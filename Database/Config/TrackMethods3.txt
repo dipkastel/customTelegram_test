@@ -1,0 +1,851 @@
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/11/2020 7:21:18 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/11/2020 7:22:32 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/11/2020 7:23:01 PM
+
+---------------------------------------------------------
+
+TesterProfile -> GetGeneralProfile -> OnActionExecuting 	- 4/11/2020 7:24:37 PM
+
+TesterProfile -> GetGeneralProfile -> OnActionExecuted 	- 4/11/2020 7:24:38 PM
+
+---------------------------------------------------------
+
+TesterProfile -> GetGeneralProfile -> OnActionExecuted 	- 4/11/2020 7:25:43 PM
+
+TesterProfile -> GetGeneralProfile -> OnActionExecuting 	- 4/11/2020 7:26:15 PM
+
+TesterProfile -> GetGeneralProfile -> OnActionExecuting 	- 4/11/2020 7:26:42 PM
+
+TesterProfile -> SetGeneralProfile -> OnActionExecuted 	- 4/11/2020 7:32:00 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/11/2020 7:32:28 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/11/2020 7:33:03 PM
+
+TesterProfile -> GetGeneralProfile -> OnActionExecuted 	- 4/11/2020 7:33:46 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/11/2020 7:34:03 PM
+
+TesterProfile -> GetGeneralProfile -> OnActionExecuting 	- 4/11/2020 7:34:57 PM
+
+TesterProfile -> GetGeneralProfile -> OnActionExecuted 	- 4/11/2020 7:34:57 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/11/2020 7:35:47 PM
+
+TesterProfile -> GetGeneralProfile -> OnActionExecuting 	- 4/11/2020 7:40:10 PM
+
+GeneralData -> GetGenderTypes -> OnResultExecuting 	- 4/11/2020 7:40:10 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/11/2020 7:50:11 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/11/2020 7:50:53 PM
+
+Account -> RefreshToken -> OnActionExecuting 	- 4/12/2020 10:13:41 AM
+
+Account -> RefreshToken -> OnActionExecuted 	- 4/12/2020 10:13:41 AM
+
+Account -> RefreshToken -> OnActionExecuted 	- 4/12/2020 10:14:54 AM
+
+Account -> RefreshToken -> کاربری با این مشخصات یافت نشد 	- 4/12/2020 10:14:55 AM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/12/2020 10:38:07 AM
+
+TesterProfile -> GetProfile -> OnResultExecuted 	- 4/12/2020 10:38:19 AM
+
+TesterProfile -> GetGeneralProfile -> OnActionExecuting 	- 4/12/2020 11:44:57 AM
+
+TesterProfile -> GetGeneralProfile -> OnActionExecuting 	- 4/12/2020 11:46:06 AM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/12/2020 11:46:30 AM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/12/2020 11:47:04 AM
+
+TesterProfile -> GetGeneralProfile -> OnActionExecuting 	- 4/12/2020 11:47:12 AM
+
+TesterProfile -> GetGeneralProfile -> OnActionExecuting 	- 4/12/2020 11:47:46 AM
+
+GeneralData -> GetGenderTypes -> OnResultExecuting 	- 4/12/2020 11:48:41 AM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/12/2020 11:51:51 AM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuted 	- 4/12/2020 11:51:52 AM
+
+TesterProfile -> GetGeneralProfile -> OnActionExecuting 	- 4/12/2020 11:52:36 AM
+
+TesterProfile -> GetProfile -> OnResultExecuting 	- 4/12/2020 11:52:36 AM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 11:52:53 AM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/12/2020 11:53:18 AM
+
+TesterProfile -> GetGeneralProfile -> OnActionExecuted 	- 4/12/2020 11:53:19 AM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 11:55:41 AM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 11:55:50 AM
+
+GeneralData -> GetGenderTypes -> OnResultExecuted 	- 4/12/2020 12:06:43 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/12/2020 12:18:45 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 12:18:46 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 12:19:16 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 12:20:44 PM
+
+---------------------------------------------------------
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuted 	- 4/12/2020 12:26:47 PM
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuted 	- 4/12/2020 12:27:36 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 12:27:55 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/12/2020 12:28:15 PM
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuting 	- 4/12/2020 12:28:26 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 12:28:37 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 12:28:47 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 12:29:10 PM
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuting 	- 4/12/2020 12:29:34 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 12:30:27 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/12/2020 12:31:13 PM
+
+---------------------------------------------------------
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuted 	- 4/12/2020 12:33:15 PM
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuting 	- 4/12/2020 12:33:26 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 12:33:46 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 12:33:56 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/12/2020 12:36:24 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuted 	- 4/12/2020 12:36:24 PM
+
+GeneralData -> GetGenderTypes -> OnResultExecuting 	- 4/12/2020 12:37:23 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 12:37:23 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/12/2020 12:39:32 PM
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuted 	- 4/12/2020 12:40:10 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 12:41:45 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/12/2020 12:44:53 PM
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuting 	- 4/12/2020 12:44:53 PM
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuted 	- 4/12/2020 12:48:00 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuted 	- 4/12/2020 12:48:26 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/12/2020 1:03:39 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 1:03:49 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 1:04:25 PM
+
+GeneralData -> GetGenderTypes -> OnResultExecuting 	- 4/12/2020 1:05:54 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/12/2020 1:08:15 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 1:08:16 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/12/2020 1:22:05 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 1:29:58 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 1:30:27 PM
+
+---------------------------------------------------------
+
+TesterProfile -> GetProfile -> OnResultExecuting 	- 4/12/2020 1:32:33 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 1:32:44 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/12/2020 1:33:50 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 1:36:16 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 1:39:13 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/12/2020 1:41:29 PM
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuting 	- 4/12/2020 1:41:30 PM
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuted 	- 4/12/2020 2:09:14 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/12/2020 2:10:13 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 2:10:41 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 2:20:57 PM
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuted 	- 4/12/2020 2:25:25 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 2:27:47 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 2:31:05 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/12/2020 2:33:11 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/12/2020 2:35:38 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 2:38:46 PM
+
+---------------------------------------------------------
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/12/2020 2:55:10 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/12/2020 5:28:56 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuted 	- 4/12/2020 6:24:00 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 6:49:44 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/12/2020 7:07:16 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/12/2020 7:12:12 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 7:12:26 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/12/2020 7:12:56 PM
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuted 	- 4/12/2020 7:15:00 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/12/2020 7:57:57 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 7:57:58 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/12/2020 7:59:07 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 8:09:59 PM
+
+---------------------------------------------------------
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 8:20:26 PM
+
+GeneralData -> GetGenderTypes -> OnResultExecuted 	- 4/12/2020 8:26:35 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 8:27:16 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/12/2020 8:27:16 PM
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuting 	- 4/12/2020 8:34:02 PM
+
+TesterProfile -> GetProfile -> OnResultExecuted 	- 4/12/2020 8:34:14 PM
+
+GeneralData -> GetGenderTypes -> OnResultExecuted 	- 4/12/2020 8:34:14 PM
+
+---------------------------------------------------------
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 9:00:13 PM
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuting 	- 4/12/2020 9:08:01 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 9:14:56 PM
+
+GeneralData -> GetGenderTypes -> OnResultExecuting 	- 4/12/2020 9:14:57 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 9:15:45 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/12/2020 9:17:43 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 9:17:44 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/12/2020 9:19:36 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 9:53:19 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuted 	- 4/12/2020 9:54:52 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/12/2020 9:56:14 PM
+
+GeneralData -> GetGenderTypes -> OnResultExecuted 	- 4/12/2020 9:56:14 PM
+
+GeneralData -> GetEducationGrades -> OnActionExecuting 	- 4/12/2020 10:10:50 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/12/2020 10:16:46 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 10:16:46 PM
+
+TesterProfile -> GetEducations -> OnActionExecuting 	- 4/12/2020 10:23:22 PM
+
+GeneralData -> GetEducationGrades -> OnResultExecuted 	- 4/12/2020 10:23:23 PM
+
+GeneralData -> GetEducationGrades -> OnActionExecuting 	- 4/12/2020 10:23:23 PM
+
+TesterProfile -> GetEducations -> OnActionExecuted 	- 4/12/2020 10:23:23 PM
+
+---------------------------------------------------------
+
+GeneralData -> GetEducationGrades -> OnActionExecuting 	- 4/12/2020 10:28:58 PM
+
+GeneralData -> GetEducationGrades -> OnActionExecuting 	- 4/13/2020 10:57:48 AM
+
+GeneralData -> GetLanguages -> OnActionExecuting 	- 4/13/2020 11:22:48 AM
+
+TesterProfile -> GetLanguages -> OnActionExecuting 	- 4/13/2020 11:23:36 AM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/13/2020 11:25:21 AM
+
+GeneralData -> GetEducationGrades -> OnActionExecuted 	- 4/13/2020 11:25:24 AM
+
+GeneralData -> GetEducationGrades -> OnActionExecuting 	- 4/13/2020 11:26:10 AM
+
+GeneralData -> GetLanguages -> OnActionExecuting 	- 4/13/2020 11:27:15 AM
+
+TesterProfile -> GetLanguages -> OnActionExecuting 	- 4/13/2020 11:28:52 AM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/13/2020 11:32:00 AM
+
+TesterProfile -> GetProfile -> OnResultExecuted 	- 4/13/2020 11:32:00 AM
+
+GeneralData -> GetLanguages -> OnActionExecuted 	- 4/13/2020 11:32:01 AM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/13/2020 11:34:10 AM
+
+GeneralData -> GetLanguages -> OnActionExecuting 	- 4/13/2020 11:36:50 AM
+
+GeneralData -> GetEducationGrades -> OnActionExecuting 	- 4/13/2020 11:36:58 AM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuted 	- 4/13/2020 12:00:56 PM
+
+TesterProfile -> GetLanguages -> OnActionExecuted 	- 4/13/2020 12:00:57 PM
+
+TesterProfile -> GetProfile -> OnResultExecuting 	- 4/13/2020 12:24:04 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/13/2020 12:26:48 PM
+
+TesterProfile -> GetLanguages -> OnResultExecuting 	- 4/13/2020 12:32:48 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/13/2020 1:07:24 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/13/2020 1:17:04 PM
+
+---------------------------------------------------------
+
+TesterProfile -> GetLanguages -> OnResultExecuting 	- 4/13/2020 1:40:39 PM
+
+GeneralData -> GetEducationGrades -> OnActionExecuting 	- 4/13/2020 1:41:54 PM
+
+GeneralData -> GetLanguages -> OnActionExecuting 	- 4/13/2020 1:45:11 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/13/2020 1:52:31 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/13/2020 1:55:17 PM
+
+GeneralData -> GetLanguages -> OnActionExecuting 	- 4/13/2020 1:58:38 PM
+
+TesterProfile -> GetJobs -> OnActionExecuted 	- 4/13/2020 2:05:46 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuted 	- 4/13/2020 2:31:34 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/13/2020 4:35:38 PM
+
+GeneralData -> GetJobSalaries -> OnResultExecuted 	- 4/13/2020 4:38:11 PM
+
+GeneralData -> GetCompanyScales -> OnResultExecuted 	- 4/13/2020 4:39:58 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/13/2020 4:50:30 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/13/2020 4:50:39 PM
+
+---------------------------------------------------------
+
+---------------------------------------------------------
+
+TesterProfile -> GetJobs -> OnActionExecuting 	- 4/13/2020 5:04:07 PM
+
+TesterProfile -> GetJobs -> OnResultExecuting 	- 4/13/2020 5:04:07 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/13/2020 5:04:17 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/13/2020 5:04:17 PM
+
+TesterProfile -> GetJobs -> OnActionExecuted 	- 4/13/2020 5:04:18 PM
+
+TesterProfile -> GetJobs -> OnActionExecuting 	- 4/13/2020 5:04:57 PM
+
+TesterProfile -> GetJobs -> OnActionExecuted 	- 4/13/2020 5:04:57 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/13/2020 5:05:29 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/13/2020 5:05:29 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuted 	- 4/13/2020 5:05:44 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/13/2020 5:05:58 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuted 	- 4/13/2020 5:05:58 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/13/2020 6:18:11 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/13/2020 6:18:29 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/13/2020 6:18:30 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/13/2020 6:18:32 PM
+
+GeneralData -> GetCompanyScales -> OnResultExecuted 	- 4/13/2020 6:18:32 PM
+
+---------------------------------------------------------
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/13/2020 6:21:10 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/13/2020 6:21:11 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/13/2020 7:38:50 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/13/2020 7:39:27 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuted 	- 4/13/2020 7:39:28 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/13/2020 7:39:52 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuted 	- 4/13/2020 7:39:52 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/13/2020 7:41:54 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuted 	- 4/13/2020 7:42:17 PM
+
+GeneralData -> GetSocialTypes -> OnResultExecuting 	- 4/13/2020 7:42:17 PM
+
+TesterProfile -> GetSocials -> OnActionExecuting 	- 4/13/2020 7:44:02 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/13/2020 7:44:52 PM
+
+GeneralData -> GetActivateTimeType -> OnResultExecuting 	- 4/13/2020 7:44:52 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/13/2020 7:45:07 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuted 	- 4/13/2020 7:45:07 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/13/2020 7:50:51 PM
+
+TesterProfile -> GetSocials -> OnActionExecuted 	- 4/13/2020 7:51:01 PM
+
+---------------------------------------------------------
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/13/2020 8:01:11 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuted 	- 4/13/2020 8:01:11 PM
+
+---------------------------------------------------------
+
+GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/13/2020 8:01:11 PM
+
+TesterProfile -> GetSocials -> OnResultExecuted 	- 4/13/2020 8:01:12 PM
+
+GeneralData -> GetGenderTypes -> OnResultExecuted 	- 4/13/2020 8:05:06 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/13/2020 8:05:07 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuted 	- 4/13/2020 8:05:07 PM
+
+TesterProfile -> GetSocials -> OnActionExecuting 	- 4/13/2020 8:05:07 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/13/2020 8:06:05 PM
+
+GeneralData -> GetGenderTypes -> OnResultExecuted 	- 4/13/2020 8:06:13 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/13/2020 8:06:13 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuted 	- 4/13/2020 8:06:13 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/13/2020 8:06:30 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/13/2020 8:06:46 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/13/2020 8:06:59 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuted 	- 4/13/2020 8:07:04 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/13/2020 8:08:45 PM
+
+GeneralData -> GetJobSalaries -> OnResultExecuted 	- 4/13/2020 8:08:47 PM
+
+TesterProfile -> GetSocials -> OnActionExecuted 	- 4/13/2020 8:08:54 PM
+
+GeneralData -> GetSocialTypes -> OnResultExecuting 	- 4/13/2020 8:08:54 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuted 	- 4/13/2020 8:10:25 PM
+
+TesterProfile -> GetSocials -> OnActionExecuted 	- 4/13/2020 8:13:12 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuted 	- 4/13/2020 8:13:12 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/13/2020 8:55:43 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/13/2020 9:27:57 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuted 	- 4/13/2020 9:27:57 PM
+
+---------------------------------------------------------
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/13/2020 9:32:28 PM
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuted 	- 4/13/2020 9:39:33 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/13/2020 9:42:00 PM
+
+GeneralData -> GetLanguages -> OnActionExecuting 	- 4/13/2020 9:47:54 PM
+
+GeneralData -> GetActivateTimeType -> OnResultExecuted 	- 4/13/2020 10:01:19 PM
+
+---------------------------------------------------------
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/13/2020 10:01:21 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/13/2020 10:01:21 PM
+
+---------------------------------------------------------
+
+Account -> RefreshToken -> OnActionExecuting 	- 4/15/2020 7:52:54 PM
+
+GeneralData -> GetActivateTimeType -> OnResultExecuting 	- 4/15/2020 7:52:55 PM
+
+Account -> RefreshToken -> OnActionExecuting 	- 4/20/2020 7:24:42 PM
+
+Account -> Login -> OnActionExecuting 	- 4/20/2020 7:30:43 PM
+
+Account -> RefreshToken -> OnActionExecuted 	- 4/20/2020 7:37:56 PM
+
+Account -> RefreshToken -> OnActionExecuted 	- 4/20/2020 7:44:14 PM
+
+Account -> RefreshToken -> OnActionExecuted 	- 4/20/2020 7:44:31 PM
+
+GeneralData -> GetGenderTypes -> OnResultExecuted 	- 4/20/2020 7:45:01 PM
+
+Account -> RefreshToken -> OnResultExecuting 	- 4/20/2020 7:56:25 PM
+
+Account -> RefreshToken -> OnActionExecuted 	- 4/20/2020 7:57:19 PM
+
+Account -> RefreshToken -> OnActionExecuted 	- 4/20/2020 7:59:57 PM
+
+Account -> RefreshToken -> OnActionExecuted 	- 4/20/2020 8:32:53 PM
+
+Account -> RefreshToken -> OnActionExecuted 	- 4/20/2020 8:32:57 PM
+
+Account -> RefreshToken -> OnActionExecuted 	- 4/20/2020 8:33:05 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/20/2020 8:40:11 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/20/2020 8:40:14 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/20/2020 8:40:16 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/20/2020 8:40:19 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/20/2020 8:40:25 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/20/2020 8:40:34 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/20/2020 8:42:10 PM
+
+TesterProfile -> GetJobs -> OnActionExecuted 	- 4/20/2020 8:42:41 PM
+
+---------------------------------------------------------
+
+TesterProfile -> GetLanguages -> OnActionExecuted 	- 4/20/2020 8:43:05 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/20/2020 8:46:13 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/20/2020 8:53:04 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/20/2020 8:53:29 PM
+
+GeneralData -> GetJobSalaries -> OnResultExecuted 	- 4/20/2020 8:53:30 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/20/2020 8:55:41 PM
+
+GeneralData -> GetLanguages -> OnActionExecuting 	- 4/20/2020 8:58:21 PM
+
+GeneralData -> GetJobSalaries -> OnResultExecuting 	- 4/20/2020 9:00:14 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/20/2020 9:04:58 PM
+
+GeneralData -> GetActivateTimeType -> OnResultExecuted 	- 4/20/2020 9:09:55 PM
+
+TesterProfile -> GetEducations -> OnResultExecuting 	- 4/20/2020 9:11:36 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/20/2020 9:12:46 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/20/2020 9:12:47 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/20/2020 9:30:15 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuted 	- 4/20/2020 9:30:15 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/20/2020 9:30:15 PM
+
+GeneralData -> GetRelationTypes -> OnActionExecuting 	- 4/20/2020 9:41:19 PM
+
+GeneralData -> GetEducationGrades -> OnActionExecuting 	- 4/20/2020 10:00:22 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/20/2020 10:00:53 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/20/2020 10:03:05 PM
+
+TesterProfile -> GetJobs -> OnActionExecuted 	- 4/20/2020 10:03:10 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/20/2020 10:05:30 PM
+
+TesterProfile -> GetEducations -> OnActionExecuted 	- 4/20/2020 10:05:34 PM
+
+GeneralData -> GetLanguages -> OnActionExecuting 	- 4/20/2020 10:05:38 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/20/2020 10:07:53 PM
+
+TesterProfile -> GetJobs -> OnActionExecuted 	- 4/20/2020 10:07:53 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/20/2020 10:07:54 PM
+
+TesterProfile -> GetSocials -> OnActionExecuted 	- 4/20/2020 10:08:58 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/20/2020 10:09:40 PM
+
+TesterProfile -> GetSocials -> OnActionExecuting 	- 4/20/2020 10:09:48 PM
+
+TesterProfile -> GetJobs -> OnActionExecuted 	- 4/20/2020 10:09:56 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/20/2020 10:09:57 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuted 	- 4/20/2020 10:09:57 PM
+
+GeneralData -> GetSocialTypes -> OnResultExecuting 	- 4/20/2020 10:11:56 PM
+
+GeneralData -> GetSocialTypes -> OnResultExecuting 	- 4/20/2020 10:11:56 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/20/2020 10:12:25 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuted 	- 4/20/2020 10:12:26 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/20/2020 10:35:41 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuted 	- 4/20/2020 10:35:41 PM
+
+GeneralData -> GetSocialTypes -> OnResultExecuting 	- 4/20/2020 10:35:41 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/20/2020 10:36:05 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuted 	- 4/20/2020 10:36:05 PM
+
+TesterProfile -> GetEducations -> OnActionExecuted 	- 4/20/2020 10:37:30 PM
+
+GeneralData -> GetCompanyScales -> OnResultExecuted 	- 4/20/2020 10:37:34 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/20/2020 10:37:35 PM
+
+TesterProfile -> GetSocials -> OnActionExecuting 	- 4/20/2020 10:37:39 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/20/2020 10:37:39 PM
+
+GeneralData -> GetSocialTypes -> OnResultExecuted 	- 4/20/2020 10:37:39 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/20/2020 10:37:40 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/21/2020 6:36:01 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuted 	- 4/21/2020 6:36:01 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/21/2020 6:44:53 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/21/2020 6:44:53 PM
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/21/2020 6:46:50 PM
+
+GeneralData -> GetLanguages -> OnResultExecuted 	- 4/21/2020 6:46:51 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/21/2020 6:46:57 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/21/2020 6:55:34 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/21/2020 6:56:47 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/21/2020 6:58:42 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/21/2020 6:59:41 PM
+
+---------------------------------------------------------
+
+GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/21/2020 7:03:12 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/21/2020 7:03:12 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuted 	- 4/21/2020 7:03:13 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/21/2020 7:04:57 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/21/2020 7:06:52 PM
+
+GeneralData -> GetGenderTypes -> OnResultExecuting 	- 4/21/2020 7:06:53 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/21/2020 7:09:58 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/21/2020 7:09:58 PM
+
+GeneralData -> GetJobSalaries -> OnResultExecuted 	- 4/21/2020 7:09:59 PM
+
+---------------------------------------------------------
+
+GeneralData -> GetSocialTypes -> OnActionExecuted 	- 4/21/2020 7:15:42 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/21/2020 7:15:52 PM
+
+TesterProfile -> GetSocials -> OnActionExecuting 	- 4/21/2020 7:16:01 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/21/2020 7:16:01 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuted 	- 4/21/2020 7:16:01 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuted 	- 4/21/2020 7:16:44 PM
+
+TesterProfile -> GetProfile -> OnResultExecuted 	- 4/21/2020 7:22:27 PM
+
+TesterProfile -> GetSocials -> OnActionExecuting 	- 4/21/2020 7:24:06 PM
+
+TesterProfile -> GetSocials -> OnActionExecuted 	- 4/21/2020 7:24:07 PM
+
+GeneralData -> GetGenderTypes -> OnResultExecuting 	- 4/21/2020 7:24:17 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/21/2020 7:24:47 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/21/2020 7:27:15 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/21/2020 7:27:34 PM
+
+---------------------------------------------------------
+
+GeneralData -> GetSocialTypes -> OnResultExecuted 	- 4/21/2020 7:28:11 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/21/2020 7:30:06 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/21/2020 7:30:49 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/21/2020 7:32:36 PM
+
+TesterProfile -> GetProfile -> OnResultExecuting 	- 4/21/2020 7:33:32 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/21/2020 7:33:59 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/21/2020 7:35:26 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/21/2020 7:35:48 PM
+
+TesterProfile -> GetProfile -> OnResultExecuting 	- 4/21/2020 7:35:48 PM
+
+GeneralData -> GetGenderTypes -> OnResultExecuting 	- 4/21/2020 7:43:06 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/21/2020 7:43:27 PM
+
+GeneralData -> GetActivateTimeType -> OnResultExecuting 	- 4/21/2020 7:43:36 PM
+
+GeneralData -> GetLanguages -> OnActionExecuting 	- 4/21/2020 7:43:40 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/21/2020 7:43:46 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/21/2020 7:56:58 PM
+
+TesterProfile -> GetProfile -> OnResultExecuting 	- 4/21/2020 7:57:33 PM
+
+TesterProfile -> GetProfile -> OnResultExecuted 	- 4/21/2020 7:58:22 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/21/2020 8:00:14 PM
+
+TesterProfile -> GetProfilePercentage -> OnResultExecuted 	- 4/21/2020 8:00:51 PM
+
+GeneralData -> GetLanguages -> OnActionExecuting 	- 4/21/2020 8:05:53 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/21/2020 8:07:03 PM
+
+GeneralData -> GetCompanyScales -> OnResultExecuted 	- 4/21/2020 8:07:06 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/21/2020 8:07:08 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/21/2020 8:07:08 PM
+
+GeneralData -> GetCompanyScales -> OnResultExecuting 	- 4/21/2020 8:07:23 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/21/2020 8:07:24 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/21/2020 8:45:59 PM
+
+TesterProfile -> GetProfile -> OnActionExecuted 	- 4/21/2020 8:46:00 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/21/2020 8:46:27 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/21/2020 8:47:18 PM
+
+GeneralData -> GetGenderTypes -> OnResultExecuting 	- 4/21/2020 8:47:19 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/21/2020 8:48:52 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/21/2020 8:50:17 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/21/2020 8:51:18 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/21/2020 8:51:40 PM
+
+TesterProfile -> GetJobs -> OnActionExecuted 	- 4/21/2020 8:52:06 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/21/2020 8:53:58 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/21/2020 8:54:19 PM
+
+TesterProfile -> GetSocials -> OnActionExecuted 	- 4/21/2020 8:56:08 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuted 	- 4/21/2020 8:57:52 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/21/2020 8:58:40 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/21/2020 8:58:53 PM
+
+GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/21/2020 8:59:04 PM
+
+TesterProfile -> GetProfile -> OnActionExecuting 	- 4/21/2020 9:01:19 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/21/2020 9:03:15 PM
+
+TesterProfile -> GetProfilePercentage -> OnActionExecuting 	- 4/21/2020 9:30:10 PM
+
+GeneralData -> GetEducationGrades -> OnActionExecuting 	- 4/22/2020 4:53:33 PM
+
+---------------------------------------------------------
+
+GeneralData -> GetActivateTimeType -> OnActionExecuted 	- 4/22/2020 4:53:53 PM
+
+Account -> RefreshToken -> OnActionExecuted 	- 4/23/2020 4:50:50 PM
+
+Account -> RefreshToken -> OnActionExecuting 	- 4/23/2020 5:11:20 PM
+
+Account -> RefreshToken -> OnActionExecuted 	- 4/23/2020 5:11:20 PM
+
+Account -> RefreshToken -> OnActionExecuted 	- 4/23/2020 5:19:18 PM
+
+GeneralData -> GetSocialTypes -> OnActionExecuted 	- 4/23/2020 5:19:30 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/23/2020 5:19:31 PM
+
+GeneralData -> GetJobSalaries -> OnActionExecuted 	- 4/23/2020 5:19:39 PM
+
+GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/23/2020 5:20:04 PM
+
+GeneralData -> GetActivateTimeType -> OnResultExecuting 	- 4/23/2020 5:20:04 PM
+
+GeneralData -> GetActivateTimeType -> OnResultExecuting 	- 4/23/2020 5:20:59 PM
+
