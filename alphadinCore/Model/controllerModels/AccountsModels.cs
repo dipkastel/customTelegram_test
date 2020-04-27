@@ -5,11 +5,13 @@
 
     }
 
-    public class AccountSendSmsRequst {
+    public class AccountSendSmsRequst 
+    {
         public string PhoneNumber { get; set; }
     }
 
-    public class AccountLoginRequst {
+    public class AccountLoginRequst 
+    {
         public string MobileNumber { get; set; }
         public string SmsKey { get; set; }
     }

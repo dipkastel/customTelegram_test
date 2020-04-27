@@ -39,28 +39,26 @@ namespace alphadinCore.Controllers
             _db = db;
         }
 
-        [Route("getSms")]
         [HttpPost]
-        public JsonResult GetSms(AccountSendSmsRequst input)
+        public JsonResult GetSms(AccountSendSmsRequst smsRequst)
         {
-            var smsResult = _smsHelper.sendAuthSms(input.phoneNumber, _db);
+            var smsResult = _smsHelper.sendAuthSms(smsRequst.PhoneNumber, _db);
             return new JsonResult(smsResult);
         }
 
-        [Route("Login")]
         [HttpPost]
-        public JsonResult Login(AccountLoginRequst input)
+        public JsonResult Login(AccountLoginRequst loginInfo)
         {
-            if (input.MobileNumber == null || input.SmsKey == null)
+            if (loginInfo.MobileNumber == null || loginInfo.SmsKey == null)
                 throw new CustomException("اطلاعات وارد شده معتبر نیست",
                     ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_LOGIN + "01");
 
-            var login = new User
+            var tempUser = new User
             {
-                MobileNumber = input.MobileNumber
+                MobileNumber = loginInfo.MobileNumber
             };
 
-            var user = _authHelper.AuthenticateUser(login, _db);
+            var user = _authHelper.AuthenticateUser(tempUser, _db);
 
             if (!CheckUserAcess(user, out var userCustomException))
             {
@@ -71,17 +69,16 @@ namespace alphadinCore.Controllers
                 .OrderByDescending(p => p.SendDate)
                 .FirstOrDefault();
 
-            if (!CheckSms(input, sms, out var smsCustomException))
+            if (!CheckSms(loginInfo, sms, out var smsCustomException))
             {
                 throw smsCustomException;
             }
 
             sms.Status = (int)SmsStatus.Used;
-
             _db.Sms.Update(sms);
             _db.SaveChanges();
 
-            _authHelper.GenerateJSONWebToken(user, _config, _db, (int)UserTokenStatus.Created);
+            _authHelper.GenerateJsonWebToken(user, _config, _db, (int)UserTokenStatus.Created);
 
             var token = _db.UserTokens.Where(u => u.User.MobileNumber == user.MobileNumber)
                 .OrderByDescending(i => i.Id)
@@ -91,33 +88,31 @@ namespace alphadinCore.Controllers
         }
 
 
-        [Route("RefreshToken")]
         [HttpPost]
-        public JsonResult RefreshToken(RefreshTokenRequst input)
+        public JsonResult RefreshToken(RefreshTokenRequst refreshInfo)
         {
             var user = _db.Users.Include(o => o.Role)
-                .FirstOrDefault(o => o.RefreshToken == input.RefreshKey);
+                .FirstOrDefault(o => o.RefreshToken == refreshInfo.RefreshKey);
 
             if (user == null)
                 throw new CustomException("کاربری با این مشخصات یافت نشد",
                     ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REFRESH_TOKEN + "01");
 
-            _authHelper.GenerateJSONWebToken(user, _config, _db, (int) UserTokenStatus.Refresh);
+            _authHelper.GenerateJsonWebToken(user, _config, _db, (int) UserTokenStatus.Refresh);
 
             user.RefreshToken = Guid.NewGuid().ToString();
 
             _db.Users.Update(user);
             _db.SaveChanges();
 
-            var token = _db.UserTokens.Where(u => u.User.MobileNumber == user.MobileNumber).OrderByDescending(i => i.Id)
+            var token = _db.UserTokens.Where(u => u.User.MobileNumber == user.MobileNumber)
+                .OrderByDescending(i => i.Id)
                 .FirstOrDefault();
 
             return new JsonResult(token);
         }
 
-
         [Authorize(Roles = "tester")]
-        [Route("tester")]
         [HttpPost]
         public JsonResult Post()
         {
@@ -128,7 +123,6 @@ namespace alphadinCore.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [Route("Admin")]
         public JsonResult GetHasan()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;

@@ -13,116 +13,127 @@ namespace alphadinCore.Controllers
     [ApiController]
     public class GeneralDataController : BaseController
     {
+        private readonly DbContextModel _db;
 
-        private DbContextModel db;
-        public GeneralDataController(DbContextModel _db)
+        public GeneralDataController(DbContextModel db)
         {
-            db = _db;
+            _db = db;
         }
 
 
-        [Route("GetRelationTypes")]
         [HttpGet]
         public JsonResult GetRelationTypes()
         {
-            return new JsonResult(db.GeneralTypes.Where(o => o.TypeModel == (int)GeneralTypeModel.Relation).Select(s=>new { 
-            ID=s.TypeKey,
-            Name = s.TypeName
-            }).ToList());
+            return new JsonResult(_db.GeneralTypes.Where(o => o.TypeModel == (int) GeneralTypeModel.Relation).Select(
+                s => new
+                {
+                    ID = s.TypeKey,
+                    Name = s.TypeName
+                }).ToList());
         }
 
-        [Route("GetGenderTypes")]
         [HttpGet]
         public JsonResult GetGenderTypes()
         {
-            return new JsonResult(db.GeneralTypes.Where(o => o.TypeModel == (int)GeneralTypeModel.Gender).Select(s => new {
-                ID = s.TypeKey,
-                Name = s.TypeName
-            }).ToList());
+            return new JsonResult(_db.GeneralTypes.Where(o => o.TypeModel == (int) GeneralTypeModel.Gender).Select(s =>
+                new
+                {
+                    ID = s.TypeKey,
+                    Name = s.TypeName
+                }).ToList());
         }
         
-        [Route("GetEducationGrades")]
         [HttpGet]
         public JsonResult GetEducationGrades()
         {
-            return new JsonResult(db.GeneralTypes.Where(o => o.TypeModel == (int)GeneralTypeModel.EducationGrades).Select(s => new {
-                ID = s.TypeKey,
-                Name = s.TypeName
-            }).ToList());
+            return new JsonResult(_db.GeneralTypes.Where(o => o.TypeModel == (int) GeneralTypeModel.EducationGrades)
+                .Select(s => new
+                {
+                    ID = s.TypeKey,
+                    Name = s.TypeName
+                }).ToList());
         }
         
-        [Route("GetJobSalaries")]
         [HttpGet]
         public JsonResult GetJobSalaries()
         {
-            return new JsonResult(db.GeneralTypes.Where(o => o.TypeModel == (int)GeneralTypeModel.JobSalaries).Select(s => new {
-                ID = s.TypeKey,
-                Name = s.TypeName
-            }).ToList());
+            return new JsonResult(_db.GeneralTypes.Where(o => o.TypeModel == (int) GeneralTypeModel.JobSalaries).Select(
+                s => new
+                {
+                    ID = s.TypeKey,
+                    Name = s.TypeName
+                }).ToList());
         }
         
-        [Route("GetCompanyScales")]
         [HttpGet]
         public JsonResult GetCompanyScales()
         {
-            return new JsonResult(db.GeneralTypes.Where(o => o.TypeModel == (int)GeneralTypeModel.CompanyScales).Select(s => new {
-                ID = s.TypeKey,
-                Name = s.TypeName
-            }).ToList());
+            return new JsonResult(_db.GeneralTypes.Where(o => o.TypeModel == (int) GeneralTypeModel.CompanyScales)
+                .Select(s => new
+                {
+                    ID = s.TypeKey,
+                    Name = s.TypeName
+                }).ToList());
         }
-        [Route("GetSocialTypes")]
+        
         [HttpGet]
         public JsonResult GetSocialTypes()
         {
-            return new JsonResult(db.GeneralTypes.Where(o => o.TypeModel == (int)GeneralTypeModel.SocialTypes).Select(s => new {
-                ID = s.TypeKey,
-                Name = s.TypeName
-            }).ToList());
+            return new JsonResult(_db.GeneralTypes.Where(o => o.TypeModel == (int) GeneralTypeModel.SocialTypes).Select(
+                s => new
+                {
+                    ID = s.TypeKey,
+                    Name = s.TypeName
+                }).ToList());
         }
-        [Route("GetActivateTimeType")]
+
         [HttpGet]
         public JsonResult GetActivateTimeType()
         {
-            return new JsonResult(db.GeneralTypes.Where(o => o.TypeModel == (int)GeneralTypeModel.ActivateTimeType).Select(s => new {
-                ID = s.TypeKey,
-                Name = s.TypeName
-            }).ToList());
+            return new JsonResult(_db.GeneralTypes.Where(o => o.TypeModel == (int) GeneralTypeModel.ActivateTimeType)
+                .Select(s => new
+                {
+                    ID = s.TypeKey,
+                    Name = s.TypeName
+                }).ToList());
         }
 
-        [Route("GetLanguages")]
         [HttpGet]
         public JsonResult GetLanguages()
         {
-            List<Language> languages = db.Languages.ToList();
+            List<Language> languages = _db.Languages.ToList();
             return new JsonResult(languages);
         }
 
-        [Route("GetFavoriteTags")]
         [HttpGet]
         public JsonResult GetFavoriteTags()
         {
-            List<FavoriteTag> favorites = db.FavoriteTags.ToList();
+            var favorites = _db.FavoriteTags.ToList();
             return new JsonResult(favorites);
         }
 
-        [Route("GetCityCodes")]
         [HttpGet]
         public JsonResult GetCityCodes()
         {
-            IQueryable<Location> locations = db.Locations;
-            List<Location> master = locations.Where(p => p.Parent == null).ToList();
-            foreach (Location loc in master) {
-                Addchilds(loc,locations);
+            IQueryable<Location> allLocations = _db.Locations;
+            var countries = allLocations.Where(loc => loc.Parent == null).ToList();
+            foreach (var provinces in countries)
+            {
+                Addchilds(provinces, allLocations);
             }
-            return new JsonResult(master);
+
+            return new JsonResult(countries);
         }
 
-        private void Addchilds(Location loc, IQueryable<Location> locations)
+        private void Addchilds(Location parentLocation, IQueryable<Location> allLocations)
         {
-            List<Location> childs = locations.Where(i => i.Parent.Id == loc.Id).ToList();
-            loc.Childs = childs;
-            foreach (Location child in childs) {
-                Addchilds(child, locations);
+            var childs = allLocations.Where(loc => loc.Parent.Id == parentLocation.Id).ToList();
+
+            parentLocation.Childs = childs;
+
+            foreach (var childLocation in childs)
+            {
+                Addchilds(childLocation, allLocations);
             }
         }
     }

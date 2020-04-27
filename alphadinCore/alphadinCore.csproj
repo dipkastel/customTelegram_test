@@ -19,7 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DatabaseValidation\DatabaseValidation.csproj" />
     <ProjectReference Include="..\Database\Database.csproj" />
+    <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

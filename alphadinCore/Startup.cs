@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Services.Operator;
+using Services.Operator.Interfaces;
+using Services.Repository;
 
 namespace alphadinCore
 {
@@ -63,17 +66,49 @@ namespace alphadinCore
                 });
 
             services.AddMvc();
+
+            #region IOC
+
+            #region Repository
+
+            services.AddTransient<IConstService, ConstService>();
+            services.AddTransient<IFavoriteTagService, FavoriteTagService>();
+            services.AddTransient<IGeneralTypesService, GeneralTypesService>();
+            services.AddTransient<ILanguageService, LanguageService>();
+            services.AddTransient<ILocationService, LocationService>();
+            services.AddTransient<IRoleAccessService, RoleAccessService>();
+            services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<ISchoolCourseService, SchoolCourseService>();
+            services.AddTransient<ISchoolQuisQuestionOptionService, SchoolQuisQuestionOptionService>();
+            services.AddTransient<ISchoolQuizCourseService, SchoolQuizCourseService>();
+            services.AddTransient<ISchoolQuizQuestionService, SchoolQuizQuestionService>();
+            services.AddTransient<ISchoolTopicService, SchoolTopicService>();
+            services.AddTransient<ISchoolUnitService, SchoolUnitService>();
+            services.AddTransient<ISmsService, SmsService>();
+            services.AddTransient<ITesterProfileService, TesterProfileService>();
+            services.AddTransient<IUserEducationService, UserEducationService>();
+            services.AddTransient<IUserJobService, UserJobService>();
+            services.AddTransient<IUserLanguageService, UserLanguageService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserSocialsService, UserSocialsService>();
+            services.AddTransient<IUserTokenService, UserTokenService>();
+
+            #endregion
+
             services.AddSingleton<AuthHelper>();
             services.AddSingleton<SmsHelper>();
+
+            #endregion
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //if (env.IsDevelopment())
-            //{
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
-            //}
+            }
 
             //app.UseCors(builder =>
             //    builder.WithOrigins("http://localhost:8080"));
