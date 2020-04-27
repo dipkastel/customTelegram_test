@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using alphadinCore.Common.Filters;
-using alphadinCore.data;
 using alphadinCore.Model;
 using alphadinCore.Model.controllerModels;
-using alphadinCore.Model.dbModels;
 using alphadinCore.Model.NetworkModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using Database.Config;
+using Database.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,8 +19,8 @@ namespace alphadinCore.Controllers
     {
 
 
-        private dbContextModel db;
-        public SchoolController(dbContextModel _db)
+        private DbContextModel db;
+        public SchoolController(DbContextModel _db)
         {
             db = _db;
         }
@@ -36,7 +32,7 @@ namespace alphadinCore.Controllers
         //[Authorize(Roles = "tester")]
         public JsonResult GetTopics()
         {
-            List<SchoolTopicModel> topics = db.SchoolTopics.Include(sc=>sc.Courses).ToList();
+            List<SchoolTopic> topics = db.SchoolTopics.Include(sc=>sc.Courses).ToList();
             return new JsonResult(topics);
         }
 
@@ -48,7 +44,7 @@ namespace alphadinCore.Controllers
         //[Authorize(Roles = "tester")]
         public JsonResult GetCourses(SchoolGetCoursesInput input)
         {
-            SchoolTopicModel topic = db.SchoolTopics.Include(sc => sc.Courses).Where(o => o.Id == input.TopicId).FirstOrDefault();
+            SchoolTopic topic = db.SchoolTopics.Include(sc => sc.Courses).Where(o => o.Id == input.TopicId).FirstOrDefault();
             if (topic == null)
                 throw new CustomException("چنین تاپیکی وجود ندارد", ErrorsPreFix.CONTROLLER_SCHOOL + ERROR_GET_COURSES + "01");
             List<int> CourseIds = topic.Courses.Select(p=>p.Id).ToList();

@@ -4,17 +4,18 @@ using System.Linq;
 using System.Security.Claims;
 using alphadinCore.Common.Filters;
 using alphadinCore.Common.Helper;
-using alphadinCore.data;
 using alphadinCore.Model;
 using alphadinCore.Model.controllerModels;
 using alphadinCore.Model.NetworkModels;
 using alphadinCore.Model.smsModels;
 using alphadinCore.Services.Helper;
+using Database.Common.Enums;
+using Database.Config;
+using Database.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 
 namespace alphadinCore.Controllers
 {
@@ -27,8 +28,8 @@ namespace alphadinCore.Controllers
         private IConfiguration config;
         private AuthHelper authHelper;
         private SmsHelper smsHelper;
-        private dbContextModel db;
-        public AccountController(IConfiguration _config, AuthHelper _authHelper, dbContextModel _db,SmsHelper _smsHelper)
+        private DbContextModel db;
+        public AccountController(IConfiguration _config, AuthHelper _authHelper, DbContextModel _db,SmsHelper _smsHelper)
         {
             config = _config;
             authHelper = _authHelper;
@@ -49,7 +50,7 @@ namespace alphadinCore.Controllers
         {
             if (input.MobileNumber == null || input.smsKey == null)
                 throw new CustomException("اطلاعات وارد شده معتبر نیست", ErrorsPreFix.CONTROLLER_ACOUNT+ERROR_LOGIN+"01");
-            UserModel login = new UserModel();
+            User login = new User();
             login.MobileNumber = input.MobileNumber;
             var user = authHelper.AuthenticateUser(login, db);
             if (user == null)
@@ -62,7 +63,7 @@ namespace alphadinCore.Controllers
             if (input.smsKey != sms.Key) 
                 throw new CustomException("کد دریافت شده معتبر نمی باشد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_LOGIN + "05");
 
-           authHelper.GenerateJSONWebToken(user, config,db,(int)TokenStatus.created);
+           authHelper.GenerateJSONWebToken(user, config,db,(int)UserTokenStatus.Created);
 
             sms.Status = 1;
             db.Sms.Update(sms);
@@ -76,10 +77,10 @@ namespace alphadinCore.Controllers
         [HttpPost]
         public JsonResult RefreshToken(RefreshTokenRequst input)
         {
-            UserModel user = db.Users.Include(o=>o.Role).Where(o => o.RefreshToken == input.RefreshKey).FirstOrDefault();
+            User user = db.Users.Include(o=>o.Role).Where(o => o.RefreshToken == input.RefreshKey).FirstOrDefault();
             if (user == null)
                 throw new CustomException("کاربری با این مشخصات یافت نشد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REFRESH_TOKEN + "01");
-            authHelper.GenerateJSONWebToken(user, config,db,(int)TokenStatus.Refresh);
+            authHelper.GenerateJSONWebToken(user, config,db,(int)UserTokenStatus.Refresh);
             user.RefreshToken = Guid.NewGuid().ToString();
             db.Users.Update(user);
             db.SaveChanges();

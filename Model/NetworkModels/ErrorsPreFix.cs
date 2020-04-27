@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace alphadinCore.Model.NetworkModels
+﻿namespace alphadinCore.Model.NetworkModels
 {
     public class ErrorsPreFix
     {

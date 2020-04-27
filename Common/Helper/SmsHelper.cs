@@ -1,11 +1,12 @@
-﻿using alphadinCore.data;
-using alphadinCore.Model;
+﻿using alphadinCore.Model;
 using alphadinCore.Model.NetworkModels;
 using alphadinCore.Model.smsModels;
 using Kavenegar.Core.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using Database.Common.Enums;
+using Database.Config;
+using Database.Models;
 
 namespace alphadinCore.Common.Helper
 {
@@ -15,12 +16,12 @@ namespace alphadinCore.Common.Helper
         const string API_KEY = "672F63374D31584673477577684157626567643831513D3D";
 
 
-        public SendSmsResultModel sendAuthSms(string phoneNumber, dbContextModel db) {
+        public SendSmsResultModel sendAuthSms(string phoneNumber, DbContextModel db) {
             string code = generateRandomSmsCode();
             return sendSms(phoneNumber, code, db);
         }
 
-        public SendSmsResultModel sendSms(String phoneNumber, String code, dbContextModel db) {
+        public SendSmsResultModel sendSms(String phoneNumber, String code, DbContextModel db) {
             SendSmsResultModel smsResult = new SendSmsResultModel();
             try
             {
@@ -34,7 +35,7 @@ namespace alphadinCore.Common.Helper
                     smsResult.FaMessage = "کد ورود برای کاربر ارسال شد";
                     smsResult.EnMessage = "entry code Successfully sended";
                     insertUser(phoneNumber,code, db);
-                    db.Sms.Add(new SmsModel { Key = code, Text = smsMessage, Reciver = phoneNumber, SendDate = DateTime.Now, Status = (int)SmsStatus.Success });
+                    db.Sms.Add(new Sms { Key = code, Text = smsMessage, Reciver = phoneNumber, SendDate = DateTime.Now, Status = (int)SmsStatus.Success });
                     db.SaveChanges();
                     return smsResult;
                 }
@@ -43,7 +44,7 @@ namespace alphadinCore.Common.Helper
                     smsResult.success = false;
                     smsResult.FaMessage = "خطا در ارسال اس ام اس";
                     smsResult.EnMessage = "error in sending sms";
-                    db.Sms.Add(new SmsModel { Key = code, Text = smsMessage, Reciver = phoneNumber, SendDate = DateTime.Now, Status = (int)SmsStatus.Faild });
+                    db.Sms.Add(new Sms { Key = code, Text = smsMessage, Reciver = phoneNumber, SendDate = DateTime.Now, Status = (int)SmsStatus.Faild });
                     db.SaveChanges();
                     throw new CustomException(smsResult.FaMessage, ErrorsPreFix.HELPER_SMS + ERROR_SEND_SMS + "01");
                 }
@@ -53,16 +54,16 @@ namespace alphadinCore.Common.Helper
                 smsResult.success = false;
                 smsResult.FaMessage = "خطا در ارسال اس ام اس";
                 smsResult.EnMessage = ex.Message;
-                db.Sms.Add(new SmsModel { Key = code, Text = "", Reciver = phoneNumber, SendDate = DateTime.Now, Status = (int)SmsStatus.Faild });
+                db.Sms.Add(new Sms { Key = code, Text = "", Reciver = phoneNumber, SendDate = DateTime.Now, Status = (int)SmsStatus.Faild });
                 db.SaveChanges();
-                throw new CustomException(smsResult.FaMessage, ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_SEND_SMS + "02");
+                throw new CustomException(smsResult.FaMessage, ErrorsPreFix.HELPER_SMS + ERROR_SEND_SMS + "02");
             }
             catch (Kavenegar.Core.Exceptions.HttpException ex)
             {
                 smsResult.success = false;
                 smsResult.FaMessage = "خطا در برقراری ارتباط با ارسال کننده اس ام اس";
                 smsResult.EnMessage = ex.Message;
-                db.Sms.Add(new SmsModel { Key = code, Text = "", Reciver = phoneNumber, SendDate = DateTime.Now, Status = (int)SmsStatus.Faild });
+                db.Sms.Add(new Sms { Key = code, Text = "", Reciver = phoneNumber, SendDate = DateTime.Now, Status = (int)SmsStatus.Faild });
                 db.SaveChanges();
                 throw new CustomException(smsResult.FaMessage, ErrorsPreFix.HELPER_SMS + ERROR_SEND_SMS + "03");
             }
@@ -70,7 +71,7 @@ namespace alphadinCore.Common.Helper
                 smsResult.success = false;
                 smsResult.FaMessage = ex.Message;
                 smsResult.EnMessage = ex.Message;
-                db.Sms.Add(new SmsModel { Key = code, Text = "", Reciver = phoneNumber, SendDate = DateTime.Now, Status = (int)SmsStatus.Faild });
+                db.Sms.Add(new Sms { Key = code, Text = "", Reciver = phoneNumber, SendDate = DateTime.Now, Status = (int)SmsStatus.Faild });
                 db.SaveChanges();
                 throw new CustomException(smsResult.FaMessage, ErrorsPreFix.HELPER_SMS + ERROR_SEND_SMS + "04");
             }
@@ -78,13 +79,13 @@ namespace alphadinCore.Common.Helper
 
         }
 
-        private UserModel insertUser(string phoneNumber,string code ,dbContextModel db)
+        private User insertUser(string phoneNumber,string code ,DbContextModel db)
         {
-            UserModel user = db.Users.Where(a=>a.MobileNumber==phoneNumber).FirstOrDefault();
+            User user = db.Users.Where(a=>a.MobileNumber==phoneNumber).FirstOrDefault();
             if (user == null)
             {
-                RoleModel role = db.Roles.Where(t => t.Name == "tester").FirstOrDefault();
-                db.Users.Add(new UserModel {  MobileNumber = phoneNumber, Role = role, Status = (int)UserStatus.Active, RefreshToken = Guid.NewGuid().ToString() });
+                Role role = db.Roles.Where(t => t.Name == "tester").FirstOrDefault();
+                db.Users.Add(new User {  MobileNumber = phoneNumber, Role = role, Status = (int)UserStatus.Active, RefreshToken = Guid.NewGuid().ToString() });
                 db.SaveChanges();
             }
             else {
@@ -95,7 +96,7 @@ namespace alphadinCore.Common.Helper
             return user;
         }
 
-        private string codeToMessage(string code,dbContextModel db) {
+        private string codeToMessage(string code,DbContextModel db) {
 
             return "کد ورود شما به آلفادین :" + code + "می باشد.";
         }

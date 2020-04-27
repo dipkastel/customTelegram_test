@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using alphadinCore.Common.Filters;
-using alphadinCore.data;
-using alphadinCore.Model.dbModels;
 using alphadinCore.Model.NetworkModels;
-using Kavenegar.Core.Exceptions;
+using Database.Config;
+using Database.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace alphadinCore.Model.controllerModels
 {
@@ -23,8 +17,8 @@ namespace alphadinCore.Model.controllerModels
     [ResultFixer]
     public class TesterProfileController : ControllerBase
     {
-        private dbContextModel db;
-        public TesterProfileController(dbContextModel _db)
+        private DbContextModel db;
+        public TesterProfileController(DbContextModel _db)
         {
             db = _db;
         }
@@ -39,14 +33,14 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            TesterProfileModel testerProfile = db.TesterProfiles.Include(o => o.user).Include(p => p.user.Role).Where(o => o.user.MobileNumber == mobileNumber).FirstOrDefault();
+            TesterProfile testerProfile = db.TesterProfiles.Include(o => o.User).Include(p => p.User.Role).Where(o => o.User.MobileNumber == mobileNumber).FirstOrDefault();
             if (testerProfile == null)
-                testerProfile = new TesterProfileModel();
+                testerProfile = new TesterProfile();
             var result = new
             {
 
                 mobileNumber = mobileNumber,
-                role = (testerProfile.user != null && testerProfile.user.Role != null) ? testerProfile.user.Role.Name : "tester",
+                role = (testerProfile.User != null && testerProfile.User.Role != null) ? testerProfile.User.Role.Name : "tester",
                 userName = testerProfile.UserName,
                 profileImageUrl = testerProfile.ProfileImageUrl,
                 userBio = testerProfile.UserBio,
@@ -59,7 +53,7 @@ namespace alphadinCore.Model.controllerModels
                 email = testerProfile.Email,
                 emailVerified = testerProfile.EmailVerified,
                 postalCode = testerProfile.PostalCode,
-                cityCode = testerProfile.cityCode
+                cityCode = testerProfile.CityCode
             };
             return new JsonResult(result);
         }
@@ -72,17 +66,17 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            TesterProfileModel testerProfile = db.TesterProfiles.Where(o => o.user.MobileNumber == mobileNumber).FirstOrDefault();
+            TesterProfile testerProfile = db.TesterProfiles.Where(o => o.User.MobileNumber == mobileNumber).FirstOrDefault();
             if (testerProfile == null)
             {
                 //FirstUpdate
-                testerProfile = new TesterProfileModel();
+                testerProfile = new TesterProfile();
                 var user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
                 if (user == null)
                     throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_TESTER_PROFILE + ERROR_SET_PROFILE + "01");
-                testerProfile.user = user;
+                testerProfile.User = user;
                 testerProfile.BirthDay = input.BirthDay;
-                testerProfile.cityCode = input.cityCode;
+                testerProfile.CityCode = input.cityCode;
                 testerProfile.Email = input.Email;
                 testerProfile.GenderType = input.GenderType;
                 testerProfile.NationalCode = input.NationalCode;
@@ -97,7 +91,7 @@ namespace alphadinCore.Model.controllerModels
             else
             {
                 testerProfile.BirthDay = input.BirthDay;
-                testerProfile.cityCode = input.cityCode;
+                testerProfile.CityCode = input.cityCode;
                 testerProfile.Email = input.Email;
                 testerProfile.GenderType = input.GenderType;
                 testerProfile.NationalCode = input.NationalCode;
@@ -119,9 +113,9 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            TesterProfileModel testerProfile = db.TesterProfiles.Where(o => o.user.MobileNumber == mobileNumber).FirstOrDefault();
+            TesterProfile testerProfile = db.TesterProfiles.Where(o => o.User.MobileNumber == mobileNumber).FirstOrDefault();
             if (testerProfile == null)
-                testerProfile = new TesterProfileModel();
+                testerProfile = new TesterProfile();
 
             var result = new
             {
@@ -142,10 +136,10 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            TesterProfileModel testerProfile = db.TesterProfiles.Where(o => o.user.MobileNumber == mobileNumber).FirstOrDefault();
+            TesterProfile testerProfile = db.TesterProfiles.Where(o => o.User.MobileNumber == mobileNumber).FirstOrDefault();
             if (testerProfile == null)
             {
-                testerProfile = new TesterProfileModel();
+                testerProfile = new TesterProfile();
                 testerProfile.NickName = input.NickName;
                 testerProfile.UserBio = input.Bio;
                 testerProfile.GenderType = input.GenderType;
@@ -173,9 +167,9 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            TesterProfileModel testerProfile = db.TesterProfiles.Where(o => o.user.MobileNumber == mobileNumber).FirstOrDefault();
+            TesterProfile testerProfile = db.TesterProfiles.Where(o => o.User.MobileNumber == mobileNumber).FirstOrDefault();
             if (testerProfile == null)
-                testerProfile = new TesterProfileModel();
+                testerProfile = new TesterProfile();
 
             var result = new
             {
@@ -196,7 +190,7 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            TesterProfileModel testerProfile = db.TesterProfiles.Where(o => o.user.MobileNumber == mobileNumber).FirstOrDefault();
+            TesterProfile testerProfile = db.TesterProfiles.Where(o => o.User.MobileNumber == mobileNumber).FirstOrDefault();
 
             testerProfile.UserName = input.UserName;
             testerProfile.BirthDay = input.BirthDay;
@@ -205,7 +199,7 @@ namespace alphadinCore.Model.controllerModels
             testerProfile.PhoneNumber = input.PhoneNumber;
             testerProfile.Email = input.Email;
             testerProfile.PostalCode = input.PostalCode;
-            testerProfile.cityCode = input.cityCode;
+            testerProfile.CityCode = input.cityCode;
             db.TesterProfiles.Update(testerProfile);
             db.SaveChanges();
             return new JsonResult(GetPersonalProfile().Value);
@@ -221,7 +215,7 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            var testerProfile = db.Educations.Where(o => o.user.MobileNumber == mobileNumber).Select(a => new
+            var testerProfile = db.Educations.Where(o => o.User.MobileNumber == mobileNumber).Select(a => new
             {
                 Id = a.Id,
                 Grade = a.Grade,
@@ -242,17 +236,17 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            UserModel user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
             if (user == null)
                 throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_Add_EdUcation + "01");
-            UserEducationModel education = new UserEducationModel()
+            UserEducation education = new UserEducation()
             {
                 Grade = input.Grade,
                 Major = input.Major,
                 Place = input.Place,
                 InProgress = input.InProgress,
                 Status = 0,
-                user = user
+                User = user
             };
             db.Educations.Add(education);
             db.SaveChanges();
@@ -268,8 +262,8 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            UserModel user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
-            UserEducationModel education = db.Educations.Where(e => e.user.Id == user.Id && e.Id == input.Id).FirstOrDefault();
+            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            UserEducation education = db.Educations.Where(e => e.User.Id == user.Id && e.Id == input.Id).FirstOrDefault();
             if (education == null)
                 throw new CustomException("رکوردی برای آپدیت وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_UPDATE_EDUCATION + "01");
 
@@ -291,10 +285,10 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            UserModel user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
             if (user == null)
                 throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_EDUCATION + "01");
-            UserEducationModel education = db.Educations.Where(o => o.Id == input.Id && o.user == user).FirstOrDefault();
+            UserEducation education = db.Educations.Where(o => o.Id == input.Id && o.User == user).FirstOrDefault();
             if (education == null)
                 throw new CustomException("رکوردی برای حذف وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_EDUCATION + "02");
             db.Educations.Remove(education);
@@ -313,7 +307,7 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            var testerProfile = db.Jobs.Where(o => o.user.MobileNumber == mobileNumber).Select(a => new
+            var testerProfile = db.Jobs.Where(o => o.User.MobileNumber == mobileNumber).Select(a => new
             {
                 Id = a.Id,
                 CompanyName = a.CompanyName,
@@ -335,10 +329,10 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            UserModel user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
             if (user == null)
                 throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_ADD_JOB + "01");
-            UserJobModel job = new UserJobModel()
+            UserJob job = new UserJob()
             {
                 CompanyName = input.CompanyName,
                 JobTitle = input.JobTitle,
@@ -346,7 +340,7 @@ namespace alphadinCore.Model.controllerModels
                 CompanyScaleId = input.CompanyScaleId,
                 InProgress = input.InProgress,
                 Status = 0,
-                user = user
+                User = user
             };
             db.Jobs.Add(job);
             db.SaveChanges();
@@ -363,8 +357,8 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            UserModel user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
-            UserJobModel job = db.Jobs.Where(e => e.user.Id == user.Id && e.Id == input.Id).FirstOrDefault();
+            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            UserJob job = db.Jobs.Where(e => e.User.Id == user.Id && e.Id == input.Id).FirstOrDefault();
             if (job == null)
                 throw new CustomException("رکوردی برای آپدیت وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_UPDATE_EDUCATION + "01");
 
@@ -387,10 +381,10 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            UserModel user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
             if (user == null)
                 throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_JOB + "01");
-            UserJobModel job = db.Jobs.Where(o => o.Id == input.Id && o.user == user).FirstOrDefault();
+            UserJob job = db.Jobs.Where(o => o.Id == input.Id && o.User == user).FirstOrDefault();
             if (job == null)
                 throw new CustomException("رکوردی برای حذف وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_JOB + "02");
             db.Jobs.Remove(job);
@@ -409,7 +403,7 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            var testerLanguages = db.UserLanguages.Where(o => o.user.MobileNumber == mobileNumber).Select(a => new
+            var testerLanguages = db.UserLanguages.Where(o => o.User.MobileNumber == mobileNumber).Select(a => new
             {
                 Id = a.Id,
                 LanguageId = a.LanguageId,
@@ -430,17 +424,17 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            UserModel user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
             if (user == null)
                 throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_ADD_LANGUAGE + "01");
-            UserLanguageModel lang = new UserLanguageModel()
+            UserLanguage lang = new UserLanguage()
             {
                 LanguageId = input.LanguageId,
                 ReadingRate = input.ReadingRate,
                 WritingRate = input.WritingRate,
                 SpeakingRate = input.SpeakingRate,
                 Status = 0,
-                user = user
+                User = user
             };
             db.UserLanguages.Add(lang);
             db.SaveChanges();
@@ -456,8 +450,8 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            UserModel user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
-            UserLanguageModel language = db.UserLanguages.Where(e => e.user.Id == user.Id && e.Id == input.Id).FirstOrDefault();
+            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            UserLanguage language = db.UserLanguages.Where(e => e.User.Id == user.Id && e.Id == input.Id).FirstOrDefault();
             if (language == null)
                 throw new CustomException("رکوردی برای آپدیت وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_UPDATE_LANGUAGE + "01");
 
@@ -479,10 +473,10 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            UserModel user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
             if (user == null)
                 throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_LANGUAGE + "01");
-            UserLanguageModel lang = db.UserLanguages.Where(o => o.Id == input.Id && o.user == user).FirstOrDefault();
+            UserLanguage lang = db.UserLanguages.Where(o => o.Id == input.Id && o.User == user).FirstOrDefault();
             if (lang == null)
                 throw new CustomException("رکوردی برای حذف وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_LANGUAGE + "02");
             db.UserLanguages.Remove(lang);
@@ -501,7 +495,7 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            var Favorites = db.UserFavorites.Where(o => o.user.MobileNumber == mobileNumber).Select(a => new
+            var Favorites = db.UserFavorites.Where(o => o.User.MobileNumber == mobileNumber).Select(a => new
             {
                 Id = a.Id,
                 TagId = a.Tag.Id,
@@ -520,18 +514,18 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            UserModel user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
             if (user == null)
                 throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_ADD_FAVORITE + "01");
-            db.UserFavorites.RemoveRange(db.UserFavorites.Where(p => p.user == user).ToList());
-            List<FavoriteTagModel> tags = db.FavoriteTags.Where(o => input.TagIds.Contains(o.Id)).ToList();
+            db.UserFavorites.RemoveRange(db.UserFavorites.Where(p => p.User == user).ToList());
+            List<FavoriteTag> tags = db.FavoriteTags.Where(o => input.TagIds.Contains(o.Id)).ToList();
 
-            List<UserFavoriteModel> UserFavorites = new List<UserFavoriteModel>();
-            foreach (FavoriteTagModel tag in tags) {
-                UserFavorites.Add(new UserFavoriteModel
+            List<UserFavorite> UserFavorites = new List<UserFavorite>();
+            foreach (FavoriteTag tag in tags) {
+                UserFavorites.Add(new UserFavorite
                 {
                     Tag = tag,
-                    user = user
+                    User = user
                 });
             }
             db.UserFavorites.AddRange(UserFavorites);
@@ -548,10 +542,10 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            UserModel user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
             if (user == null)
                 throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_FAVORITE + "01");
-            UserFavoriteModel userfav = db.UserFavorites.Where(o => o.Id == input.UserFavoritId && o.user == user).FirstOrDefault();
+            UserFavorite userfav = db.UserFavorites.Where(o => o.Id == input.UserFavoritId && o.User == user).FirstOrDefault();
             if (userfav == null)
                 throw new CustomException("رکوردی برای حذف وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_FAVORITE + "02");
             db.UserFavorites.Remove(userfav);
@@ -573,7 +567,7 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            List<UserSocialsModel> socials = db.UserSocials.Where(o => o.user.MobileNumber == mobileNumber).ToList();
+            List<UserSocials> socials = db.UserSocials.Where(o => o.User.MobileNumber == mobileNumber).ToList();
             return new JsonResult(socials);
         }
 
@@ -585,16 +579,16 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            UserModel user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
             if (user == null)
                 throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_ADD_JOB + "01");
-            UserSocialsModel Social = new UserSocialsModel()
+            UserSocials Social = new UserSocials()
             {
                 SocialType = input.SocialType,
                 Address = input.Address,
                 ActivateTimeId = input.ActivateTimeId,
                 Status = 0,
-                user = user
+                User = user
             };
             db.UserSocials.Add(Social);
             db.SaveChanges();
@@ -611,8 +605,8 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            UserModel user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
-            UserSocialsModel Social = db.UserSocials.Where(e => e.user.Id == user.Id && e.Id == input.Id).FirstOrDefault();
+            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            UserSocials Social = db.UserSocials.Where(e => e.User.Id == user.Id && e.Id == input.Id).FirstOrDefault();
             if (Social == null)
                 throw new CustomException("رکوردی برای آپدیت وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_UPDATE_EDUCATION + "01");
 
@@ -633,10 +627,10 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            UserModel user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
             if (user == null)
                 throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_JOB + "01");
-            UserSocialsModel Social = db.UserSocials.Where(o => o.Id == input.Id && o.user == user).FirstOrDefault();
+            UserSocials Social = db.UserSocials.Where(o => o.Id == input.Id && o.User == user).FirstOrDefault();
             if (Social == null)
                 throw new CustomException("رکوردی برای حذف وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_JOB + "02");
             db.UserSocials.Remove(Social);
@@ -657,14 +651,14 @@ namespace alphadinCore.Model.controllerModels
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
             var mobileNumber = claim[0].Value;
-            TesterProfileModel testerProfile = db.TesterProfiles.Where(o => o.user.MobileNumber == mobileNumber).FirstOrDefault();
-            List<UserEducationModel> educations = db.Educations.Where(o => o.user.MobileNumber == mobileNumber).ToList();
-            List<UserLanguageModel> languages = db.UserLanguages.Where(o => o.user.MobileNumber == mobileNumber).ToList();
-            List<UserJobModel> jobs = db.Jobs.Where(o => o.user.MobileNumber == mobileNumber).ToList();
-            List<UserSocialsModel> socials = db.UserSocials.Where(o => o.user.MobileNumber == mobileNumber).ToList();
-            List<UserFavoriteModel> favorits = db.UserFavorites.Include(f=>f.Tag).Where(o => o.user.MobileNumber == mobileNumber).ToList();
+            TesterProfile testerProfile = db.TesterProfiles.Where(o => o.User.MobileNumber == mobileNumber).FirstOrDefault();
+            List<UserEducation> educations = db.Educations.Where(o => o.User.MobileNumber == mobileNumber).ToList();
+            List<UserLanguage> languages = db.UserLanguages.Where(o => o.User.MobileNumber == mobileNumber).ToList();
+            List<UserJob> jobs = db.Jobs.Where(o => o.User.MobileNumber == mobileNumber).ToList();
+            List<UserSocials> socials = db.UserSocials.Where(o => o.User.MobileNumber == mobileNumber).ToList();
+            List<UserFavorite> favorits = db.UserFavorites.Include(f=>f.Tag).Where(o => o.User.MobileNumber == mobileNumber).ToList();
             if (testerProfile == null)
-                testerProfile = new TesterProfileModel();
+                testerProfile = new TesterProfile();
             if (testerProfile.UserName != null&& testerProfile.UserName != "")
                 perc++;
             if (testerProfile.NickName != null && testerProfile.NickName != "")

@@ -1,55 +1,0 @@
-
-Account -> RefreshToken -> OnActionExecuting 	- 4/12/2020 10:13:41 AM
-
-Account -> RefreshToken -> OnActionExecuted 	- 4/12/2020 10:13:41 AM
-
-Account -> RefreshToken -> OnActionExecuted 	- 4/12/2020 10:14:54 AM
-
-Account -> RefreshToken -> کاربری با این مشخصات یافت نشد 	- 4/12/2020 10:14:55 AM
-
----------------------------------------------------------
-
-TesterProfile -> GetProfile -> OnResultExecuted 	- 4/12/2020 12:41:45 PM
-
----------------------------------------------------------
-
-TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 8:14:34 PM
-
-TesterProfile -> GetProfile -> OnResultExecuted 	- 4/12/2020 8:27:16 PM
-
-GeneralData -> GetGenderTypes -> OnResultExecuting 	- 4/12/2020 10:16:46 PM
-
-TesterProfile -> GetProfile -> OnActionExecuting 	- 4/12/2020 10:23:22 PM
-
-TesterProfile -> GetProfile -> OnActionExecuted 	- 4/12/2020 10:23:23 PM
-
-GeneralData -> GetJobSalaries -> OnResultExecuting 	- 4/13/2020 5:04:17 PM
-
-GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/13/2020 7:44:02 PM
-
-GeneralData -> GetActivateTimeType -> OnResultExecuted 	- 4/13/2020 7:53:38 PM
-
-GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/13/2020 8:05:07 PM
-
-GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/13/2020 8:06:30 PM
-
-TesterProfile -> GetSocials -> OnResultExecuting 	- 4/13/2020 8:07:04 PM
-
-GeneralData -> GetActivateTimeType -> OnActionExecuting 	- 4/13/2020 8:08:45 PM
-
-TesterProfile -> GetJobs -> OnResultExecuting 	- 4/13/2020 8:08:47 PM
-
-GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/13/2020 9:27:57 PM
-
-GeneralData -> GetCompanyScales -> OnActionExecuting 	- 4/13/2020 10:01:21 PM
-
-GeneralData -> GetGenderTypes -> OnActionExecuting 	- 4/21/2020 7:04:57 PM
-
-GeneralData -> GetSocialTypes -> OnActionExecuting 	- 4/21/2020 7:27:34 PM
-
-GeneralData -> GetJobSalaries -> OnActionExecuting 	- 4/21/2020 8:07:23 PM
-
-TesterProfile -> GetSocials -> OnActionExecuting 	- 4/21/2020 8:07:24 PM
-
-TesterProfile -> GetProfile -> OnActionExecuting 	- 4/21/2020 8:57:52 PM
-
