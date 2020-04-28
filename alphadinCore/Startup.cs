@@ -2,6 +2,8 @@ using System.Text;
 using alphadinCore.Common.Helper;
 using alphadinCore.Services.Helper;
 using Database.Config;
+using DatabaseValidation.Operator;
+using DatabaseValidation.Operator.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -92,6 +94,32 @@ namespace alphadinCore
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserSocialsService, UserSocialsService>();
             services.AddTransient<IUserTokenService, UserTokenService>();
+
+            #endregion
+
+            #region Validation
+
+            services.AddTransient<IConstValidation, ConstValidation>();
+            services.AddTransient<IFavoriteTagValidation, FavoriteTagValidation>();
+            services.AddTransient<IGeneralTypesValidation, GeneralTypesValidation>();
+            services.AddTransient<ILanguageValidation, LanguageValidation>();
+            services.AddTransient<ILocationValidation, LocationValidation>();
+            services.AddTransient<IRoleAccessValidation, RoleAccessValidation>();
+            services.AddTransient<IRoleValidation, RoleValidation>();
+            services.AddTransient<ISchoolCourseValidation, SchoolCourseValidation>();
+            services.AddTransient<ISchoolQuisQuestionOptionValidation, SchoolQuisQuestionOptionValidation>();
+            services.AddTransient<ISchoolQuizCourseValidation, SchoolQuizCourseValidation>();
+            services.AddTransient<ISchoolQuizQuestionValidation, SchoolQuizQuestionValidation>();
+            services.AddTransient<ISchoolTopicValidation, SchoolTopicValidation>();
+            services.AddTransient<ISchoolUnitValidation, SchoolUnitValidation>();
+            services.AddTransient<ISmsValidation, SmsValidation>();
+            services.AddTransient<ITesterProfileValidation, TesterProfileValidation>();
+            services.AddTransient<IUserEducationValidation, UserEducationValidation>();
+            services.AddTransient<IUserJobValidation, UserJobValidation>();
+            services.AddTransient<IUserLanguageValidation, UserLanguageValidation>();
+            services.AddTransient<IUserValidation, UserValidation>();
+            services.AddTransient<IUserSocialsValidation, UserSocialsValidation>();
+            services.AddTransient<IUserTokenValidation, UserTokenValidation>();
 
             #endregion
 

@@ -78,7 +78,7 @@ namespace alphadinCore.Controllers
             _db.Sms.Update(sms);
             _db.SaveChanges();
 
-            _authHelper.GenerateJsonWebToken(user, _config, _db, (int)UserTokenStatus.Created);
+            _authHelper.GenerateJsonWebToken(user, _config, _db, UserTokenStatus.Created);
 
             var token = _db.UserTokens.Where(u => u.User.MobileNumber == user.MobileNumber)
                 .OrderByDescending(i => i.Id)
@@ -98,7 +98,7 @@ namespace alphadinCore.Controllers
                 throw new CustomException("کاربری با این مشخصات یافت نشد",
                     ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REFRESH_TOKEN + "01");
 
-            _authHelper.GenerateJsonWebToken(user, _config, _db, (int) UserTokenStatus.Refresh);
+            _authHelper.GenerateJsonWebToken(user, _config, _db, UserTokenStatus.Refresh);
 
             user.RefreshToken = Guid.NewGuid().ToString();
 
@@ -112,23 +112,6 @@ namespace alphadinCore.Controllers
             return new JsonResult(token);
         }
 
-        [Authorize(Roles = "tester")]
-        [HttpPost]
-        public JsonResult Post()
-        {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var userName = claim[0].Value;
-            return new JsonResult("Welcome " + userName);
-        }
-
-        [Authorize(Roles = "Admin")]
-        public JsonResult GetHasan()
-        {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            return new JsonResult("hasan ina");
-        }
 
 
         private bool CheckSms(AccountLoginRequst input, Sms sms, out CustomException customException)
