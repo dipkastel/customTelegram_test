@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Services.Helper
+namespace Services.Enum
 {
     public static class Enum
     {

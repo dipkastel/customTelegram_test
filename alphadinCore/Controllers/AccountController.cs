@@ -19,6 +19,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic;
+using Services.Common;
+using Services.Common.Cryptography;
+using Services.Operator.Interfaces;
 
 namespace alphadinCore.Controllers
 {
@@ -30,19 +33,23 @@ namespace alphadinCore.Controllers
         private readonly AuthHelper _authHelper;
         private readonly SmsHelper _smsHelper;
         private readonly DbContextModel _db;
-
-        public AccountController(IConfiguration config, AuthHelper authHelper, DbContextModel db, SmsHelper smsHelper)
+        private readonly OnlineUsers _onlineUsers;
+        private readonly IUserService _userService;
+        
+        public AccountController(IConfiguration config, AuthHelper authHelper, DbContextModel db, SmsHelper smsHelper, IUserService userService)
         {
             _config = config;
             _authHelper = authHelper;
             _smsHelper = smsHelper;
+            _userService = userService;
+            _onlineUsers = OnlineUsers.GetInstance();
             _db = db;
         }
 
         [HttpPost]
         public JsonResult GetSms(AccountSendSmsRequst smsRequst)
         {
-            var smsResult = _smsHelper.sendAuthSms(smsRequst.PhoneNumber, _db);
+            var smsResult = _smsHelper.SendAuthSms(smsRequst.PhoneNumber, _db);
             return new JsonResult(smsResult);
         }
 
@@ -53,13 +60,44 @@ namespace alphadinCore.Controllers
                 throw new CustomException("اطلاعات وارد شده معتبر نیست",
                     ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_LOGIN + "01");
 
-            var tempUser = new User
+            var user = new User();
+
+            var deviceAgent = _userService.GetDeviceAgentCode(loginInfo.MobileNumber, HttpContext.Request);
+                
+            switch (_onlineUsers.GetUserStatus(deviceAgent))
             {
-                MobileNumber = loginInfo.MobileNumber
-            };
+                case UserActivityStatus.Online:
+                {
+                    user = _onlineUsers.GetUserByUserAgent(deviceAgent).User;
+                    break;
+                }
+                case UserActivityStatus.Expired:
+                {
+                    user = _onlineUsers.GetUserByUserAgent(deviceAgent).User;
 
-            var user = _authHelper.AuthenticateUser(tempUser, _db);
+                    //return RedirectToAction(nameof(RefreshToken), new {new RefreshTokenRequst()
+                    //{
+                    //    RefreshKey = _onlineUsers.GetUserByUserAgent(t).User.RefreshToken,
+                    //    Token = _onlineUsers.GetUserByUserAgent(t).Token
+                    //}});
 
+                    break;
+                }
+                case UserActivityStatus.NotFound:
+                {
+                    //Login User
+                    var tempUser = new User
+                    {
+                        MobileNumber = loginInfo.MobileNumber
+                    };
+                    user = _authHelper.AuthenticateUser(tempUser, _db);
+
+                    //TODO: Add user to online users
+
+                    break;
+                }
+            }
+            
             if (!CheckUserAcess(user, out var userCustomException))
             {
                 throw userCustomException; 
@@ -78,6 +116,7 @@ namespace alphadinCore.Controllers
             _db.Sms.Update(sms);
             _db.SaveChanges();
 
+            
             _authHelper.GenerateJsonWebToken(user, _config, _db, UserTokenStatus.Created);
 
             var token = _db.UserTokens.Where(u => u.User.MobileNumber == user.MobileNumber)
@@ -85,8 +124,8 @@ namespace alphadinCore.Controllers
                 .FirstOrDefault();
 
             return new JsonResult(token);
-        }
 
+        }
 
         [HttpPost]
         public JsonResult RefreshToken(RefreshTokenRequst refreshInfo)

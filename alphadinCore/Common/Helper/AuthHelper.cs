@@ -15,10 +15,11 @@ namespace alphadinCore.Services.Helper
 {
     public class AuthHelper
     {
-        private const int TOKEN_LIFE_TIME = 8;
+        private const int TOKEN_LIFE_TIME = 8; //In hour
 
         public AuthHelper() {
         }
+
         public User AuthenticateUser(User login,DbContextModel db)
         {
             var thisUser = db.Users.Include(o => o.Role).FirstOrDefault(p => p.MobileNumber == login.MobileNumber);
@@ -36,7 +37,7 @@ namespace alphadinCore.Services.Helper
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.MobileNumber),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(new IdentityOptions().ClaimsIdentity.RoleClaimType, user.Role.Name)
+                new Claim(new IdentityOptions().ClaimsIdentity.RoleClaimType, user.Role.Name.ToLower())
             };
             
             var authToken = new JwtSecurityToken(

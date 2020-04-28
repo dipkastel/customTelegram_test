@@ -9,7 +9,7 @@ using Database.Config;
 using DatabaseValidation.Structure;
 using Microsoft.EntityFrameworkCore;
 using Services.Common;
-using Services.Helper;
+using Services.Enum;
 
 namespace Services.Repository
 {

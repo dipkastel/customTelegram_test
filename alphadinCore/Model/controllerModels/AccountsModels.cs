@@ -14,6 +14,7 @@
     {
         public string MobileNumber { get; set; }
         public string SmsKey { get; set; }
+        public bool RememberMe { get; set; }
     }
 
     public class RefreshTokenRequst
