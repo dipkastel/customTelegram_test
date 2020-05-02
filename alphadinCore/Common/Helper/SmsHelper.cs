@@ -9,135 +9,124 @@ using Database.Config;
 using Database.Models;
 using Kavenegar;
 using Kavenegar.Core.Exceptions;
+using Services.Operator.Interfaces;
 
 namespace alphadinCore.Common.Helper
 {
     public class SmsHelper
     {
         const string SENDER_LINE = "10008663";
+        const int MAX_SMS_COUNT_IN_THRESHOLD_TIME = 2;
+        const int THRESHOLD_TIME_IN_MINUTS = 5;
         const string API_KEY = "672F63374D31584673477577684157626567643831513D3D";
+        ISmsService _smsService;
 
-
-        public SendSmsResultModel SendAuthSms(string phoneNumber, DbContextModel db) {
-            string code = GenerateRandomSmsCode();
-            return SendSms(phoneNumber, code, db);
+        public SmsHelper(ISmsService smsService)
+        {
+            _smsService = smsService;
         }
-
-        public SendSmsResultModel SendSms(String phoneNumber, String code, DbContextModel db) {
+        public SendSmsResultModel SendSms(String phoneNumber, String smsMessage, String code = "0")
+        {
             var smsResult = new SendSmsResultModel();
-           
             try
             {
                 var api = new KavenegarApi(API_KEY);
-                var smsMessage = CodeToMessage(code, db);
                 var smsTask = api.Send(SENDER_LINE, phoneNumber, smsMessage);
                 var res = smsTask.Result;
 
                 if (res.Status.Equals(1))
                 {
                     smsResult.success = true;
-                    smsResult.FaMessage = "کد ورود برای کاربر ارسال شد";
-                    smsResult.EnMessage = "entry code Successfully sended";
-                    InsertUser(phoneNumber, code, db);
-                    
-                    db.Sms.Add(new Sms
+                    smsResult.Message = "کد ورود برای کاربر ارسال شد";
+                    _smsService.Add(new Sms
                     {
                         Key = code,
                         Text = smsMessage,
                         Reciver = phoneNumber,
                         SendDate = DateTime.Now,
-                        Status = (int) SmsStatus.Success
-                    });
-                    db.SaveChanges();
+                        Status = (int)SmsStatus.Success,
+                        SmsResult = "Success"
+                    }, 0);
                     return smsResult;
                 }
 
-                smsResult.success = false;
-                smsResult.FaMessage = "خطا در ارسال اس ام اس";
-                smsResult.EnMessage = "error in sending sms";
-                db.Sms.Add(new Sms
+                _smsService.Add(new Sms
                 {
-                    Key = code, Text = smsMessage, Reciver = phoneNumber, SendDate = DateTime.Now,
-                    Status = (int) SmsStatus.Faild
-                });
-                db.SaveChanges();
-                throw new CustomException(smsResult.FaMessage, ErrorsPreFix.HELPER_SMS + ERROR_SEND_SMS + "01");
+                    Key = code,
+                    Text = smsMessage,
+                    Reciver = phoneNumber,
+                    SendDate = DateTime.Now,
+                    Status = (int)SmsStatus.Faild,
+                    SmsResult = res.Message
+                }, 0);
+                throw new CustomException("خطا در ارسال اس ام اس", ErrorsPreFix.HELPER_SMS + ERROR_SEND_SMS + "01");
             }
             catch (ApiException ex)
             {
-                smsResult.success = false;
-                smsResult.FaMessage = "خطا در ارسال اس ام اس";
-                smsResult.EnMessage = ex.Message;
-                db.Sms.Add(new Sms
+                _smsService.Add(new Sms
                 {
-                    Key = code, Text = "", Reciver = phoneNumber, SendDate = DateTime.Now,
-                    Status = (int) SmsStatus.Faild
-                });
-                db.SaveChanges();
-                throw new CustomException(smsResult.FaMessage, ErrorsPreFix.HELPER_SMS + ERROR_SEND_SMS + "02");
+                    Key = code,
+                    Text = "",
+                    Reciver = phoneNumber,
+                    SendDate = DateTime.Now,
+                    Status = (int)SmsStatus.Faild,
+                    SmsResult = ex.Message
+                }, 0);
+                throw new CustomException("خطا در ارسال اس ام اس", ErrorsPreFix.HELPER_SMS + ERROR_SEND_SMS + "02");
             }
             catch (HttpException ex)
             {
-                smsResult.success = false;
-                smsResult.FaMessage = "خطا در برقراری ارتباط با ارسال کننده اس ام اس";
-                smsResult.EnMessage = ex.Message;
-                db.Sms.Add(new Sms
+                _smsService.Add(new Sms
                 {
-                    Key = code, Text = "", Reciver = phoneNumber, SendDate = DateTime.Now,
-                    Status = (int) SmsStatus.Faild
-                });
-                db.SaveChanges();
-                throw new CustomException(smsResult.FaMessage, ErrorsPreFix.HELPER_SMS + ERROR_SEND_SMS + "03");
+                    Key = code,
+                    Text = "",
+                    Reciver = phoneNumber,
+                    SendDate = DateTime.Now,
+                    Status = (int)SmsStatus.Faild,
+                    SmsResult = ex.Message
+                }, 0);
+                throw new CustomException("خطا در برقراری ارتباط با ارسال کننده اس ام اس", ErrorsPreFix.HELPER_SMS + ERROR_SEND_SMS + "03");
             }
             catch (Exception ex)
             {
-                smsResult.success = false;
-                smsResult.FaMessage = ex.Message;
-                smsResult.EnMessage = ex.Message;
-                db.Sms.Add(new Sms
+                _smsService.Add(new Sms
                 {
-                    Key = code, Text = "", Reciver = phoneNumber, SendDate = DateTime.Now,
-                    Status = (int) SmsStatus.Faild
-                });
-                db.SaveChanges();
-                throw new CustomException(smsResult.FaMessage, ErrorsPreFix.HELPER_SMS + ERROR_SEND_SMS + "04");
+                    Key = code,
+                    Text = "",
+                    Reciver = phoneNumber,
+                    SendDate = DateTime.Now,
+                    Status = (int)SmsStatus.Faild,
+                    SmsResult = ex.Message
+                }, 0);
+                throw new CustomException("خطا در ارسال اس ام اس", ErrorsPreFix.HELPER_SMS + ERROR_SEND_SMS + "04");
             }
 
         }
 
-        private User InsertUser(string phoneNumber,string code ,DbContextModel db)
+        public SendSmsResultModel SendAuthSms(string phoneNumber)
         {
-            var user = db.Users.FirstOrDefault(a => a.MobileNumber == phoneNumber);
-            if (user == null)
-            {
-                var role = db.Roles.FirstOrDefault(t => t.Name == "tester");
-                db.Users.Add(new User
-                {
-                    MobileNumber = phoneNumber, Role = role, Status = (int) UserStatus.Active,
-                    RefreshToken = Guid.NewGuid().ToString()
-                });
-                db.SaveChanges();
-            }
-            else
-            {
-                user.RefreshToken = Guid.NewGuid().ToString();
-                db.Users.Update(user);
-                db.SaveChanges();
-            }
+            string code = GenerateRandomSmsCode();
+            string smsMessage = CodeToMessage(code);
+            bool IsOver = _smsService.FindAll(p => p.Reciver == phoneNumber && p.SmsType == (int)SmsTypes.Auth && p.SendDate.AddMinutes(THRESHOLD_TIME_IN_MINUTS) > DateTime.Now).Count > MAX_SMS_COUNT_IN_THRESHOLD_TIME;
+            if (IsOver)
+                throw new CustomException("تعداد پیامک های ارسال شده بیش از حد مجاز است", ErrorsPreFix.HELPER_SMS + ERROR_SEND_AUTH_SMS + "01");
 
-            return user;
+            return SendSms(phoneNumber, smsMessage, code);
         }
 
-        private string CodeToMessage(string code,DbContextModel db) {
-
+        private string CodeToMessage(string code)
+        {
             return "کد ورود شما به آلفادین :" + code + "می باشد.";
         }
-        private string GenerateRandomSmsCode() {
+
+        private string GenerateRandomSmsCode()
+        {
             Random generator = new Random();
             String r = generator.Next(10000, 99999).ToString();
             return r;
         }
 
         public string ERROR_SEND_SMS = "01";
+        public string ERROR_SEND_AUTH_SMS = "02";
     }
 }

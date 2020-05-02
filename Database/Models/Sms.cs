@@ -15,6 +15,8 @@ namespace Database.Models
         public string Reciver { get; set; }
         public string Text { get; set; }
         public string Key { get; set; }
+        public int SmsType { get; set; }
+        public string SmsResult { get; set; }
         public DateTime SendDate { get; set; }
 
     }

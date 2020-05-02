@@ -16,5 +16,6 @@ namespace Database.Models
         public DateTime CreateDate { get; set; }
         public DateTime ExpiteDate { get; set; }
 
+       
     }
 }

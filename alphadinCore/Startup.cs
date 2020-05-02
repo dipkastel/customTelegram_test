@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using alphadinCore.Common.Helper;
 using alphadinCore.Services.Helper;
@@ -75,8 +76,8 @@ namespace alphadinCore
 
             #endregion
 
-            services.AddSingleton<AuthHelper>();
-            services.AddSingleton<SmsHelper>();
+            services.AddTransient<AuthHelper>();
+            services.AddTransient<SmsHelper>();
         }
     }
 

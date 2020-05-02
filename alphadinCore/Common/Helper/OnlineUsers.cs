@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Database.Models;
 
-namespace Services.Common
+namespace alphadinCore.Common.Helper
 {
     public class OnlineUsers
     {
@@ -45,19 +45,6 @@ namespace Services.Common
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         public User GetActiveUserByUserAgent(string agent)
         {
             var userToken = UserInfos[agent];
@@ -68,7 +55,7 @@ namespace Services.Common
             return null;
         }
 
-        public UserToken GetUserByUserAgent(string agent)
+        public UserToken GetUserTokenByUserAgent(string agent)
         {
             return UserInfos[agent];
         }
@@ -85,7 +72,7 @@ namespace Services.Common
 
         public int GetOnlineUsersCount()
         {
-            return UserInfos.Count(u => u.Value.ExpiteDate < DateTime.Now);
+            return UserInfos.Count(u => u.Value.ExpiteDate > DateTime.Now);
         }
 
         public List<User> GetOnlineUsers()
@@ -100,7 +87,9 @@ namespace Services.Common
             return UserInfos[agent].ExpiteDate.AddDays(5) > DateTime.Now;
         }
 
-       
+
+
+
     }
 
 
