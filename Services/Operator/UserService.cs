@@ -17,11 +17,13 @@ namespace Services.Operator
 
         }
 
-        public string GetDeviceAgentCode(string mobileNumber, HttpRequest httpContextRequest)
+        public string GetUserUniqKey(string mobileNumber, HttpRequest httpContextRequest)
         {
             var userAgent = httpContextRequest.Headers["User-Agent"];
             var deviceAgent = MD5.Generate(mobileNumber + userAgent);
             return deviceAgent;
         }
+
+
     }
 }

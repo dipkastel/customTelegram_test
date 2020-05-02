@@ -12,5 +12,6 @@
 
 
         public static string HELPER_SMS = "77";
+        public static string AUTH_HELPER = "78";
     }
 }

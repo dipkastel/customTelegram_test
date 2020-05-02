@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Database.Migrations
 {
-    public partial class initialize : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -200,6 +200,7 @@ namespace Database.Migrations
                     Reciver = table.Column<string>(nullable: true),
                     Text = table.Column<string>(nullable: true),
                     Key = table.Column<string>(nullable: true),
+                    SmsType = table.Column<int>(nullable: false),
                     SendDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>

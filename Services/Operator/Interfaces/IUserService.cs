@@ -6,6 +6,6 @@ namespace Services.Operator.Interfaces
 {
     public interface IUserService : IGenericRepository<User>
     {
-        string GetDeviceAgentCode(string mobileNumber, HttpRequest httpContextRequest);
+        string GetUserUniqKey(string mobileNumber, HttpRequest httpContextRequest);
     }
 }

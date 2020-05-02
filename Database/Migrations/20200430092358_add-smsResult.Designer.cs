@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Migrations
 {
     [DbContext(typeof(DbContextModel))]
-    [Migration("20200427081214_initialize")]
-    partial class initialize
+    [Migration("20200430092358_add-smsResult")]
+    partial class addsmsResult
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -621,6 +621,12 @@ namespace Database.Migrations
 
                     b.Property<DateTime>("SendDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("SmsResult")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SmsType")
+                        .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");

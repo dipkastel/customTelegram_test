@@ -4,14 +4,16 @@ using Database.Config;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Database.Migrations
 {
     [DbContext(typeof(DbContextModel))]
-    partial class DbContextModelModelSnapshot : ModelSnapshot
+    [Migration("20200430085328_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -619,9 +621,6 @@ namespace Database.Migrations
 
                     b.Property<DateTime>("SendDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("SmsResult")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SmsType")
                         .HasColumnType("int");
