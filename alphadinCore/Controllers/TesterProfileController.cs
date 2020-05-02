@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace alphadinCore.Model.controllerModels
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
     public class TesterProfileController : BaseController
     {
@@ -24,7 +24,7 @@ namespace alphadinCore.Model.controllerModels
 
         /*profile*/
 
-        [Route("GetTesterProfile")]
+        //[Route("GetTesterProfile")]
         [HttpGet]
         [Authorize(Roles = "tester")]
         public JsonResult GetProfile()
@@ -57,7 +57,7 @@ namespace alphadinCore.Model.controllerModels
             return new JsonResult(result);
         }
 
-        [Route("SetTesterProfile")]
+        //[Route("SetTesterProfile")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult SetProfile(TesterProfileSetRequst input)
@@ -104,7 +104,8 @@ namespace alphadinCore.Model.controllerModels
             }
             return new JsonResult(testerProfile);
         }
-        [Route("GetGeneralProfile")]
+
+        //[Route("GetGeneralProfile")]
         [HttpGet]
         [Authorize(Roles = "tester")]
         public JsonResult GetGeneralProfile()
@@ -127,7 +128,7 @@ namespace alphadinCore.Model.controllerModels
         }
 
 
-        [Route("SetGeneralProfile")]
+        //[Route("SetGeneralProfile")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult SetGeneralProfile(SetGeneralProfileRequest input)
@@ -158,7 +159,7 @@ namespace alphadinCore.Model.controllerModels
             return new JsonResult(GetGeneralProfile().Value);
         }
 
-        [Route("GetPersonalProfile")]
+        //[Route("GetPersonalProfile")]
         [HttpGet]
         [Authorize(Roles = "tester")]
         public JsonResult GetPersonalProfile()
@@ -181,7 +182,7 @@ namespace alphadinCore.Model.controllerModels
             return new JsonResult(result);
         }
 
-        [Route("SetPersonalProfile")]
+        //[Route("SetPersonalProfile")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult SetPersonalProfile(SetPersonalProfileRequest input)
@@ -206,7 +207,7 @@ namespace alphadinCore.Model.controllerModels
 
         /*Educations*/
 
-        [Route("GetEducations")]
+        //[Route("GetEducations")]
         [HttpGet]
         [Authorize(Roles = "tester")]
         public JsonResult GetEducations()
@@ -227,7 +228,7 @@ namespace alphadinCore.Model.controllerModels
             return new JsonResult(testerProfile);
         }
 
-        [Route("AddEducation")]
+        //[Route("AddEducation")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult AddEducation(UserEducationAddRequest input)
@@ -253,7 +254,7 @@ namespace alphadinCore.Model.controllerModels
             return new JsonResult(GetEducations().Value);
         }
 
-        [Route("UpdateEducation")]
+        //[Route("UpdateEducation")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult UpdateEducation(UserEducationUpdateRequest input)
@@ -276,7 +277,7 @@ namespace alphadinCore.Model.controllerModels
             return new JsonResult(GetEducations().Value);
         }
 
-        [Route("RemoveEducation")]
+        //[Route("RemoveEducation")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult RemoveEducation(RemoveUserEducationRequest input)
@@ -298,7 +299,7 @@ namespace alphadinCore.Model.controllerModels
 
         /*Jobs*/
 
-        [Route("GetJobs")]
+        //[Route("GetJobs")]
         [HttpGet]
         [Authorize(Roles = "tester")]
         public JsonResult GetJobs()
@@ -320,7 +321,7 @@ namespace alphadinCore.Model.controllerModels
             return new JsonResult(testerProfile);
         }
 
-        [Route("AddJob")]
+        //[Route("AddJob")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult AddJob(UserJobAddRequest input)
@@ -348,7 +349,7 @@ namespace alphadinCore.Model.controllerModels
         }
 
 
-        [Route("UpdateJob")]
+        //[Route("UpdateJob")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult UpdateJob(UserJobUpdateRequest input)
@@ -372,7 +373,7 @@ namespace alphadinCore.Model.controllerModels
             return new JsonResult(GetJobs().Value);
         }
 
-        [Route("RemoveJob")]
+        //[Route("RemoveJob")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult RemoveJob(RemoveUserJobsRequest input)
@@ -394,7 +395,7 @@ namespace alphadinCore.Model.controllerModels
 
         /*Languages*/
 
-        [Route("GetLanguages")]
+        //[Route("GetLanguages")]
         [HttpGet]
         [Authorize(Roles = "tester")]
         public JsonResult GetLanguages()
@@ -415,7 +416,7 @@ namespace alphadinCore.Model.controllerModels
             return new JsonResult(testerLanguages);
         }
 
-        [Route("AddLanguage")]
+        //[Route("AddLanguage")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult AddLanguage(UserLanguageAddRequest input)
@@ -441,7 +442,7 @@ namespace alphadinCore.Model.controllerModels
             return new JsonResult(GetLanguages().Value);
         }
 
-        [Route("UpdateLanguage")]
+        //[Route("UpdateLanguage")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult UpdateLanguage(UserLanguageUpdateRequest input)
@@ -464,7 +465,7 @@ namespace alphadinCore.Model.controllerModels
             return new JsonResult(GetLanguages().Value);
         }
 
-        [Route("RemoveLanguage")]
+        //[Route("RemoveLanguage")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult RemoveLanguage(RemoveUserLanguageRequest input)
@@ -486,7 +487,7 @@ namespace alphadinCore.Model.controllerModels
 
         /*Favorites*/
 
-        [Route("GetFavorites")]
+        //[Route("GetFavorites")]
         [HttpGet]
         [Authorize(Roles = "tester")]
         public JsonResult GetFavorites()
@@ -505,7 +506,7 @@ namespace alphadinCore.Model.controllerModels
             return new JsonResult(Favorites);
         }
 
-        [Route("UpdateFavorites")]
+        //[Route("UpdateFavorites")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult UpdateFavorites(AddUserFavoritRequest input)
@@ -533,7 +534,7 @@ namespace alphadinCore.Model.controllerModels
             return new JsonResult(GetFavorites().Value);
         }
 
-        [Route("RemoveFavorite")]
+        //[Route("RemoveFavorite")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult RemoveFavorite(RemoveUserFavoritRequest input)
@@ -558,7 +559,7 @@ namespace alphadinCore.Model.controllerModels
 
 
 
-        [Route("GetSocials")]
+        //[Route("GetSocials")]
         [HttpGet]
         [Authorize(Roles = "tester")]
         public JsonResult GetSocials()
@@ -570,7 +571,7 @@ namespace alphadinCore.Model.controllerModels
             return new JsonResult(socials);
         }
 
-        [Route("AddSocial")]
+        //[Route("AddSocial")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult AddSocial(UserSocialAddRequest input)
@@ -596,7 +597,7 @@ namespace alphadinCore.Model.controllerModels
         }
 
 
-        [Route("UpdateSocial")]
+       //[Route("UpdateSocial")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult UpdateSocial(UserSocialUpdateRequest input)
@@ -618,7 +619,7 @@ namespace alphadinCore.Model.controllerModels
             return new JsonResult(GetJobs().Value);
         }
 
-        [Route("RemoveSocial")]
+       //[Route("RemoveSocial")]
         [HttpPost]
         [Authorize(Roles = "tester")]
         public JsonResult RemoveSocial(UserSocialRemoveRequest input)
@@ -641,7 +642,7 @@ namespace alphadinCore.Model.controllerModels
 
         /*Percentage*/
 
-        [Route("GetProfilePercentage")]
+        //[Route("GetProfilePercentage")]
         [HttpGet]
         [Authorize(Roles = "tester")]
         public JsonResult GetProfilePercentage()

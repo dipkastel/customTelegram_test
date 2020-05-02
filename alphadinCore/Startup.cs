@@ -130,11 +130,8 @@ namespace alphadinCore
 
             services.AddMvc();
 
-            #region IOC
-
             Ioc.Config(services);
 
-            #endregion
 
         }
 
@@ -162,6 +159,14 @@ namespace alphadinCore
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                //endpoints.MapControllerRoute(
+                //    name: "default",
+                //    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "apiArea",
+                    pattern: "api/{area:exists}/{controller}/{action=Index}/{id?}");
             });
 
             FirstData.Initialize(app);

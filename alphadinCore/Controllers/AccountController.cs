@@ -25,7 +25,7 @@ using Services.Operator.Interfaces;
 
 namespace alphadinCore.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
     public class AccountController : BaseController
     {

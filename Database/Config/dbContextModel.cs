@@ -41,5 +41,6 @@ namespace Database.Config
         public DbSet<SchoolTopic> SchoolTopics { get; set; }
         public DbSet<UserSocials> UserSocials { get; set; }
         public DbSet<GeneralTypes> GeneralTypes { get; set; }
+        public DbSet<SchoolCourseCertificate> SchoolCourseCertificates { get; set; }
     }
 }

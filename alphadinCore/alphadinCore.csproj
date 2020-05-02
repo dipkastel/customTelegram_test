@@ -25,6 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\TesterCity\Data\" />
+    <Folder Include="Areas\TesterCity\Models\" />
+    <Folder Include="Areas\TesterCity\Views\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 

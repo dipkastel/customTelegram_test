@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace alphadinCore.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
     public class SchoolController : BaseController
     {
@@ -26,7 +26,7 @@ namespace alphadinCore.Controllers
 
 
 
-        [Route("GetTopics")]
+        //[Route("GetTopics")]
         [HttpGet]
         //[Authorize(Roles = "tester")]
         public JsonResult GetTopics()
@@ -38,7 +38,7 @@ namespace alphadinCore.Controllers
 
 
 
-        [Route("GetCourses")]
+        //[Route("GetCourses")]
         [HttpPost]
         //[Authorize(Roles = "tester")]
         public JsonResult GetCourses(SchoolGetCoursesInput input)

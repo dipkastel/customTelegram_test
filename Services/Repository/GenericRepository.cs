@@ -19,13 +19,23 @@ namespace Services.Repository
         protected IGenericValidation<T> Validation;
         private bool _disposed = true;
 
+        public IQueryable<T> Queryable { get; set; }
+
+
         protected GenericRepository(DbContextModel context, IGenericValidation<T> validation)
         {
             Context = context;
             Validation = validation;
+            Queryable = Context.Set<T>();
         }
 
-       
+
+        public GenericRepository<T> Include(Expression<Func<T, object>> navigationPropertyPath)
+        {
+            Queryable.Include(navigationPropertyPath);
+            return this;
+        }
+
         #region Create
 
         /// <summary>
@@ -2126,7 +2136,6 @@ namespace Services.Repository
         }
 
         #endregion
-
 
     }
 }
