@@ -1,9 +1,9 @@
 ﻿using Database.Config;
-using Database.Models;
-using DatabaseValidation.Operator.Interfaces;
+using Database.Models.Authentication;
+using DatabaseValidation.Operator.Authentication.Interfaces;
 using DatabaseValidation.Structure;
 
-namespace DatabaseValidation.Operator
+namespace DatabaseValidation.Operator.Authentication
 {
     public class RoleAccessValidation : GenericValidation<RoleAccess>, IRoleAccessValidation
     {

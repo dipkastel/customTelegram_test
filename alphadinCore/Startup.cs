@@ -1,9 +1,14 @@
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using alphadinCore.Common.Helper;
 using alphadinCore.Services.Helper;
+using Authentication.Services;
+using Authentication.Services.Interface;
 using Database.Config;
 using DatabaseValidation.Operator;
+using DatabaseValidation.Operator.Authentication;
+using DatabaseValidation.Operator.Authentication.Interfaces;
 using DatabaseValidation.Operator.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -12,9 +17,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Services.Operator;
+using Services.Operator.Authentication;
+using Services.Operator.Authentication.Interfaces;
 using Services.Operator.Interfaces;
 using Services.Repository;
 
@@ -26,13 +34,17 @@ namespace alphadinCore
         {
             #region Repository
 
+            services.AddTransient<IActionService, ActionService>();
+            services.AddTransient<IRoleActionService, RoleActionService>();
+            services.AddTransient<IUserActionService, UserActionService>();
+            services.AddTransient<IRoleAccessService, RoleAccessService>();
+            services.AddTransient<IRoleService, RoleService>();
+
             services.AddTransient<IConstService, ConstService>();
             services.AddTransient<IFavoriteTagService, FavoriteTagService>();
             services.AddTransient<IGeneralTypesService, GeneralTypesService>();
             services.AddTransient<ILanguageService, LanguageService>();
             services.AddTransient<ILocationService, LocationService>();
-            services.AddTransient<IRoleAccessService, RoleAccessService>();
-            services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<ISchoolCourseService, SchoolCourseService>();
             services.AddTransient<ISchoolQuisQuestionOptionService, SchoolQuisQuestionOptionService>();
             services.AddTransient<ISchoolQuizCourseService, SchoolQuizCourseService>();
@@ -47,18 +59,26 @@ namespace alphadinCore
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserSocialsService, UserSocialsService>();
             services.AddTransient<IUserTokenService, UserTokenService>();
+            services.AddTransient<ISchoolCourseCertificateService, SchoolCourseCertificateService>();
+
+
+
 
             #endregion
 
             #region Validation
+
+            services.AddTransient<IActionValidation, ActionValidation>();
+            services.AddTransient<IRoleActionValidation, RoleActionValidation>();
+            services.AddTransient<IUserActionValidation, UserActionValidation>();
+            services.AddTransient<IRoleAccessValidation, RoleAccessValidation>();
+            services.AddTransient<IRoleValidation, RoleValidation>();
 
             services.AddTransient<IConstValidation, ConstValidation>();
             services.AddTransient<IFavoriteTagValidation, FavoriteTagValidation>();
             services.AddTransient<IGeneralTypesValidation, GeneralTypesValidation>();
             services.AddTransient<ILanguageValidation, LanguageValidation>();
             services.AddTransient<ILocationValidation, LocationValidation>();
-            services.AddTransient<IRoleAccessValidation, RoleAccessValidation>();
-            services.AddTransient<IRoleValidation, RoleValidation>();
             services.AddTransient<ISchoolCourseValidation, SchoolCourseValidation>();
             services.AddTransient<ISchoolQuisQuestionOptionValidation, SchoolQuisQuestionOptionValidation>();
             services.AddTransient<ISchoolQuizCourseValidation, SchoolQuizCourseValidation>();
@@ -73,11 +93,15 @@ namespace alphadinCore
             services.AddTransient<IUserValidation, UserValidation>();
             services.AddTransient<IUserSocialsValidation, UserSocialsValidation>();
             services.AddTransient<IUserTokenValidation, UserTokenValidation>();
+            services.AddTransient<ISchoolCourseCertificateValidation, SchoolCourseCertificateValidation>();
 
             #endregion
 
             services.AddTransient<AuthHelper>();
             services.AddTransient<SmsHelper>();
+
+            services.AddSingleton<IOnlineUserService, OnlineUserService>();
+
         }
     }
 
@@ -119,15 +143,16 @@ namespace alphadinCore
                 {
                     option.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = Configuration["Jwt:Issuer"],
                         ValidAudience = Configuration["Jwt:Issuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
                     };
                 });
+
 
             services.AddMvc();
 
@@ -160,14 +185,6 @@ namespace alphadinCore
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-
-                //endpoints.MapControllerRoute(
-                //    name: "default",
-                //    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-                endpoints.MapControllerRoute(
-                    name: "apiArea",
-                    pattern: "api/{area:exists}/{controller}/{action=Index}/{id?}");
             });
 
             FirstData.Initialize(app);

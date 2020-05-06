@@ -1,33 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Security.Claims;
 using alphadinCore.Common.Controllers;
-using alphadinCore.Common.Filters;
 using alphadinCore.Common.Helper;
 using alphadinCore.Model;
 using alphadinCore.Model.controllerModels;
 using alphadinCore.Model.NetworkModels;
-using alphadinCore.Model.smsModels;
 using alphadinCore.Services.Helper;
-using Database.Common.Enums;
+using Authentication.Services.Interface;
 using Database.Config;
-using Database.Models;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.VisualBasic;
-using Services.Common;
-using Services.Common.Cryptography;
-using Services.Operator.Interfaces;
 
 namespace alphadinCore.Controllers
 {
-    //[Route("api/[controller]")]
-    [ApiController]
     public class AccountController : BaseController
     {
         private readonly SmsHelper _smsHelper;
@@ -35,14 +22,14 @@ namespace alphadinCore.Controllers
         private readonly DbContextModel _db;
         private readonly IConfiguration _config;
         
-        public AccountController(IConfiguration config, DbContextModel db, SmsHelper smsHelper, AuthHelper authHelper)
+        public AccountController(IConfiguration config, DbContextModel db, SmsHelper smsHelper, AuthHelper authHelper, IOnlineUserService onlineUserService) : base(onlineUserService)
         {
             _smsHelper = smsHelper;
             _authHelper = authHelper;
             _db = db;
             _config = config;
         }
-        [Route("getsms")]
+
         [HttpPost]
         public JsonResult GetSms(AccountSendSmsRequst smsRequst)
         {
@@ -50,11 +37,11 @@ namespace alphadinCore.Controllers
             return new JsonResult(smsResult);
         }
 
-        [Route("Login")]
+
         [HttpPost]
         public JsonResult Login(AccountLoginRequst loginInfo)
         {
-            var result = _authHelper.Login(loginInfo.MobileNumber, loginInfo.SmsKey,HttpContext,_config,loginInfo.RememberMe);
+            var result = _authHelper.Login(loginInfo, HttpContext, _config);
             return new JsonResult(result);
 
         }
@@ -77,10 +64,17 @@ namespace alphadinCore.Controllers
             _db.SaveChanges();
 
             var token = _db.UserTokens.Where(u => u.User.MobileNumber == user.MobileNumber)
-                .OrderByDescending(i => i.Id)
+                .OrderByDescending(i => i.CreateDate)
                 .FirstOrDefault();
 
             return new JsonResult(token);
+        }
+
+        [HttpPost]
+        public JsonResult Logout()
+        {
+            //TODO: Remove user from online users
+            return null;
         }
 
         public string ERROR_GET_SMS = "01";

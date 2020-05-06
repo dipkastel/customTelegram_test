@@ -25,16 +25,13 @@ namespace alphadinCore.Common.Helper
         {
             _smsService = smsService;
         }
-        public SendSmsResultModel SendSms(String phoneNumber, String smsMessage, String code = "0")
+        public SendSmsResultModel SendSms(string phoneNumber, string smsMessage, string code = "0")
         {
             var smsResult = new SendSmsResultModel();
             try
             {
-                var api = new KavenegarApi(API_KEY);
-                var smsTask = api.Send(SENDER_LINE, phoneNumber, smsMessage);
-                var res = smsTask.Result;
-
-                if (res.Status.Equals(1))
+               
+                if (/*res.Status.Equals(1)*/ true)
                 {
                     smsResult.success = true;
                     smsResult.Message = "کد ورود برای کاربر ارسال شد";
@@ -49,6 +46,9 @@ namespace alphadinCore.Common.Helper
                     }, 0);
                     return smsResult;
                 }
+                var api = new KavenegarApi(API_KEY);
+                var smsTask = api.Send(SENDER_LINE, phoneNumber, smsMessage);
+                var res = smsTask.Result;
 
                 _smsService.Add(new Sms
                 {

@@ -5,6 +5,7 @@ using alphadinCore.Common.Filters;
 using alphadinCore.Model;
 using alphadinCore.Model.controllerModels;
 using alphadinCore.Model.NetworkModels;
+using Authentication.Services.Interface;
 using Database.Config;
 using Database.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,44 +13,38 @@ using Microsoft.EntityFrameworkCore;
 
 namespace alphadinCore.Controllers
 {
-    //[Route("api/[controller]")]
-    [ApiController]
     public class SchoolController : BaseController
     {
 
 
-        private DbContextModel db;
-        public SchoolController(DbContextModel _db)
+        private readonly DbContextModel _db;
+        public SchoolController(DbContextModel db, IOnlineUserService onlineUserService) : base(onlineUserService)
         {
-            db = _db;
+            _db = db;
         }
 
 
 
-        //[Route("GetTopics")]
         [HttpGet]
-        //[Authorize(Roles = "tester")]
         public JsonResult GetTopics()
         {
-            List<SchoolTopic> topics = db.SchoolTopics.Include(sc=>sc.Courses).ToList();
+            var topics = _db.SchoolTopics.Include(sc=>sc.Courses).ToList();
             return new JsonResult(topics);
         }
 
 
 
 
-        //[Route("GetCourses")]
         [HttpPost]
-        //[Authorize(Roles = "tester")]
         public JsonResult GetCourses(SchoolGetCoursesInput input)
         {
-            SchoolTopic topic = db.SchoolTopics.Include(sc => sc.Courses).Where(o => o.Id == input.TopicId).FirstOrDefault();
+            SchoolTopic topic = _db.SchoolTopics.Include(sc => sc.Courses).FirstOrDefault(o => o.Id == input.TopicId);
             if (topic == null)
                 throw new CustomException("چنین تاپیکی وجود ندارد", ErrorsPreFix.CONTROLLER_SCHOOL + ERROR_GET_COURSES + "01");
             List<int> CourseIds = topic.Courses.Select(p=>p.Id).ToList();
             if (CourseIds == null)
                 throw new CustomException("درسی برای این تاپیک وارد نشده", ErrorsPreFix.CONTROLLER_SCHOOL + ERROR_GET_COURSES + "02");
-            var courses = db
+            var courses = _db
                 .SchoolCourses
                 .Include(sc => sc.Units)
                 .Where(o => CourseIds.Contains(o.Id))

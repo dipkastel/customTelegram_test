@@ -1,39 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using alphadinCore.Common.Controllers;
-using Microsoft.AspNetCore.Http;
+using alphadinCore.Areas.TesterCity.Common;
+using Authentication.Services.Interface;
+using Database.Models;
 using Microsoft.AspNetCore.Mvc;
-using Services.Operator;
+using Newtonsoft.Json;
+using Services.Operator.Interfaces;
 
 namespace alphadinCore.Areas.TesterCity.Controllers
 {
-    [Area("TestterCity")]
-    [ApiController]
-    public class SchoolController : BaseController
+    public class SchoolController : TesterCityController
     {
-        private readonly SchoolCourseService _courseService;
-        private readonly SchoolCourseCertificateService _certificateService;
+        private readonly ISchoolCourseService _courseService;
+        private readonly ISchoolTopicService _topicService;
 
-        public SchoolController(SchoolCourseService courseService, SchoolCourseCertificateService certificateService)
+        public SchoolController(ISchoolCourseService courseService, ISchoolTopicService topicService, IOnlineUserService onlineUserService): base(onlineUserService)
         {
             _courseService = courseService;
-            _certificateService = certificateService;
-        }
-
-
-        [HttpGet]
-        public JsonResult GetCourses()
-        {
-            return (JsonResult) _courseService.GetAll().Data;
+            _topicService = topicService;
         }
 
         [HttpGet]
-        public JsonResult GetMyCourse()
+        public JsonResult Topics()
         {
-            return (JsonResult) _certificateService.GetAllIncluding(c => c.SchoolCourse)
-                .Where(certificate => certificate.OwnerUserId == 1);
+            var topicsResult = _topicService.GetAll();
+
+            return (JsonResult) topicsResult.Data;
         }
+
+        [HttpGet]
+        public JsonResult Courses(int topicId)
+        {
+            return (JsonResult) _topicService
+                .GetAllIncluding(t => t.Courses)
+                .Where(t => t.Id == topicId)
+                .Select(t => t.Courses);
+        }
+
+        [HttpGet]
+        public JsonResult Units(int courseId)
+        {
+            return (JsonResult)_courseService
+                .GetAllIncluding(c => c.Units)
+                .Where(c => c.Id == courseId)
+                .Select(c => c.Units);
+        }
+
+        [HttpPost]
+        public JsonResult PassUnit(int unitId)
+        {
+            throw new NotImplementedException("گرفتن شماره آخرین یونیت خوانده شده");
+        }
+
+        [HttpGet]
+        public JsonResult QuizLink(int courseId)
+        {
+            throw new NotImplementedException("لینک امتحان یک کورسی که تمام شده ولی این آزمون را ندیده");
+        }
+
     }
 }

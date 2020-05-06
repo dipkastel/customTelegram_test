@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Database.Common.Enums;
 using Database.Models;
+using Database.Models.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 

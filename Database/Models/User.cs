@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Database.Common;
 using Database.Common.Interfaces;
+using Database.Models.Authentication;
 
 namespace Database.Models
 {
@@ -13,7 +14,9 @@ namespace Database.Models
 
         public string MobileNumber { get; set; }
         public string RefreshToken { get; set; }
+
         public Role Role{ get; set; }
+        public ICollection<UserAction> UserActions { get; set; }
 
     }
 }

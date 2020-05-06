@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Database.Models;
+using Database.Models.Authentication;
 using Microsoft.EntityFrameworkCore;
 
 namespace Database.Config
@@ -42,5 +43,14 @@ namespace Database.Config
         public DbSet<UserSocials> UserSocials { get; set; }
         public DbSet<GeneralTypes> GeneralTypes { get; set; }
         public DbSet<SchoolCourseCertificate> SchoolCourseCertificates { get; set; }
+
+        public DbSet<SchoolUserLastUnit> SchoolUserLastUnits { get; set; }
+        public DbSet<RoleAction> RoleActions { get; set; }
+        public DbSet<Action> Actions { get; set; }
+        public DbSet<UserAction> UserActions { get; set; }
+
+
+        //public DbSet<DeviceType> DeviceTypes { get; set; }
+        //public DbSet<UserDevice> UserDevices { get; set; }
     }
 }

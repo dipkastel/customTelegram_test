@@ -8,10 +8,13 @@ namespace Database.Models
 {
     public class SchoolUnit : Auditable
     {
-        
+        public int CourseId { get; set; }
+
 
 
         public string Title { get; set; }
         public string Body { get; set; }
+
+        public SchoolCourse Course { get; set; }
     }
 }

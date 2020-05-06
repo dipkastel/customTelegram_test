@@ -8,7 +8,9 @@ using Database.Common.Interfaces;
 using Database.Config;
 using DatabaseValidation.Structure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Services.Common;
+using Services.Common.Interfaces;
 using Services.Enum;
 
 namespace Services.Repository
@@ -30,11 +32,11 @@ namespace Services.Repository
         }
 
 
-        public GenericRepository<T> Include(Expression<Func<T, object>> navigationPropertyPath)
-        {
-            Queryable.Include(navigationPropertyPath);
-            return this;
-        }
+//        public IMyIncludedQueryable<T, object> Include(Expression<Func<T, object>> navigationPropertyPath)
+//        {
+//            return Queryable.Include(navigationPropertyPath) as IMyIncludedQueryable<T, object>;
+//        }
+
 
         #region Create
 
@@ -1481,111 +1483,6 @@ namespace Services.Repository
 
         #region Update
 
-        /// <summary>
-        /// update an object data
-        /// </summary>
-        /// <param name="newValue">new value object</param>
-        /// <param name="oldValue">old value object with itself id</param>
-        /// <param name="updatedById">id of user who want to update this object</param>
-        /// <returns>
-        /// returns updated object
-        /// </returns>
-        public virtual DbResult<T> Update(T newValue, T oldValue, int updatedById)
-        {
-            var result = new DbResult<T>();
-
-            try
-            {
-                newValue = FillUpdateDefaultProperties(newValue, oldValue, updatedById);
-
-                if (!Validation.UpdateValidation(newValue, out var validationMessage))
-                {
-                    result.Success = false;
-                    result.Data = null;
-                    result.Count = 0;
-                    result.MessageType = MessageType.InvalidData;
-                    result.Info = MessageType.InvalidData.Description();
-                    result.Message = validationMessage;
-
-                    return result;
-                }
-
-                Context.Entry(oldValue).CurrentValues.SetValues(newValue);
-                Save();
-
-                result.Success = true;
-                result.Data = newValue;
-                result.Count = 1;
-                result.MessageType = MessageType.Success;
-                result.Info = MessageType.Success.Description();
-
-                return result;
-            }
-            catch (Exception e)
-            {
-                result.Success = false;
-                result.Data = null;
-                result.Count = 0;
-                result.MessageType = MessageType.Error;
-                result.Info = MessageType.Error.Description();
-                result.Exception = e;
-
-                return result;
-            }
-        }
-
-        /// <summary>
-        /// update an object data async
-        /// </summary>
-        /// <param name="newValue">new value object</param>
-        /// <param name="oldValue">old value object with itself id</param>
-        /// <param name="updatedById">id of user who want to update this object</param>
-        /// <returns>
-        /// returns updated object
-        /// </returns>
-        public virtual async Task<DbResult<T>> UpdateAsync(T newValue, T oldValue, int updatedById)
-        {
-            var result = new DbResult<T>();
-
-            try
-            {
-                newValue = FillUpdateDefaultProperties(newValue, oldValue, updatedById);
-
-                if (!Validation.UpdateValidation(newValue, out var validationMessage))
-                {
-                    result.Success = false;
-                    result.Data = null;
-                    result.Count = 0;
-                    result.MessageType = MessageType.InvalidData;
-                    result.Info = MessageType.InvalidData.Description();
-                    result.Message = validationMessage;
-
-                    return result;
-                }
-
-                Context.Entry(oldValue).CurrentValues.SetValues(newValue);
-                await SaveAsync();
-
-                result.Success = true;
-                result.Data = newValue;
-                result.Count = 1;
-                result.MessageType = MessageType.Success;
-                result.Info = MessageType.Success.Description();
-
-                return result;
-            }
-            catch (Exception e)
-            {
-                result.Success = false;
-                result.Data = null;
-                result.Count = 0;
-                result.MessageType = MessageType.Error;
-                result.Info = MessageType.Error.Description();
-                result.Exception = e;
-
-                return result;
-            }
-        }
 
         /// <summary>
         /// update an object data
@@ -1599,18 +1496,29 @@ namespace Services.Repository
         {
             try
             {
-                var dbResult = Get(newValue.Id);
+                var dbResult = GetByAdmin(newValue.Id);
 
                 if (!dbResult.Success)
                 {
                     throw new Exception(dbResult.Message);
                 }
 
-                var oldValue = dbResult.Data;
+                newValue.UpdatedByUserId = updatedById;
+                newValue.UpdatedOn = DateTime.Now;
 
-                var updateResult = Update(newValue, oldValue, updatedById);
+                Context.Update(newValue);
+                Save();
 
-                return updateResult;
+                var result = new DbResult<T>
+                {
+                    Success = true,
+                    Data = newValue,
+                    Count = 1,
+                    MessageType = MessageType.Success,
+                    Info = MessageType.Success.Description()
+                };
+
+                return result;
             }
             catch (Exception e)
             {
@@ -1641,18 +1549,29 @@ namespace Services.Repository
         {
             try
             {
-                var dbResult = await GetAsync(newValue.Id);
+                var dbResult = await GetAsyncByAdmin(newValue.Id);
 
                 if (!dbResult.Success)
                 {
                     throw new Exception(dbResult.Message);
                 }
 
-                var oldValue = dbResult.Data;
+                newValue.UpdatedByUserId = updatedById;
+                newValue.UpdatedOn = DateTime.Now;
 
-                var updateResult =await UpdateAsync(newValue, oldValue, updatedById);
+                Context.Update(newValue);
+                await SaveAsync();
 
-                return updateResult;
+                var result = new DbResult<T>
+                {
+                    Success = true,
+                    Data = newValue,
+                    Count = 1,
+                    MessageType = MessageType.Success,
+                    Info = MessageType.Success.Description()
+                };
+
+                return result;
             }
             catch (Exception e)
             {

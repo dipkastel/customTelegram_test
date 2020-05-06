@@ -2,6 +2,7 @@
 using System.Linq;
 using alphadinCore.Common.Controllers;
 using alphadinCore.Common.Filters;
+using Authentication.Services.Interface;
 using Database.Common.Enums;
 using Database.Config;
 using Database.Models;
@@ -9,13 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace alphadinCore.Controllers
 {
-    //[Route("api/[controller]")]
-    [ApiController]
     public class GeneralDataController : BaseController
     {
         private readonly DbContextModel _db;
 
-        public GeneralDataController(DbContextModel db)
+        public GeneralDataController(DbContextModel db, IOnlineUserService onlineUserService) : base(onlineUserService)
         {
             _db = db;
         }

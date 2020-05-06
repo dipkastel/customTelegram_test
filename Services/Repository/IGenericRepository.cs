@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 using Database.Common;
 using Database.Common.Interfaces;
 using Services.Common;
+using Services.Common.Interfaces;
 
 namespace Services.Repository
 {
     public interface IGenericRepository<T> where T : Auditable
     {
+//        IMyIncludedQueryable<T, object> Include(Expression<Func<T, object>> navigationPropertyPath);
+
+
+
         #region Create
 
         /// <summary>
@@ -293,28 +298,6 @@ namespace Services.Repository
         /// returns updated object
         /// </returns>
         Task<DbResult<T>> UpdateAsync(T newValue, int updatedById);
-
-        /// <summary>
-        /// update an object data
-        /// </summary>
-        /// <param name="newValue">new value object</param>
-        /// <param name="oldValue">old value object with itself id</param>
-        /// <param name="updatedById">id of user who want to update this object</param>
-        /// <returns>
-        /// returns updated object
-        /// </returns>
-        DbResult<T> Update(T newValue, T oldValue, int updatedById);
-
-        /// <summary>
-        /// update an object data async
-        /// </summary>
-        /// <param name="newValue">new value object</param>
-        /// <param name="oldValue">old value object with itself id</param>
-        /// <param name="updatedById">id of user who want to update this object</param>
-        /// <returns>
-        /// returns updated object
-        /// </returns>
-        Task<DbResult<T>> UpdateAsync(T newValue, T oldValue, int updatedById);
 
         /// <summary>
         /// Logically delete an object

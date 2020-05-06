@@ -1,7 +1,7 @@
-﻿using Database.Models;
+﻿using Database.Models.Authentication;
 using DatabaseValidation.Structure;
 
-namespace DatabaseValidation.Operator.Interfaces
+namespace DatabaseValidation.Operator.Authentication.Interfaces
 {
     public interface IRoleAccessValidation : IGenericValidation<RoleAccess>
     {

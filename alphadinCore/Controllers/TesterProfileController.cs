@@ -2,44 +2,50 @@
 using System.Linq;
 using System.Security.Claims;
 using alphadinCore.Common.Controllers;
-using alphadinCore.Common.Filters;
 using alphadinCore.Model.NetworkModels;
+using Authentication.Services.Interface;
 using Database.Config;
 using Database.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Services.Operator.Interfaces;
 
 namespace alphadinCore.Model.controllerModels
 {
-    //[Route("api/[controller]")]
-    [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class TesterProfileController : BaseController
     {
-        private DbContextModel db;
-        public TesterProfileController(DbContextModel _db)
+        private readonly DbContextModel _db;
+        private readonly User _user;
+        private readonly ITesterProfileService _testerProfileService;
+
+        public TesterProfileController(DbContextModel db, IOnlineUserService onlineUserService,
+            ITesterProfileService testerProfileService) : base(onlineUserService)
         {
-            db = _db;
+            _user = GetUser();
+            _db = db;
+            _testerProfileService = testerProfileService;
         }
 
         /*profile*/
 
-        //[Route("GetTesterProfile")]
         [HttpGet]
-        [Authorize(Roles = "tester")]
+        [ResponseCache(Duration = 120, Location = ResponseCacheLocation.Client, NoStore = false)]
         public JsonResult GetProfile()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            TesterProfile testerProfile = db.TesterProfiles.Include(o => o.User).Include(p => p.User.Role).Where(o => o.User.MobileNumber == mobileNumber).FirstOrDefault();
-            if (testerProfile == null)
-                testerProfile = new TesterProfile();
+            var testerProfile = _db.TesterProfiles
+                                    .Include(o => o.User)
+                                    .ThenInclude(u => u.Role)
+                                    .FirstOrDefault(o => o.User == _user) ?? new TesterProfile();
+                //_testerProfileService.Include(o=>o.User).MyThenInclude(u => u.)
+
             var result = new
             {
-
-                mobileNumber = mobileNumber,
-                role = (testerProfile.User != null && testerProfile.User.Role != null) ? testerProfile.User.Role.Name : "tester",
+                mobileNumber = _user.Id,
+                role = (testerProfile.User?.Role != null) ? testerProfile.User.Role.Name : "tester",
                 userName = testerProfile.UserName,
                 profileImageUrl = testerProfile.ProfileImageUrl,
                 userBio = testerProfile.UserBio,
@@ -54,68 +60,37 @@ namespace alphadinCore.Model.controllerModels
                 postalCode = testerProfile.PostalCode,
                 cityCode = testerProfile.CityCode
             };
+
             return new JsonResult(result);
         }
 
-        //[Route("SetTesterProfile")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult SetProfile(TesterProfileSetRequst input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            TesterProfile testerProfile = db.TesterProfiles.Where(o => o.User.MobileNumber == mobileNumber).FirstOrDefault();
-            if (testerProfile == null)
-            {
-                //FirstUpdate
-                testerProfile = new TesterProfile();
-                var user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
-                if (user == null)
-                    throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_TESTER_PROFILE + ERROR_SET_PROFILE + "01");
-                testerProfile.User = user;
-                testerProfile.BirthDay = input.BirthDay;
-                testerProfile.CityCode = input.cityCode;
-                testerProfile.Email = input.Email;
-                testerProfile.GenderType = input.GenderType;
-                testerProfile.NationalCode = input.NationalCode;
-                testerProfile.PhoneNumber = input.PhoneNumber;
-                testerProfile.PostalCode = input.PostalCode;
-                testerProfile.RelationType = input.RelationType;
-                testerProfile.UserName = input.UserName;
+            var testerProfile = _db.TesterProfiles.FirstOrDefault(o => o.User.Id == _user.Id) ?? new TesterProfile();
 
-                db.TesterProfiles.Add(testerProfile);
-                db.SaveChanges();
-            }
-            else
-            {
-                testerProfile.BirthDay = input.BirthDay;
-                testerProfile.CityCode = input.cityCode;
-                testerProfile.Email = input.Email;
-                testerProfile.GenderType = input.GenderType;
-                testerProfile.NationalCode = input.NationalCode;
-                testerProfile.PhoneNumber = input.PhoneNumber;
-                testerProfile.PostalCode = input.PostalCode;
-                testerProfile.RelationType = input.RelationType;
-                testerProfile.UserName = input.UserName;
-                db.TesterProfiles.Update(testerProfile);
-                db.SaveChanges();
+            testerProfile.User = _user;
+            testerProfile.BirthDay = input.BirthDay;
+            testerProfile.CityCode = input.cityCode;
+            testerProfile.Email = input.Email;
+            testerProfile.GenderType = input.GenderType;
+            testerProfile.NationalCode = input.NationalCode;
+            testerProfile.PhoneNumber = input.PhoneNumber;
+            testerProfile.PostalCode = input.PostalCode;
+            testerProfile.RelationType = input.RelationType;
+            testerProfile.UserName = input.UserName;
 
-            }
+            _db.TesterProfiles.Update(testerProfile);
+            _db.SaveChanges();
+
             return new JsonResult(testerProfile);
         }
 
-        //[Route("GetGeneralProfile")]
         [HttpGet]
-        [Authorize(Roles = "tester")]
         public JsonResult GetGeneralProfile()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            TesterProfile testerProfile = db.TesterProfiles.Where(o => o.User.MobileNumber == mobileNumber).FirstOrDefault();
-            if (testerProfile == null)
-                testerProfile = new TesterProfile();
+            var testerProfile = _db.TesterProfiles.FirstOrDefault(o => o.User.Id == _user.Id) ??
+                                new TesterProfile();
 
             var result = new
             {
@@ -124,52 +99,35 @@ namespace alphadinCore.Model.controllerModels
                 Gender = testerProfile.GenderType,
                 ImageUrl = testerProfile.ProfileImageUrl
             };
+
             return new JsonResult(result);
         }
 
 
-        //[Route("SetGeneralProfile")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult SetGeneralProfile(SetGeneralProfileRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            TesterProfile testerProfile = db.TesterProfiles.Where(o => o.User.MobileNumber == mobileNumber).FirstOrDefault();
-            if (testerProfile == null)
-            {
-                testerProfile = new TesterProfile();
-                testerProfile.NickName = input.NickName;
-                testerProfile.UserBio = input.Bio;
-                testerProfile.GenderType = input.GenderType;
-                db.TesterProfiles.Add(testerProfile);
-                db.SaveChanges();
+            var testerProfile =
+                _db.TesterProfiles.FirstOrDefault(o => o.User.Id == _user.Id) ??
+                new TesterProfile();
 
-            }
-            else
-            {
-                testerProfile.NickName = input.NickName;
-                testerProfile.UserBio = input.Bio;
-                testerProfile.GenderType = input.GenderType;
-                db.TesterProfiles.Update(testerProfile);
-                db.SaveChanges();
-            }
+            testerProfile.User = _user;
+            testerProfile.NickName = input.NickName;
+            testerProfile.UserBio = input.Bio;
+            testerProfile.GenderType = input.GenderType;
+
+            _db.TesterProfiles.Update(testerProfile);
+            _db.SaveChanges();
 
             return new JsonResult(GetGeneralProfile().Value);
         }
 
-        //[Route("GetPersonalProfile")]
         [HttpGet]
-        [Authorize(Roles = "tester")]
         public JsonResult GetPersonalProfile()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            TesterProfile testerProfile = db.TesterProfiles.Where(o => o.User.MobileNumber == mobileNumber).FirstOrDefault();
-            if (testerProfile == null)
-                testerProfile = new TesterProfile();
+            var testerProfile =
+                _db.TesterProfiles.FirstOrDefault(o => o.User.Id == _user.Id) ??
+                new TesterProfile();
 
             var result = new
             {
@@ -177,21 +135,19 @@ namespace alphadinCore.Model.controllerModels
                 Email = testerProfile.Email,
                 EmailVerified = testerProfile.EmailVerified,
                 BirthDay = testerProfile.BirthDay,
-
             };
+
             return new JsonResult(result);
         }
 
-        //[Route("SetPersonalProfile")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult SetPersonalProfile(SetPersonalProfileRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            TesterProfile testerProfile = db.TesterProfiles.Where(o => o.User.MobileNumber == mobileNumber).FirstOrDefault();
+            var testerProfile =
+                _db.TesterProfiles.FirstOrDefault(o => o.User.Id == _user.Id) ??
+                new TesterProfile();
 
+            testerProfile.User = _user;
             testerProfile.UserName = input.UserName;
             testerProfile.BirthDay = input.BirthDay;
             testerProfile.RelationType = input.RelationType;
@@ -200,46 +156,43 @@ namespace alphadinCore.Model.controllerModels
             testerProfile.Email = input.Email;
             testerProfile.PostalCode = input.PostalCode;
             testerProfile.CityCode = input.cityCode;
-            db.TesterProfiles.Update(testerProfile);
-            db.SaveChanges();
+
+            _db.TesterProfiles.Update(testerProfile);
+            _db.SaveChanges();
+
             return new JsonResult(GetPersonalProfile().Value);
         }
 
         /*Educations*/
 
-        //[Route("GetEducations")]
         [HttpGet]
-        [Authorize(Roles = "tester")]
         public JsonResult GetEducations()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            var testerProfile = db.Educations.Where(o => o.User.MobileNumber == mobileNumber).Select(a => new
-            {
-                Id = a.Id,
-                Grade = a.Grade,
-                Major = a.Major,
-                place = a.Place,
-                InProgress = a.InProgress
+            var testerProfile = _db.Educations.Where(o => o.User.Id == _user.Id)
+                .Select(a =>
+                    new
+                    {
+                        Id = a.Id,
+                        Grade = a.Grade,
+                        Major = a.Major,
+                        place = a.Place,
+                        InProgress = a.InProgress
+                    })
+                .ToList();
 
-            }
-                    ).ToList();
             return new JsonResult(testerProfile);
         }
 
-        //[Route("AddEducation")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult AddEducation(UserEducationAddRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            var user = _db.Users.FirstOrDefault(o => o.Id == _user.Id);
+
             if (user == null)
-                throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_Add_EdUcation + "01");
-            UserEducation education = new UserEducation()
+                throw new CustomException("کاربر ثبت نام نشده",
+                    ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_Add_EdUcation + "01");
+
+            var education = new UserEducation()
             {
                 Grade = input.Grade,
                 Major = input.Major,
@@ -248,91 +201,79 @@ namespace alphadinCore.Model.controllerModels
                 Status = 0,
                 User = user
             };
-            db.Educations.Add(education);
-            db.SaveChanges();
+
+            _db.Educations.Add(education);
+            _db.SaveChanges();
 
             return new JsonResult(GetEducations().Value);
         }
 
-        //[Route("UpdateEducation")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult UpdateEducation(UserEducationUpdateRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
-            UserEducation education = db.Educations.Where(e => e.User.Id == user.Id && e.Id == input.Id).FirstOrDefault();
+            var user = _db.Users.FirstOrDefault(o => o.Id == _user.Id);
+
+            var education = _db.Educations.FirstOrDefault(e => e.User.Id == user.Id && e.Id == input.Id);
+
             if (education == null)
-                throw new CustomException("رکوردی برای آپدیت وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_UPDATE_EDUCATION + "01");
+                throw new CustomException("رکوردی برای آپدیت وجود ندارد",
+                    ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_UPDATE_EDUCATION + "01");
 
             education.Grade = input.Grade;
             education.Major = input.Major;
             education.Place = input.Place;
             education.InProgress = input.InProgress;
-            db.Educations.Update(education);
-            db.SaveChanges();
+
+            _db.Educations.Update(education);
+            _db.SaveChanges();
 
             return new JsonResult(GetEducations().Value);
         }
 
-        //[Route("RemoveEducation")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult RemoveEducation(RemoveUserEducationRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            var user = _db.Users.FirstOrDefault(o => o.Id == _user.Id);
+
             if (user == null)
-                throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_EDUCATION + "01");
-            UserEducation education = db.Educations.Where(o => o.Id == input.Id && o.User == user).FirstOrDefault();
+                throw new CustomException("کاربر ثبت نام نشده",
+                    ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_EDUCATION + "01");
+
+            var education = _db.Educations.FirstOrDefault(o => o.Id == input.Id && o.User == user);
             if (education == null)
-                throw new CustomException("رکوردی برای حذف وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_EDUCATION + "02");
-            db.Educations.Remove(education);
-            db.SaveChanges();
+                throw new CustomException("رکوردی برای حذف وجود ندارد",
+                    ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_EDUCATION + "02");
+
+            _db.Educations.Remove(education);
+            _db.SaveChanges();
 
             return new JsonResult(GetEducations().Value);
         }
 
         /*Jobs*/
 
-        //[Route("GetJobs")]
         [HttpGet]
-        [Authorize(Roles = "tester")]
         public JsonResult GetJobs()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            var testerProfile = db.Jobs.Where(o => o.User.MobileNumber == mobileNumber).Select(a => new
-            {
-                Id = a.Id,
-                CompanyName = a.CompanyName,
-                JobTitle = a.JobTitle,
-                SalaryId = a.SalaryId,
-                CompanyScaleId = a.CompanyScaleId,
-                InProgress = a.InProgress
-
-            }
-                    ).ToList();
+            var testerProfile = _db.Jobs.Where(o => o.User.Id == _user.Id).Select(a => new
+                {
+                    Id = a.Id,
+                    CompanyName = a.CompanyName,
+                    JobTitle = a.JobTitle,
+                    SalaryId = a.SalaryId,
+                    CompanyScaleId = a.CompanyScaleId,
+                    InProgress = a.InProgress
+                }
+            ).ToList();
             return new JsonResult(testerProfile);
         }
 
-        //[Route("AddJob")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult AddJob(UserJobAddRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
-            if (user == null)
-                throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_ADD_JOB + "01");
-            UserJob job = new UserJob()
+            var user = _db.Users.FirstOrDefault(o => o.Id == _user.Id);
+
+            var job = new UserJob()
             {
                 CompanyName = input.CompanyName,
                 JobTitle = input.JobTitle,
@@ -342,92 +283,81 @@ namespace alphadinCore.Model.controllerModels
                 Status = 0,
                 User = user
             };
-            db.Jobs.Add(job);
-            db.SaveChanges();
+
+            _db.Jobs.Add(job);
+            _db.SaveChanges();
 
             return new JsonResult(GetJobs().Value);
         }
 
 
-        //[Route("UpdateJob")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult UpdateJob(UserJobUpdateRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
-            UserJob job = db.Jobs.Where(e => e.User.Id == user.Id && e.Id == input.Id).FirstOrDefault();
+            var user = _db.Users.FirstOrDefault(o => o.Id == _user.Id);
+
+            var job = _db.Jobs.FirstOrDefault(e => e.User.Id == user.Id && e.Id == input.Id);
+
             if (job == null)
-                throw new CustomException("رکوردی برای آپدیت وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_UPDATE_EDUCATION + "01");
+                throw new CustomException("رکوردی برای آپدیت وجود ندارد",
+                    ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_UPDATE_EDUCATION + "01");
 
             job.CompanyName = input.CompanyName;
             job.CompanyScaleId = input.CompanyScaleId;
             job.InProgress = input.InProgress;
             job.JobTitle = input.JobTitle;
             job.SalaryId = input.SalaryId;
-            db.Jobs.Update(job);
-            db.SaveChanges();
+            _db.Jobs.Update(job);
+            _db.SaveChanges();
 
             return new JsonResult(GetJobs().Value);
         }
 
-        //[Route("RemoveJob")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult RemoveJob(RemoveUserJobsRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            var user = _db.Users.FirstOrDefault(o => o.Id == _user.Id);
+
             if (user == null)
-                throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_JOB + "01");
-            UserJob job = db.Jobs.Where(o => o.Id == input.Id && o.User == user).FirstOrDefault();
+                throw new CustomException("کاربر ثبت نام نشده",
+                    ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_JOB + "01");
+
+            var job = _db.Jobs.FirstOrDefault(o => o.Id == input.Id && o.User == user);
+
             if (job == null)
-                throw new CustomException("رکوردی برای حذف وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_JOB + "02");
-            db.Jobs.Remove(job);
-            db.SaveChanges();
+                throw new CustomException("رکوردی برای حذف وجود ندارد",
+                    ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_JOB + "02");
+
+            _db.Jobs.Remove(job);
+            _db.SaveChanges();
 
             return new JsonResult(GetJobs().Value);
         }
 
         /*Languages*/
 
-        //[Route("GetLanguages")]
         [HttpGet]
-        [Authorize(Roles = "tester")]
         public JsonResult GetLanguages()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            var testerLanguages = db.UserLanguages.Where(o => o.User.MobileNumber == mobileNumber).Select(a => new
-            {
-                Id = a.Id,
-                LanguageId = a.LanguageId,
-                ReadingRate = a.ReadingRate,
-                WritingRate = a.WritingRate,
-                SpeakingRate = a.SpeakingRate
-
-            }
-                    ).ToList();
+            var testerLanguages = _db.UserLanguages.Where(o => o.User.Id == _user.Id).Select(a =>
+                new
+                {
+                    Id = a.Id,
+                    LanguageId = a.LanguageId,
+                    ReadingRate = a.ReadingRate,
+                    WritingRate = a.WritingRate,
+                    SpeakingRate = a.SpeakingRate
+                }
+            ).ToList();
             return new JsonResult(testerLanguages);
         }
 
-        //[Route("AddLanguage")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult AddLanguage(UserLanguageAddRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
-            if (user == null)
-                throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_ADD_LANGUAGE + "01");
-            UserLanguage lang = new UserLanguage()
+            var user = _db.Users.FirstOrDefault(o => o.Id == _user.Id);
+
+            var lang = new UserLanguage()
             {
                 LanguageId = input.LanguageId,
                 ReadingRate = input.ReadingRate,
@@ -436,153 +366,116 @@ namespace alphadinCore.Model.controllerModels
                 Status = 0,
                 User = user
             };
-            db.UserLanguages.Add(lang);
-            db.SaveChanges();
+
+            _db.UserLanguages.Add(lang);
+            _db.SaveChanges();
 
             return new JsonResult(GetLanguages().Value);
         }
 
-        //[Route("UpdateLanguage")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult UpdateLanguage(UserLanguageUpdateRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
-            UserLanguage language = db.UserLanguages.Where(e => e.User.Id == user.Id && e.Id == input.Id).FirstOrDefault();
+            var user = _db.Users.FirstOrDefault(o => o.Id == _user.Id);
+            var language = _db.UserLanguages.FirstOrDefault(e => e.User.Id == user.Id && e.Id == input.Id);
+
             if (language == null)
-                throw new CustomException("رکوردی برای آپدیت وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_UPDATE_LANGUAGE + "01");
+                throw new CustomException("رکوردی برای آپدیت وجود ندارد",
+                    ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_UPDATE_LANGUAGE + "01");
 
             language.LanguageId = input.LanguageId;
             language.ReadingRate = input.ReadingRate;
             language.WritingRate = input.WritingRate;
             language.SpeakingRate = input.SpeakingRate;
-            db.UserLanguages.Update(language);
-            db.SaveChanges();
+            _db.UserLanguages.Update(language);
+            _db.SaveChanges();
 
             return new JsonResult(GetLanguages().Value);
         }
 
-        //[Route("RemoveLanguage")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult RemoveLanguage(RemoveUserLanguageRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
+            var user = _db.Users.FirstOrDefault(o => o.Id == _user.Id);
+
             if (user == null)
-                throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_LANGUAGE + "01");
-            UserLanguage lang = db.UserLanguages.Where(o => o.Id == input.Id && o.User == user).FirstOrDefault();
+                throw new CustomException("کاربر ثبت نام نشده",
+                    ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_LANGUAGE + "01");
+
+            var lang = _db.UserLanguages.FirstOrDefault(o => o.Id == input.Id && o.User == user);
+
             if (lang == null)
-                throw new CustomException("رکوردی برای حذف وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_LANGUAGE + "02");
-            db.UserLanguages.Remove(lang);
-            db.SaveChanges();
+                throw new CustomException("رکوردی برای حذف وجود ندارد",
+                    ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_LANGUAGE + "02");
+
+            _db.UserLanguages.Remove(lang);
+            _db.SaveChanges();
 
             return new JsonResult(GetLanguages().Value);
         }
 
         /*Favorites*/
 
-        //[Route("GetFavorites")]
         [HttpGet]
-        [Authorize(Roles = "tester")]
         public JsonResult GetFavorites()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            var Favorites = db.UserFavorites.Where(o => o.User.MobileNumber == mobileNumber).Select(a => new
-            {
-                Id = a.Id,
-                TagId = a.Tag.Id,
-                Category = a.Tag.Category
-
-            }
+            var favorites = _db.UserFavorites.Where(o => o.User.Id == _user.Id).Select(a => new
+                {
+                    Id = a.Id,
+                    TagId = a.Tag.Id,
+                    Category = a.Tag.Category
+                }
             ).ToList();
-            return new JsonResult(Favorites);
+            return new JsonResult(favorites);
         }
 
-        //[Route("UpdateFavorites")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult UpdateFavorites(AddUserFavoritRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
-            if (user == null)
-                throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_ADD_FAVORITE + "01");
-            db.UserFavorites.RemoveRange(db.UserFavorites.Where(p => p.User == user).ToList());
-            List<FavoriteTag> tags = db.FavoriteTags.Where(o => input.TagIds.Contains(o.Id)).ToList();
+            var user = _db.Users.FirstOrDefault(o => o.Id == _user.Id);
+            
+            _db.UserFavorites.RemoveRange(_db.UserFavorites.Where(p => p.User == user).ToList());
+            var tags = _db.FavoriteTags.Where(o => input.TagIds.Contains(o.Id)).ToList();
 
-            List<UserFavorite> UserFavorites = new List<UserFavorite>();
-            foreach (FavoriteTag tag in tags) {
-                UserFavorites.Add(new UserFavorite
-                {
-                    Tag = tag,
-                    User = user
-                });
-            }
-            db.UserFavorites.AddRange(UserFavorites);
-            db.SaveChanges();
+            var userFavorites = tags.Select(tag => new UserFavorite {Tag = tag, User = user}).ToList();
+
+            _db.UserFavorites.AddRange(userFavorites);
+            _db.SaveChanges();
 
             return new JsonResult(GetFavorites().Value);
         }
 
-        //[Route("RemoveFavorite")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult RemoveFavorite(RemoveUserFavoritRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
-            if (user == null)
-                throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_FAVORITE + "01");
-            UserFavorite userfav = db.UserFavorites.Where(o => o.Id == input.UserFavoritId && o.User == user).FirstOrDefault();
-            if (userfav == null)
-                throw new CustomException("رکوردی برای حذف وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_FAVORITE + "02");
-            db.UserFavorites.Remove(userfav);
-            db.SaveChanges();
+            var userFavorite = _db.UserFavorites
+                .FirstOrDefault(o => o.Id == input.UserFavoritId && o.User.Id == _user.Id);
+
+            if (userFavorite == null)
+                throw new CustomException("رکوردی برای حذف وجود ندارد",
+                    ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_FAVORITE + "02");
+
+            _db.UserFavorites.Remove(userFavorite);
+            _db.SaveChanges();
 
             return new JsonResult(GetLanguages().Value);
         }
 
         /*social*/
 
-
-
-
-        //[Route("GetSocials")]
         [HttpGet]
-        [Authorize(Roles = "tester")]
         public JsonResult GetSocials()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            List<UserSocials> socials = db.UserSocials.Where(o => o.User.MobileNumber == mobileNumber).ToList();
+            var socials = _db.UserSocials.Where(o => o.User.Id == _user.Id).ToList();
             return new JsonResult(socials);
         }
 
-        //[Route("AddSocial")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult AddSocial(UserSocialAddRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
-            if (user == null)
-                throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_ADD_JOB + "01");
-            UserSocials Social = new UserSocials()
+            var user = _db.Users.FirstOrDefault(u => u.Id == _user.Id);
+
+            var social = new UserSocials()
             {
                 SocialType = input.SocialType,
                 Address = input.Address,
@@ -590,51 +483,44 @@ namespace alphadinCore.Model.controllerModels
                 Status = 0,
                 User = user
             };
-            db.UserSocials.Add(Social);
-            db.SaveChanges();
+
+            _db.UserSocials.Add(social);
+            _db.SaveChanges();
 
             return new JsonResult(GetSocials().Value);
         }
 
-
-       //[Route("UpdateSocial")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult UpdateSocial(UserSocialUpdateRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
-            UserSocials Social = db.UserSocials.Where(e => e.User.Id == user.Id && e.Id == input.Id).FirstOrDefault();
-            if (Social == null)
-                throw new CustomException("رکوردی برای آپدیت وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_UPDATE_EDUCATION + "01");
+            var user = _db.Users.FirstOrDefault(o => o.Id == _user.Id);
+            var social = _db.UserSocials.FirstOrDefault(e => e.User.Id == user.Id && e.Id == input.Id);
 
-            Social.SocialType = input.SocialType;
-            Social.Address = input.Address;
-            Social.ActivateTimeId = input.ActivateTimeId;
-            db.UserSocials.Update(Social);
-            db.SaveChanges();
+            if (social == null)
+                throw new CustomException("رکوردی برای آپدیت وجود ندارد",
+                    ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_UPDATE_EDUCATION + "01");
+
+            social.SocialType = input.SocialType;
+            social.Address = input.Address;
+            social.ActivateTimeId = input.ActivateTimeId;
+
+            _db.UserSocials.Update(social);
+            _db.SaveChanges();
 
             return new JsonResult(GetJobs().Value);
         }
 
-       //[Route("RemoveSocial")]
         [HttpPost]
-        [Authorize(Roles = "tester")]
         public JsonResult RemoveSocial(UserSocialRemoveRequest input)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            User user = db.Users.Where(o => o.MobileNumber == mobileNumber).FirstOrDefault();
-            if (user == null)
-                throw new CustomException("کاربر ثبت نام نشده", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_JOB + "01");
-            UserSocials Social = db.UserSocials.Where(o => o.Id == input.Id && o.User == user).FirstOrDefault();
-            if (Social == null)
-                throw new CustomException("رکوردی برای حذف وجود ندارد", ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_JOB + "02");
-            db.UserSocials.Remove(Social);
-            db.SaveChanges();
+            var social = _db.UserSocials.Where(o => o.Id == input.Id && o.User.Id == _user.Id).FirstOrDefault();
+            
+            if (social == null)
+                throw new CustomException("رکوردی برای حذف وجود ندارد",
+                    ErrorsPreFix.CONTROLLER_ACOUNT + ERROR_REMOVE_JOB + "02");
+            
+            _db.UserSocials.Remove(social);
+            _db.SaveChanges();
 
             return new JsonResult(GetJobs().Value);
         }
@@ -642,77 +528,79 @@ namespace alphadinCore.Model.controllerModels
 
         /*Percentage*/
 
-        //[Route("GetProfilePercentage")]
         [HttpGet]
-        [Authorize(Roles = "tester")]
         public JsonResult GetProfilePercentage()
         {
-            int perc = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var mobileNumber = claim[0].Value;
-            TesterProfile testerProfile = db.TesterProfiles.Where(o => o.User.MobileNumber == mobileNumber).FirstOrDefault();
-            List<UserEducation> educations = db.Educations.Where(o => o.User.MobileNumber == mobileNumber).ToList();
-            List<UserLanguage> languages = db.UserLanguages.Where(o => o.User.MobileNumber == mobileNumber).ToList();
-            List<UserJob> jobs = db.Jobs.Where(o => o.User.MobileNumber == mobileNumber).ToList();
-            List<UserSocials> socials = db.UserSocials.Where(o => o.User.MobileNumber == mobileNumber).ToList();
-            List<UserFavorite> favorits = db.UserFavorites.Include(f=>f.Tag).Where(o => o.User.MobileNumber == mobileNumber).ToList();
+            var percentage = 0;
+
+            var testerProfile = _db.TesterProfiles.FirstOrDefault(o => o.User.Id == _user.Id);
+            var educations = _db.Educations.Where(o => o.User.Id == _user.Id).ToList();
+            var languages = _db.UserLanguages.Where(o => o.User.Id == _user.Id).ToList();
+            var jobs = _db.Jobs.Where(o => o.User.Id == _user.Id).ToList();
+            var socials = _db.UserSocials.Where(o => o.User.Id == _user.Id).ToList();
+
+            var favorits =
+                _db.UserFavorites.Include(f => f.Tag).Where(o => o.User.Id == _user.Id).ToList();
             if (testerProfile == null)
                 testerProfile = new TesterProfile();
-            if (testerProfile.UserName != null&& testerProfile.UserName != "")
-                perc++;
-            if (testerProfile.NickName != null && testerProfile.NickName != "")
-                perc++;
-            if (testerProfile.UserBio != null && testerProfile.UserBio != "")
-                perc++;
+            if (!string.IsNullOrWhiteSpace(testerProfile.UserName))
+                percentage++;
+            if (!string.IsNullOrWhiteSpace(testerProfile.NickName))
+                percentage++;
+            if (!string.IsNullOrWhiteSpace(testerProfile.UserBio))
+                percentage++;
             if (testerProfile.RelationType > 0)
-                perc++;
-            if (testerProfile.ProfileImageUrl != null && testerProfile.ProfileImageUrl != "")
-                perc++;
-            if (testerProfile.PostalCode != null && testerProfile.PostalCode != "")
-                perc++;
+                percentage++;
+            if (!string.IsNullOrWhiteSpace(testerProfile.ProfileImageUrl))
+                percentage++;
+            if (!string.IsNullOrWhiteSpace(testerProfile.PostalCode))
+                percentage++;
             if (testerProfile.GenderType > 0)
-                perc++;
-            if (testerProfile.BirthDay != null )
-                perc++;
-            if (testerProfile.PhoneNumber != null && testerProfile.PhoneNumber != "")
-                perc++;
-                perc++;
+                percentage++;
+            if (testerProfile.BirthDay != null) //TODO: this expression is always true
+                percentage++;
+
+            if (!string.IsNullOrWhiteSpace(testerProfile.PhoneNumber))
+            {
+                percentage++;
+                percentage++;
+            }
+
             if (testerProfile.NationalCode > 0)
-                perc++;
-            if (testerProfile.Email != null && testerProfile.Email != "")
-                perc++;
+                percentage++;
+            if (!string.IsNullOrWhiteSpace(testerProfile.Email))
+                percentage++;
             if (testerProfile.EmailVerified)
-                perc++;
-                perc++;
-            if (educations.Count > 0)
-                perc++;
+            {
+                percentage++;
+                percentage++;
+            }
+
+            if (educations.Any())
+                percentage++;
             if (educations.Count > 1)
-                perc++;
-            if (languages.Count > 0)
-                perc++;
-            if (jobs.Count > 0)
-                perc++;
-            if (socials.Count > 0)
-                perc++;
+                percentage++;
+            if (languages.Any())
+                percentage++;
+            if (jobs.Any())
+                percentage++;
+            if (socials.Any())
+                percentage++;
             if (socials.Count > 1)
-                perc++;
+                percentage++;
             if (socials.Count > 2)
-                perc++;
-            if (favorits.GroupBy(f => f.Tag.Category).ToList().Count > 0)
-                perc++;
+                percentage++;
+            if (favorits.GroupBy(f => f.Tag.Category).ToList().Any())
+                percentage++;
             if (favorits.GroupBy(f => f.Tag.Category).ToList().Count > 1)
-                perc++;
+                percentage++;
             if (favorits.GroupBy(f => f.Tag.Category).ToList().Count > 2)
-                perc++;
+                percentage++;
             if (favorits.GroupBy(f => f.Tag.Category).ToList().Count > 3)
-                perc++;
-            return new JsonResult(perc*4);
+                percentage++;
+
+            return new JsonResult(percentage * 4);
         }
-
-
-        
-
 
         public string ERROR_GET_PROFILE = "01";
         public string ERROR_SET_PROFILE = "02";
