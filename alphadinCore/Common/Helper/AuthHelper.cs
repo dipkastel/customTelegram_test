@@ -50,7 +50,7 @@ namespace alphadinCore.Services.Helper
 
             var uniqueKey = _userService.GetUserUniqueKey(loginInfo.MobileNumber, httpContext.Request.Headers["User-Agent"]);
 
-            _onlineUserService.RemoveUserInfo(uniqueKey);
+            _onlineUserService.Logout(uniqueKey);
 
             var user = _userService.GetAllIncluding(u => u.Role).FirstOrDefault(u => u.MobileNumber == loginInfo.MobileNumber);
 

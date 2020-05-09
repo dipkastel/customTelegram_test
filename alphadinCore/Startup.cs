@@ -100,7 +100,7 @@ namespace alphadinCore
             services.AddTransient<AuthHelper>();
             services.AddTransient<SmsHelper>();
 
-            services.AddSingleton<IOnlineUserService, OnlineUserService>();
+            services.AddTransient<IOnlineUserService, OnlineUserService>();
 
         }
     }

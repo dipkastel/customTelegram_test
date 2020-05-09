@@ -304,16 +304,16 @@ namespace Services.Repository
         /// set object view state to Deleted
         /// </summary>
         /// <param name="id">object id</param>
-        /// <param name="updatedById">id of user who want to disable this object</param>
-        DbResult Disable(int id, int updatedById);
+        /// <param name="deletedById">id of user who want to disable this object</param>
+        DbResult Disable(int id, int deletedById);
 
         /// <summary>
         /// Logically delete an object async
         /// set object view state to Deleted
         /// </summary>
         /// <param name="id">object id</param>
-        /// <param name="updatedById">id of user who want to disable this object</param>
-        Task<DbResult> DisableAsync(int id, int updatedById);
+        /// <param name="deletedById">id of user who want to disable this object</param>
+        Task<DbResult> DisableAsync(int id, int deletedById);
 
         /// <summary>
         /// Restore an object

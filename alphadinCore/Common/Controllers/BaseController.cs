@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using alphadinCore.Common.Filters;
 using Authentication.Services.Interface;
 using Database.Models;
 using Database.Models.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Services.Operator.Interfaces;
 using Services.ViewModels.Authentication;
 
 namespace alphadinCore.Common.Controllers
@@ -25,12 +28,11 @@ namespace alphadinCore.Common.Controllers
             _onlineUserService = onlineUserService;
         }
 
-
         public string UserAgent => HttpContext.Request.Headers["User-Agent"].ToString();
 
-        public UserInfo GetCurrentUserInfo()
+        public UserInfo GetCurrentUserInfo(HttpContext httpContext)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var identity = httpContext.User.Identity as ClaimsIdentity;
             var claim = identity.Claims.ToList();
 
             var userId = int.Parse(claim.First(c => c.Type == "userId").Value);
@@ -39,19 +41,27 @@ namespace alphadinCore.Common.Controllers
             return _onlineUserService.GetUserInfo(uniqueKey, userId, UserAgent);
         }
 
-        public User GetUser()
+        public User GetUser(HttpContext httpContext)
         {
-            return GetCurrentUserInfo().User;
+            var user = GetCurrentUserInfo(httpContext).User;
+
+            if (user == null)
+            {
+                Unauthorized();
+                throw new UnauthorizedAccessException();
+            }
+
+            return user;
         }
 
-        public IEnumerable<UserAction> GetUserAccess()
+        public IEnumerable<UserAction> GetUserAccess(HttpContext httpContext)
         {
-            return GetCurrentUserInfo().UserActions;
+            return GetCurrentUserInfo(httpContext).UserActions;
         }
 
-        public UserToken GetUserToken()
+        public UserToken GetUserToken(HttpContext httpContext)
         {
-            return GetCurrentUserInfo().UserToken;
+            return GetCurrentUserInfo(httpContext).UserToken;
         }
 
     }

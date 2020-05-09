@@ -1595,8 +1595,8 @@ namespace Services.Repository
         /// set object IsDeleted to Deleted
         /// </summary>
         /// <param name="id">object id</param>
-        /// <param name="updatedById">id of user who want to disable this object</param>
-        public DbResult Disable(int id, int updatedById)
+        /// <param name="deletedById">id of user who want to disable this object</param>
+        public DbResult Disable(int id, int deletedById)
         {
             var result = new DbResult();
 
@@ -1619,7 +1619,9 @@ namespace Services.Repository
                 var entity = dbResult.Data;
 
                 entity.IsDeleted = true;
-                var updateResult = Update(entity, updatedById);
+                entity.DeletedOn = DateTime.Now;
+
+                var updateResult = Update(entity, deletedById);
 
                 if (!updateResult.Success)
                 {
@@ -1658,8 +1660,8 @@ namespace Services.Repository
         /// set object IsDeleted to Deleted
         /// </summary>
         /// <param name="id">object id</param>
-        /// <param name="updatedById">id of user who want to disable this object</param>
-        public async Task<DbResult> DisableAsync(int id, int updatedById)
+        /// <param name="deletedById">id of user who want to disable this object</param>
+        public async Task<DbResult> DisableAsync(int id, int deletedById)
         {
             var result = new DbResult();
 
@@ -1682,7 +1684,9 @@ namespace Services.Repository
                 var entity = dbResult.Data;
 
                 entity.IsDeleted = true;
-                var updateResult = await UpdateAsync(entity, updatedById);
+                entity.DeletedOn = DateTime.Now;
+
+                var updateResult = await UpdateAsync(entity, deletedById);
 
                 if (!updateResult.Success)
                 {
@@ -1992,7 +1996,8 @@ namespace Services.Repository
         /// </summary>
         public virtual void Save()
         {
-            Context.SaveChanges();
+            Context. SaveChanges();
+
         }
 
         /// <summary>

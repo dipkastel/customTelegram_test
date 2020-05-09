@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Authentication.Services.Interface;
-using Database.Models;
 using Database.Models.Authentication;
-using Services.Common.Cryptography;
 using Services.Operator.Interfaces;
 using Services.ViewModels.Authentication;
 
@@ -13,104 +10,64 @@ namespace Authentication.Services
 {
     public class OnlineUserService : IOnlineUserService
     {
+        /* Declaration */
+
         private readonly IUserTokenService _tokenService;
         private readonly IUserService _userService;
-
-        /* Declaration */
+        private readonly UsersHolder _onlineUsers;
 
         public OnlineUserService(IUserTokenService tokenService, IUserService userService)
         {
-            _tokenService = tokenService;
             _userService = userService;
-            UserInfos = new Dictionary<string, UserInfo>();
-            LastFlush = DateTime.Now;
+            _tokenService = tokenService;
+            _onlineUsers = UsersHolder.GetInstance();
         }
 
-        private Dictionary<string, UserInfo> UserInfos { get; set; }
-
-        private DateTime LastFlush { get; set; }
 
         /* Methods */
 
         public UserInfo GetUserInfo(string uniqueKey, int userId, string userAgent)
         {
-            var userInfo = UserInfos[uniqueKey];
+            var userInfo = _onlineUsers.Get(uniqueKey);
 
-            if (IsActive(userInfo))
-                return userInfo;
-            else
+            return userInfo ?? Login(uniqueKey, userId, userAgent);
+        }
+
+        public UserInfo Login(string uniqueKey, int userId, string userAgent)
+        {
+            var userToken = _tokenService.GetAllIncluding(ut => ut.User).FirstOrDefault(ut => ut.User.Id == userId);
+
+            if (userToken == null)
             {
-                var userToken = _tokenService.GetAllIncluding(ut => ut.User).FirstOrDefault(ut => ut.User.Id == userId);
-
-                if (userToken == null)
-                {
-                    return null;
-                }
-
-                var newUniqueKey = _userService.GetUserUniqueKey(userToken.User.MobileNumber, userAgent);
-
-                if (uniqueKey != newUniqueKey) //Forbidden access 
-                {
-                    //logout user 
-                    RemoveUserInfo(uniqueKey);
-
-                    return null;
-                }
-
-                userInfo = new UserInfo()
-                {
-                    User = userToken.User,
-                    UserToken = userToken,
-                    ExpireDate = DateTime.Now.AddHours(8),
-                    UserActions = new List<UserAction>()
-                };
-
-                //TODO: Get ExpireTime from JWT
-
-                AddUser(newUniqueKey, userInfo);
-                return userInfo;
-
+                return null;
             }
-        }
 
-        public void RemoveUserInfo(string agent)
-        {
-            UserInfos.Remove(agent);
-        }
+            var newUniqueKey = _userService.GetUserUniqueKey(userToken.User.MobileNumber, userAgent);
 
-        public int GetOnlineUserServiceCount()
-        {
-            return UserInfos.Count(u => IsActive(u.Value));
-        }
-
-        public List<UserInfo> GetOnlineUserService()
-        {
-            return UserInfos.Where(u => IsActive(u.Value)).Select(u => u.Value).ToList();
-        }
-
-
-
-        private void AddUser(string uniqueKey, UserInfo userInfo)
-        {
-            UserInfos.Add(uniqueKey, userInfo);
-
-            if (LastFlush.AddHours(8) < DateTime.Now)
+            if (uniqueKey != newUniqueKey) //Forbidden access 
             {
-                Flush();
+                Logout(uniqueKey);
+
+                return null;
             }
-        }
 
-        private bool IsActive(UserInfo userInfo)
-        {
-            return userInfo?.ExpireDate > DateTime.Now;
-        }
-
-        private void Flush()
-        {
-            foreach (var userInfo in UserInfos.Where(userInfo => !IsActive(userInfo.Value)))
+            var userInfo = new UserInfo()
             {
-                RemoveUserInfo(userInfo.Key);
-            }
+                User = userToken.User,
+                UserToken = userToken,
+                ExpireDate = DateTime.Now.AddHours(8),
+                UserActions = new List<UserAction>()
+            };
+
+            //TODO: Get ExpireTime from JWT
+
+            _onlineUsers.Add(newUniqueKey, userInfo);
+            return userInfo;
+        }
+
+        public void Logout(string agent)
+        {
+            _onlineUsers.Remove(agent);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using alphadinCore.Common.Controllers;
+using alphadinCore.Common.Filters;
 using alphadinCore.Common.Helper;
 using alphadinCore.Model;
 using alphadinCore.Model.controllerModels;
@@ -15,14 +16,19 @@ using Microsoft.Extensions.Configuration;
 
 namespace alphadinCore.Controllers
 {
-    public class AccountController : BaseController
+    [TrackMethodsFilter]
+    [ResultFixer]
+    [ApiController]
+    [Route("api/{area:exists}/[controller]/[action]/{id?}")]
+    [Route("api/[controller]/[action]/{id?}")]
+    public class AccountController : ControllerBase
     {
         private readonly SmsHelper _smsHelper;
         private readonly AuthHelper _authHelper;
         private readonly DbContextModel _db;
         private readonly IConfiguration _config;
         
-        public AccountController(IConfiguration config, DbContextModel db, SmsHelper smsHelper, AuthHelper authHelper, IOnlineUserService onlineUserService) : base(onlineUserService)
+        public AccountController(IConfiguration config, DbContextModel db, SmsHelper smsHelper, AuthHelper authHelper)
         {
             _smsHelper = smsHelper;
             _authHelper = authHelper;
