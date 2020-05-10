@@ -47,7 +47,7 @@ namespace Database.Config
         public DbSet<GeneralTypes> GeneralTypes { get; set; }
         public DbSet<SchoolCourseCertificate> SchoolCourseCertificates { get; set; }
 
-        public DbSet<SchoolUserLastUnit> SchoolUserLastUnits { get; set; }
+        public DbSet<SchoolUserUnitRead> SchoolUserLastUnits { get; set; }
         public DbSet<RoleAction> RoleActions { get; set; }
         public DbSet<Action> Actions { get; set; }
         public DbSet<UserAction> UserActions { get; set; }

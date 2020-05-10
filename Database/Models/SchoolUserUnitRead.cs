@@ -2,7 +2,7 @@
 
 namespace Database.Models
 {
-    public class SchoolUserLastUnit : Auditable
+    public class SchoolUserUnitRead : Auditable
     {
 
         public int CourseId { get; set; }

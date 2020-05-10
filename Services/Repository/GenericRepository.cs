@@ -18,13 +18,13 @@ namespace Services.Repository
     public abstract class GenericRepository<T> : IGenericRepository<T> where T : Auditable
     {
         protected DbContextModel Context;
-        protected IGenericValidation<T> Validation;
+        protected IGenericValidation<T> ReadValidation;
         private bool _disposed = true;
 
-        protected GenericRepository(DbContextModel context, IGenericValidation<T> validation)
+        protected GenericRepository(DbContextModel context, IGenericValidation<T> readValidation)
         {
             Context = context;
-            Validation = validation;
+            ReadValidation = readValidation;
         }
 
 
@@ -49,7 +49,7 @@ namespace Services.Repository
             {
                 entity = SetInsertProperties(entity, createdById);
 
-                if (!Validation.InsertValidation(entity,out var validationMessage))
+                if (!ReadValidation.InsertValidation(entity,out var validationMessage))
                 {
                     result.Success = false;
                     result.Data = null;
@@ -101,7 +101,7 @@ namespace Services.Repository
             {
                 entity = SetInsertProperties(entity, createdById);
 
-                if (!Validation.InsertValidation(entity, out var validationMessage))
+                if (!ReadValidation.InsertValidation(entity, out var validationMessage))
                 {
                     result.Success = false;
                     result.Data = null;
@@ -1864,7 +1864,7 @@ namespace Services.Repository
 
             try
             {
-                if (!Validation.DeleteValidation(entity, out var validationMessage))
+                if (!ReadValidation.DeleteValidation(entity, out var validationMessage))
                 {
                     result.Success = false;
                     result.Count = 0;
@@ -1907,7 +1907,7 @@ namespace Services.Repository
 
             try
             {
-                if (!Validation.DeleteValidation(entity, out var validationMessage))
+                if (!ReadValidation.DeleteValidation(entity, out var validationMessage))
                 {
                     result.Success = false;
                     result.Count = 0;

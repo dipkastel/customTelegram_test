@@ -10,6 +10,8 @@ using DatabaseValidation.Operator;
 using DatabaseValidation.Operator.Authentication;
 using DatabaseValidation.Operator.Authentication.Interfaces;
 using DatabaseValidation.Operator.Interfaces;
+using DatabaseValidation.Operator.School;
+using DatabaseValidation.Operator.School.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +26,8 @@ using Services.Operator;
 using Services.Operator.Authentication;
 using Services.Operator.Authentication.Interfaces;
 using Services.Operator.Interfaces;
+using Services.Operator.School;
+using Services.Operator.School.Interfaces;
 using Services.Repository;
 
 namespace alphadinCore
@@ -51,6 +55,8 @@ namespace alphadinCore
             services.AddTransient<ISchoolQuizQuestionService, SchoolQuizQuestionService>();
             services.AddTransient<ISchoolTopicService, SchoolTopicService>();
             services.AddTransient<ISchoolUnitService, SchoolUnitService>();
+            services.AddTransient<ISchoolUserUnitReadService, SchoolUserUnitReadService>();
+
             services.AddTransient<ISmsService, SmsService>();
             services.AddTransient<ITesterProfileService, TesterProfileService>();
             services.AddTransient<IUserEducationService, UserEducationService>();
@@ -87,6 +93,8 @@ namespace alphadinCore
             services.AddTransient<ISchoolQuizQuestionValidation, SchoolQuizQuestionValidation>();
             services.AddTransient<ISchoolTopicValidation, SchoolTopicValidation>();
             services.AddTransient<ISchoolUnitValidation, SchoolUnitValidation>();
+            services.AddTransient<ISchoolUserUnitReadValidation, SchoolUserUnitReadValidation>();
+
             services.AddTransient<ISmsValidation, SmsValidation>();
             services.AddTransient<ITesterProfileValidation, TesterProfileValidation>();
             services.AddTransient<IUserEducationValidation, UserEducationValidation>();
