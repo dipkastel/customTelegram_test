@@ -55,6 +55,8 @@ namespace alphadinCore
             services.AddTransient<ITesterProfileService, TesterProfileService>();
             services.AddTransient<IUserEducationService, UserEducationService>();
             services.AddTransient<IUserJobService, UserJobService>();
+            services.AddTransient<IUserFavoriteService, UserFavoriteService>();
+
             services.AddTransient<IUserLanguageService, UserLanguageService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserSocialsService, UserSocialsService>();
@@ -94,6 +96,7 @@ namespace alphadinCore
             services.AddTransient<IUserSocialsValidation, UserSocialsValidation>();
             services.AddTransient<IUserTokenValidation, UserTokenValidation>();
             services.AddTransient<ISchoolCourseCertificateValidation, SchoolCourseCertificateValidation>();
+            services.AddTransient<IUserFavoriteValidation, UserFavoriteValidation>();
 
             #endregion
 

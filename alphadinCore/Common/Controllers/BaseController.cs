@@ -6,6 +6,8 @@ using alphadinCore.Common.Filters;
 using Authentication.Services.Interface;
 using Database.Models;
 using Database.Models.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Operator.Interfaces;
@@ -13,12 +15,12 @@ using Services.ViewModels.Authentication;
 
 namespace alphadinCore.Common.Controllers
 {
-
-    [TrackMethodsFilter]
-    [ResultFixer]
-    [ApiController]
     [Route("api/{area:exists}/[controller]/[action]/{id?}")]
     [Route("api/[controller]/[action]/{id?}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [ApiController]
+    [TrackMethodsFilter]
+    [ResultFixer]
     public class BaseController : ControllerBase
     {
         private readonly IOnlineUserService _onlineUserService;

@@ -282,22 +282,22 @@ namespace Services.Repository
         /// <summary>
         /// update an object data
         /// </summary>
-        /// <param name="newValue">object must have id</param>
+        /// <param name="entity">object must have id</param>
         /// <param name="updatedById">id of user who want to update this object</param>
         /// <returns>
         /// returns updated object
         /// </returns>
-        DbResult<T> Update(T newValue, int updatedById);
+        DbResult<T> Update(T entity, int updatedById);
 
         /// <summary>
         /// update an object data async
         /// </summary>
-        /// <param name="newValue">new value object with itself id</param>
+        /// <param name="entity">new value object with itself id</param>
         /// <param name="updatedById">id of user who want to update this object</param>
         /// <returns>
         /// returns updated object
         /// </returns>
-        Task<DbResult<T>> UpdateAsync(T newValue, int updatedById);
+        Task<DbResult<T>> UpdateAsync(T entity, int updatedById);
 
         /// <summary>
         /// Logically delete an object

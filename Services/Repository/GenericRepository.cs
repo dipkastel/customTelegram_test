@@ -21,21 +21,13 @@ namespace Services.Repository
         protected IGenericValidation<T> Validation;
         private bool _disposed = true;
 
-        public IQueryable<T> Queryable { get; set; }
-
-
         protected GenericRepository(DbContextModel context, IGenericValidation<T> validation)
         {
             Context = context;
             Validation = validation;
-            Queryable = Context.Set<T>();
         }
 
 
-//        public IMyIncludedQueryable<T, object> Include(Expression<Func<T, object>> navigationPropertyPath)
-//        {
-//            return Queryable.Include(navigationPropertyPath) as IMyIncludedQueryable<T, object>;
-//        }
 
 
         #region Create
@@ -55,7 +47,7 @@ namespace Services.Repository
 
             try
             {
-                entity = FillInsertDefaultProperties(entity, createdById);
+                entity = SetInsertProperties(entity, createdById);
 
                 if (!Validation.InsertValidation(entity,out var validationMessage))
                 {
@@ -107,7 +99,7 @@ namespace Services.Repository
 
             try
             {
-                entity = FillInsertDefaultProperties(entity, createdById);
+                entity = SetInsertProperties(entity, createdById);
 
                 if (!Validation.InsertValidation(entity, out var validationMessage))
                 {
@@ -145,6 +137,7 @@ namespace Services.Repository
             }
         }
 
+       
         #endregion
 
         #region Read By Admin
@@ -1487,32 +1480,38 @@ namespace Services.Repository
         /// <summary>
         /// update an object data
         /// </summary>
-        /// <param name="newValue">object must have id</param>
+        /// <param name="entity">object must have id</param>
         /// <param name="updatedById">id of user who want to update this object</param>
         /// <returns>
         /// returns updated object
         /// </returns>
-        public virtual DbResult<T> Update(T newValue, int updatedById)
+        public virtual DbResult<T> Update(T entity, int updatedById)
         {
             try
             {
-                var dbResult = GetByAdmin(newValue.Id);
+                var dbResult = GetByAdmin(entity.Id);
 
                 if (!dbResult.Success)
                 {
                     throw new Exception(dbResult.Message);
                 }
 
-                newValue.UpdatedByUserId = updatedById;
-                newValue.UpdatedOn = DateTime.Now;
+                if (dbResult.Data == null || dbResult.Data.Id == 0)
+                {
+                    return Add(entity, updatedById);
+                }
 
-                Context.Update(newValue);
+                entity.UpdatedByUserId = updatedById;
+                entity.UpdatedOn = DateTime.Now;
+
+
+                Context.Update(entity);
                 Save();
 
                 var result = new DbResult<T>
                 {
                     Success = true,
-                    Data = newValue,
+                    Data = entity,
                     Count = 1,
                     MessageType = MessageType.Success,
                     Info = MessageType.Success.Description()
@@ -1540,32 +1539,37 @@ namespace Services.Repository
         /// <summary>
         /// update an object data async
         /// </summary>
-        /// <param name="newValue">new value object with itself id</param>
+        /// <param name="entity">new value object with itself id</param>
         /// <param name="updatedById">id of user who want to update this object</param>
         /// <returns>
         /// returns updated object
         /// </returns>
-        public virtual async Task<DbResult<T>> UpdateAsync(T newValue, int updatedById)
+        public virtual async Task<DbResult<T>> UpdateAsync(T entity, int updatedById)
         {
             try
             {
-                var dbResult = await GetAsyncByAdmin(newValue.Id);
+                var dbResult = await GetAsyncByAdmin(entity.Id);
 
                 if (!dbResult.Success)
                 {
                     throw new Exception(dbResult.Message);
                 }
 
-                newValue.UpdatedByUserId = updatedById;
-                newValue.UpdatedOn = DateTime.Now;
+                if (dbResult.Data == null || dbResult.Data.Id == 0)
+                {
+                    return Add(entity, updatedById);
+                }
 
-                Context.Update(newValue);
+                entity.UpdatedByUserId = updatedById;
+                entity.UpdatedOn = DateTime.Now;
+
+                Context.Update(entity);
                 await SaveAsync();
 
                 var result = new DbResult<T>
                 {
                     Success = true,
-                    Data = newValue,
+                    Data = entity,
                     Count = 1,
                     MessageType = MessageType.Success,
                     Info = MessageType.Success.Description()
@@ -2035,29 +2039,19 @@ namespace Services.Repository
 
         #region Func
 
-        private T FillInsertDefaultProperties(T entity, int? createdById)
+        private T SetInsertProperties(T entity, int? createdById)
         {
             entity.CreatedByUserId = createdById;
             entity.CreatedOn = DateTime.Now;
 
             entity.IsDeleted = false;
 
-            if (entity.OwnerUserId == 0 && createdById.HasValue)
-                entity.OwnerUserId = createdById;
+            if (entity.OwnerUserId.GetValueOrDefault(0) == 0)
+                entity.OwnerUserId = createdById.GetValueOrDefault(1);
 
             return entity;
         }
 
-        private T FillUpdateDefaultProperties(T newValue, T oldValue, int updatedById)
-        {
-            newValue.CreatedByUserId = oldValue.CreatedByUserId;
-            newValue.CreatedOn = oldValue.CreatedOn;
-
-            newValue.UpdatedByUserId = updatedById;
-            newValue.UpdatedOn = DateTime.Now;
-
-            return newValue;
-        }
 
         #endregion
 
