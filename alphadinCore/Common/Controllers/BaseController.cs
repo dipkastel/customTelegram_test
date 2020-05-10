@@ -37,6 +37,11 @@ namespace alphadinCore.Common.Controllers
             var identity = httpContext.User.Identity as ClaimsIdentity;
             var claim = identity.Claims.ToList();
 
+            if (claim.Count == 0)
+            {
+                return null;
+            }
+
             var userId = int.Parse(claim.First(c => c.Type == "userId").Value);
             var uniqueKey = claim.First(c => c.Type == "uniqueKey").Value;
 
@@ -45,7 +50,15 @@ namespace alphadinCore.Common.Controllers
 
         public User GetUser(HttpContext httpContext)
         {
-            var user = GetCurrentUserInfo(httpContext).User;
+            var userInfo = GetCurrentUserInfo(httpContext);
+
+            if (userInfo == null)
+            {
+                Unauthorized();
+                throw new UnauthorizedAccessException();
+            }
+
+            var user = userInfo.User;
 
             if (user == null)
             {

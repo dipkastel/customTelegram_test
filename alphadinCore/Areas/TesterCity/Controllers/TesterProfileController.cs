@@ -81,7 +81,6 @@ namespace alphadinCore.Areas.TesterCity.Controllers
 
             var testerProfile = _profileService.Find(tp => tp.OwnerUserId == _user.Id).Data ?? new TesterProfile();
 
-            testerProfile.User = _user;
             testerProfile.BirthDay = input.BirthDay;
             testerProfile.CityCode = input.cityCode;
             testerProfile.Email = input.Email;
@@ -123,7 +122,6 @@ namespace alphadinCore.Areas.TesterCity.Controllers
 
             var testerProfile = _profileService.Find(tp => tp.OwnerUserId == _user.Id).Data ?? new TesterProfile();
 
-            testerProfile.User = _user;
             testerProfile.NickName = input.NickName;
             testerProfile.UserBio = input.Bio;
             testerProfile.GenderType = input.GenderType;
@@ -160,7 +158,6 @@ namespace alphadinCore.Areas.TesterCity.Controllers
             var testerProfile = _profileService.Find(tp => tp.OwnerUserId == _user.Id).Data ?? new TesterProfile();
 
 
-            testerProfile.User = _user;
             testerProfile.UserName = input.UserName;
             testerProfile.BirthDay = input.BirthDay;
             testerProfile.RelationType = input.RelationType;
@@ -212,7 +209,6 @@ namespace alphadinCore.Areas.TesterCity.Controllers
                 Place = input.Place,
                 InProgress = input.InProgress,
                 Status = 0,
-                User = _user
             };
 
             _educationService.Add(education, _user.Id);
@@ -294,7 +290,6 @@ namespace alphadinCore.Areas.TesterCity.Controllers
                 CompanyScaleId = input.CompanyScaleId,
                 InProgress = input.InProgress,
                 Status = 0,
-                User = _user
             };
 
             _jobService.Add(job, _user.Id);
@@ -374,7 +369,6 @@ namespace alphadinCore.Areas.TesterCity.Controllers
                 WritingRate = input.WritingRate,
                 SpeakingRate = input.SpeakingRate,
                 Status = 0,
-                User = _user
             };
 
             _languageService.Add(lang, _user.Id);
@@ -448,7 +442,7 @@ namespace alphadinCore.Areas.TesterCity.Controllers
 
             var tags = _favoriteTagService.FindAll(o => input.TagIds.Contains(o.Id)).Data;
 
-            var userFavorites = tags.Select(tag => new UserFavorite {Tag = tag, User = _user}).ToList();
+            var userFavorites = tags.Select(tag => new UserFavorite {Tag = tag}).ToList();
 
             _userFavoriteService.AddRange(userFavorites, _user.Id);
             
@@ -495,7 +489,6 @@ namespace alphadinCore.Areas.TesterCity.Controllers
                 Address = input.Address,
                 ActivateTimeId = input.ActivateTimeId,
                 Status = 0,
-                User = _user
             };
 
             _socialsService.Add(social, _user.Id);
