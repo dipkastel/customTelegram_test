@@ -1,4 +1,5 @@
-﻿using Database.Config;
+﻿using System.Linq;
+using Database.Config;
 using Database.Models;
 using DatabaseValidation.Operator.Interfaces;
 using DatabaseValidation.Structure;
@@ -13,6 +14,12 @@ namespace Services.Operator
             : base(context, validation)
         {
 
+        }
+
+        public int GetUnitsCount(int courseId)
+        {
+            var unitsCount = FindBy(u => u.CourseId == courseId).Data.Count();
+            return unitsCount;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Database.Config;
+﻿using System.Linq;
+using Database.Config;
 using Database.Models;
 using DatabaseValidation.Operator.Interfaces;
 using DatabaseValidation.Structure;
@@ -14,5 +15,6 @@ namespace Services.Operator
         {
 
         }
+
     }
 }

@@ -9,7 +9,7 @@ namespace Database.Models
     public class SchoolUnit : Auditable
     {
         public int CourseId { get; set; }
-
+        public int PageNumber { get; set; }
 
 
         public string Title { get; set; }

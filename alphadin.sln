@@ -11,7 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Database\Database.csproj", "{7A06B471-A5C5-4C15-8F04-5810BD442795}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication", "Authentication\Authentication.csproj", "{FDAE89F9-170A-4F84-8E9A-B7250DD07431}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication", "Authentication\Authentication.csproj", "{FDAE89F9-170A-4F84-8E9A-B7250DD07431}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FormEngine", "FormEngine", "{1262E11C-AA0B-4097-8023-021FDFCBF6E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormDatabase", "FormEngine\FormDatabase\FormDatabase.csproj", "{41152083-9FBB-4E74-A0BE-AC683498C75F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormServices", "FormEngine\FormServices\FormServices.csproj", "{F5E2C17D-1C44-4233-AA3F-386014936BFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +45,21 @@ Global
 		{FDAE89F9-170A-4F84-8E9A-B7250DD07431}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDAE89F9-170A-4F84-8E9A-B7250DD07431}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDAE89F9-170A-4F84-8E9A-B7250DD07431}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41152083-9FBB-4E74-A0BE-AC683498C75F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41152083-9FBB-4E74-A0BE-AC683498C75F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41152083-9FBB-4E74-A0BE-AC683498C75F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41152083-9FBB-4E74-A0BE-AC683498C75F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5E2C17D-1C44-4233-AA3F-386014936BFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5E2C17D-1C44-4233-AA3F-386014936BFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5E2C17D-1C44-4233-AA3F-386014936BFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5E2C17D-1C44-4233-AA3F-386014936BFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{41152083-9FBB-4E74-A0BE-AC683498C75F} = {1262E11C-AA0B-4097-8023-021FDFCBF6E3}
+		{F5E2C17D-1C44-4233-AA3F-386014936BFD} = {1262E11C-AA0B-4097-8023-021FDFCBF6E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D461BEA-6DF3-48FD-8C0E-71727CE0F9CE}

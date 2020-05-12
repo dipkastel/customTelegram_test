@@ -8,7 +8,6 @@ using alphadinCore.Model.NetworkModels;
 using Authentication.Services.Interface;
 using Database.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Services.Operator.Interfaces;
 using Services.Operator.School.Interfaces;
 using Services.ViewModels.School;
@@ -109,6 +108,37 @@ namespace alphadinCore.Areas.TesterCity.Controllers
             return lastUnit == null ? null : new JsonResult(lastUnit.UnitId);
         }
 
+        [HttpGet]
+        public JsonResult ReadPercentage(SchoolGetLastUnitInput input)
+        {
+            var user = GetUser(HttpContext);
+
+            var lastRead = _unitReadService
+                .GetAllIncluding(ur => ur.Unit)
+                .Where(lu => lu.CourseId == input.CourseId && lu.OwnerUserId == user.Id)
+                .OrderByDescending(lu => lu.UnitId)
+                .FirstOrDefault();
+
+            if (lastRead == null)
+            {
+                return new JsonResult(0);
+            }
+
+            var unitsCount = _unitService.GetUnitsCount(input.CourseId);
+
+            var percentage = (lastRead.Unit.PageNumber * 100) / unitsCount;
+
+            return new JsonResult(percentage);
+        }
+
+        [HttpGet]
+        //[ResponseCache(Duration = 3600, NoStore = false, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new []{"*"})]
+        public JsonResult UnitCount(SchoolGetLastUnitInput input)
+        {
+            var unitsCount = _unitService.GetUnitsCount(input.CourseId);
+            return new JsonResult(unitsCount);
+        }
+
         [HttpPost]
         public JsonResult PassUnit(SchoolSetLastUnitInput input)
         {
@@ -152,13 +182,6 @@ namespace alphadinCore.Areas.TesterCity.Controllers
             throw new CustomException("خطا در ثبت اطلاعات",
                 ErrorsPreFix.CONTROLLER_SCHOOL + ERROR_SET_LAST_UNIT + "04");
         }
-
-        [HttpGet]
-        public JsonResult QuizLink(int courseId)
-        {
-            throw new NotImplementedException("لینک امتحان یک کورسی که تمام شده ولی این آزمون را ندیده");
-        }
-
 
         private string ERROR_GET_TOPICS = "01";
         private string ERROR_GET_COURSES = "02";
