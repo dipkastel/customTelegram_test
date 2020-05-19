@@ -36,6 +36,12 @@ namespace alphadinCore
     {
         public static void Config(IServiceCollection services)
         {
+            FormEngine.DatabaseValidation.IOC.Di.Config(services);
+
+            FormEngine.Services.IOC.Di.Config(services);
+
+
+
             #region Repository
 
             services.AddTransient<IActionService, ActionService>();

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FormEngine.Database.Common.Interface;
-using FormEngine.Database.Models.Quiz;
 
 namespace FormEngine.Database.Models
 {
@@ -9,16 +9,15 @@ namespace FormEngine.Database.Models
         public string Title { get; set; }
         public string Description { get; set; }
 
+        public string CssClass { get; set; }
+        public string CustomCss { get; set; }
 
+        public ICollection<Element> Elements { get; set; }
 
-
-
-
-
-        public int IntroductionId { get; set; }
-        public Introduction.Introduction Introduction { get; set; }
-
-        public ICollection<Question> Questions { get; set; }
+        /// <summary>
+        /// Generated Html for cache
+        /// </summary>
+        public string Html { get; set; }
 
     }
 }

@@ -3,32 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Database.Common;
-using Database.Common.Interfaces;
-using Database.Config;
-using DatabaseValidation.Structure;
+using FormEngine.Database.Common.Interface;
+using FormEngine.Database.Config;
+using FormEngine.DatabaseValidation.Structure;
+using FormEngine.Services.Common;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using Services.Common;
-using Services.Common.Interfaces;
-using Services.Enum;
 
-namespace Services.Repository
+namespace FormEngine.Services.Structure
 {
     public abstract class GenericRepository<T> : IGenericRepository<T> where T : Auditable
     {
-        protected DbContextModel Context;
-        protected IGenericValidation<T> ReadValidation;
+        protected FormEngineDbContext Context;
+        protected IGenericValidation<T> Validation;
         private bool _disposed = true;
 
-        protected GenericRepository(DbContextModel context, IGenericValidation<T> readValidation)
+        protected GenericRepository(FormEngineDbContext context, IGenericValidation<T> validation)
         {
             Context = context;
-            ReadValidation = readValidation;
+            Validation = validation;
         }
-
-
-
 
         #region Create
 
@@ -41,7 +34,7 @@ namespace Services.Repository
         /// <returns>
         /// return inserted object with id
         /// </returns>
-        public virtual DbResult<T> Add(T entity, int? createdById)
+        public virtual DbResult<T> Add(T entity, Guid? createdById)
         {
             var result = new DbResult<T>();
 
@@ -49,7 +42,7 @@ namespace Services.Repository
             {
                 entity = SetInsertProperties(entity, createdById);
 
-                if (!ReadValidation.InsertValidation(entity,out var validationMessage))
+                if (!Validation.InsertValidation(entity,out var validationMessage))
                 {
                     result.Success = false;
                     result.Data = null;
@@ -93,7 +86,7 @@ namespace Services.Repository
         /// <returns>
         /// return inserted object with id
         /// </returns>
-        public virtual async Task<DbResult<T>> AddAsync(T entity, int? createdById)
+        public virtual async Task<DbResult<T>> AddAsync(T entity, Guid? createdById)
         {
             var result = new DbResult<T>();
 
@@ -101,7 +94,7 @@ namespace Services.Repository
             {
                 entity = SetInsertProperties(entity, createdById);
 
-                if (!ReadValidation.InsertValidation(entity, out var validationMessage))
+                if (!Validation.InsertValidation(entity, out var validationMessage))
                 {
                     result.Success = false;
                     result.Data = null;
@@ -241,7 +234,7 @@ namespace Services.Repository
         /// <returns>
         /// return object if that's found else method returns null
         /// </returns>
-        public virtual DbResult<T> GetByAdmin(int id)
+        public virtual DbResult<T> GetByAdmin(Guid id)
         {
             var result = new DbResult<T>();
 
@@ -288,7 +281,7 @@ namespace Services.Repository
         /// <returns>
         /// Return object if that's found else method returns null
         /// </returns>
-        public virtual async Task<DbResult<T>> GetAsyncByAdmin(int id)
+        public virtual async Task<DbResult<T>> GetAsyncByAdmin(Guid id)
         {
             var result = new DbResult<T>();
 
@@ -296,7 +289,7 @@ namespace Services.Repository
             {
                 var entity = await Context.Set<T>().FindAsync(id);
 
-                if (entity == null || entity.Id == 0)
+                if (entity == null || entity.Id == Guid.Empty)
                 {
                     result.Success = true;
                     result.Data = entity;
@@ -343,7 +336,7 @@ namespace Services.Repository
             {
                 var entity = Context.Set<T>().FirstOrDefault(match);
 
-                if (entity == null || entity.Id == 0)
+                if (entity == null || entity.Id == Guid.Empty)
                 {
                     result.Success = true;
                     result.Data = entity;
@@ -390,7 +383,7 @@ namespace Services.Repository
             {
                 var entity = await Context.Set<T>().FirstOrDefaultAsync(match);
 
-                if (entity == null || entity.Id == 0)
+                if (entity == null || entity.Id == Guid.Empty)
                 {
                     result.Success = true;
                     result.Data = entity;
@@ -764,7 +757,7 @@ namespace Services.Repository
         /// </summary>
         /// <param name="id">object id</param>
         /// <returns></returns>
-        public DbResult<bool> ExistsByAdmin(int id)
+        public DbResult<bool> ExistsByAdmin(Guid id)
         {
             var result = new DbResult<bool>();
 
@@ -900,7 +893,7 @@ namespace Services.Repository
         /// <returns>
         /// return object if that's found else method returns null
         /// </returns>
-        public virtual DbResult<T> Get(int id)
+        public virtual DbResult<T> Get(Guid id)
         {
             var result = new DbResult<T>();
 
@@ -909,7 +902,7 @@ namespace Services.Repository
                 var entity = Context.Set<T>()
                     .FirstOrDefault(e => e.Id == id && e.IsDeleted == false);
 
-                if (entity == null || entity.Id == 0)
+                if (entity == null || entity.Id == Guid.Empty)
                 {
                     result.Success = true;
                     result.Data = entity;
@@ -948,7 +941,7 @@ namespace Services.Repository
         /// <returns>
         /// return object if that's found else method returns null
         /// </returns>
-        public virtual async Task<DbResult<T>> GetAsync(int id)
+        public virtual async Task<DbResult<T>> GetAsync(Guid id)
         {
             var result = new DbResult<T>();
 
@@ -957,7 +950,7 @@ namespace Services.Repository
                 var entity = await Context.Set<T>()
                     .FirstOrDefaultAsync(e => e.Id == id && e.IsDeleted == false);
 
-                if (entity == null || entity.Id == 0)
+                if (entity == null || entity.Id == Guid.Empty)
                 {
                     result.Success = true;
                     result.Data = entity;
@@ -1004,7 +997,7 @@ namespace Services.Repository
             {
                 var entity = Context.Set<T>().FirstOrDefault(match);
 
-                if (entity == null || entity.Id == 0)
+                if (entity == null || entity.Id == Guid.Empty)
                 {
                     result.Success = true;
                     result.Data = entity;
@@ -1051,7 +1044,7 @@ namespace Services.Repository
             {
                 var entity = await Context.Set<T>().FirstOrDefaultAsync(match);
 
-                if (entity == null || entity.Id == 0)
+                if (entity == null || entity.Id == Guid.Empty)
                 {
                     result.Success = true;
                     result.Data = entity;
@@ -1440,7 +1433,7 @@ namespace Services.Repository
         /// </summary>
         /// <param name="id">object id</param>
         /// <returns></returns>
-        public DbResult<bool> Exists(int id)
+        public DbResult<bool> Exists(Guid id)
         {
             var result = new DbResult<bool>();
 
@@ -1485,7 +1478,7 @@ namespace Services.Repository
         /// <returns>
         /// returns updated object
         /// </returns>
-        public virtual DbResult<T> Update(T entity, int updatedById)
+        public virtual DbResult<T> Update(T entity, Guid updatedById)
         {
             try
             {
@@ -1496,7 +1489,7 @@ namespace Services.Repository
                     throw new Exception(dbResult.Message);
                 }
 
-                if (dbResult.Data == null || dbResult.Data.Id == 0)
+                if (dbResult.Data == null || dbResult.Data.Id == Guid.Empty)
                 {
                     return Add(entity, updatedById);
                 }
@@ -1544,7 +1537,7 @@ namespace Services.Repository
         /// <returns>
         /// returns updated object
         /// </returns>
-        public virtual async Task<DbResult<T>> UpdateAsync(T entity, int updatedById)
+        public virtual async Task<DbResult<T>> UpdateAsync(T entity, Guid updatedById)
         {
             try
             {
@@ -1555,7 +1548,7 @@ namespace Services.Repository
                     throw new Exception(dbResult.Message);
                 }
 
-                if (dbResult.Data == null || dbResult.Data.Id == 0)
+                if (dbResult.Data == null || dbResult.Data.Id == Guid.Empty)
                 {
                     return Add(entity, updatedById);
                 }
@@ -1600,7 +1593,7 @@ namespace Services.Repository
         /// </summary>
         /// <param name="id">object id</param>
         /// <param name="deletedById">id of user who want to disable this object</param>
-        public DbResult Disable(int id, int deletedById)
+        public DbResult Disable(Guid id, Guid deletedById)
         {
             var result = new DbResult();
 
@@ -1665,7 +1658,7 @@ namespace Services.Repository
         /// </summary>
         /// <param name="id">object id</param>
         /// <param name="deletedById">id of user who want to disable this object</param>
-        public async Task<DbResult> DisableAsync(int id, int deletedById)
+        public async Task<DbResult> DisableAsync(Guid id, Guid deletedById)
         {
             var result = new DbResult();
 
@@ -1730,7 +1723,7 @@ namespace Services.Repository
         /// </summary>
         /// <param name="id">object id</param>
         /// <param name="updatedById">id of user who want to enable this object</param>
-        public DbResult Enable(int id, int updatedById)
+        public DbResult Enable(Guid id, Guid updatedById)
         {
             var result = new DbResult();
 
@@ -1793,7 +1786,7 @@ namespace Services.Repository
         /// </summary>
         /// <param name="id">object id</param>
         /// <param name="updatedById">id of user who want to enable this object</param>
-        public async Task<DbResult> EnableAsync(int id, int updatedById)
+        public async Task<DbResult> EnableAsync(Guid id, Guid updatedById)
         {
             var result = new DbResult();
 
@@ -1864,7 +1857,7 @@ namespace Services.Repository
 
             try
             {
-                if (!ReadValidation.DeleteValidation(entity, out var validationMessage))
+                if (!Validation.DeleteValidation(entity, out var validationMessage))
                 {
                     result.Success = false;
                     result.Count = 0;
@@ -1907,7 +1900,7 @@ namespace Services.Repository
 
             try
             {
-                if (!ReadValidation.DeleteValidation(entity, out var validationMessage))
+                if (!Validation.DeleteValidation(entity, out var validationMessage))
                 {
                     result.Success = false;
                     result.Count = 0;
@@ -1945,7 +1938,7 @@ namespace Services.Repository
         /// delete prementaly an object from database with objectId
         /// </summary>
         /// <param name="entityId">object Id</param>
-        public virtual DbResult Delete(int entityId)
+        public virtual DbResult Delete(Guid entityId)
         {
             try
             {
@@ -1970,7 +1963,7 @@ namespace Services.Repository
         /// delete prementaly an object from database async with objectId
         /// </summary>
         /// <param name="entityId">object Id</param>
-        public virtual async Task<DbResult> DeleteAsync(int entityId)
+        public virtual async Task<DbResult> DeleteAsync(Guid entityId)
         {
             try
             {
@@ -2018,15 +2011,15 @@ namespace Services.Repository
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
-            {
-                if (disposing)
-                {
-                    Context.Dispose();
-                }
+            if (this._disposed)
+                return;
 
-                this._disposed = false;
+            if (disposing)
+            {
+                Context.Dispose();
             }
+
+            this._disposed = false;
         }
 
         public void Dispose()
@@ -2039,15 +2032,15 @@ namespace Services.Repository
 
         #region Func
 
-        private static T SetInsertProperties(T entity, int? createdById)
+        private static T SetInsertProperties(T entity, Guid? createdById)
         {
             entity.CreatedByUserId = createdById;
             entity.CreatedOn = DateTime.Now;
 
             entity.IsDeleted = false;
 
-            if (entity.OwnerUserId.GetValueOrDefault(0) == 0)
-                entity.OwnerUserId = createdById.GetValueOrDefault(1);
+            if (entity.OwnerUserId.GetValueOrDefault(Guid.Empty) == Guid.Empty)
+                entity.OwnerUserId = createdById.GetValueOrDefault(Guid.NewGuid());
 
             return entity;
         }

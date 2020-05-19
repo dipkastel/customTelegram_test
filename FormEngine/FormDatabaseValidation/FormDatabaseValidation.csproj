@@ -2,11 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>FormEngine.Services</RootNamespace>
+    <RootNamespace>FormEngine.DatabaseValidation</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FormDatabaseValidation\FormDatabaseValidation.csproj" />
     <ProjectReference Include="..\FormDatabase\FormDatabase.csproj" />
   </ItemGroup>
 

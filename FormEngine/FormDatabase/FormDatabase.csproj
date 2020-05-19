@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <Folder Include="Common\Enum\" />
-    <Folder Include="Models\BugReport\" />
   </ItemGroup>
 
   <ItemGroup>
