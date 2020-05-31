@@ -6,12 +6,7 @@ using alphadinCore.Services.Helper;
 using Authentication.Services;
 using Authentication.Services.Interface;
 using Database.Config;
-using DatabaseValidation.Operator;
-using DatabaseValidation.Operator.Authentication;
-using DatabaseValidation.Operator.Authentication.Interfaces;
-using DatabaseValidation.Operator.Interfaces;
-using DatabaseValidation.Operator.School;
-using DatabaseValidation.Operator.School.Interfaces;
+using FormEngine.Database.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,13 +17,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using Services.Operator;
-using Services.Operator.Authentication;
-using Services.Operator.Authentication.Interfaces;
-using Services.Operator.Interfaces;
-using Services.Operator.School;
-using Services.Operator.School.Interfaces;
-using Services.Repository;
 
 namespace alphadinCore
 {
@@ -36,89 +24,17 @@ namespace alphadinCore
     {
         public static void Config(IServiceCollection services)
         {
+            /* Form Engine */
             FormEngine.DatabaseValidation.IOC.Di.Config(services);
-
             FormEngine.Services.IOC.Di.Config(services);
 
-
-
-            #region Repository
-
-            services.AddTransient<IActionService, ActionService>();
-            services.AddTransient<IRoleActionService, RoleActionService>();
-            services.AddTransient<IUserActionService, UserActionService>();
-            services.AddTransient<IRoleAccessService, RoleAccessService>();
-            services.AddTransient<IRoleService, RoleService>();
-
-            services.AddTransient<IConstService, ConstService>();
-            services.AddTransient<IFavoriteTagService, FavoriteTagService>();
-            services.AddTransient<IGeneralTypesService, GeneralTypesService>();
-            services.AddTransient<ILanguageService, LanguageService>();
-            services.AddTransient<ILocationService, LocationService>();
-            services.AddTransient<ISchoolCourseService, SchoolCourseService>();
-            services.AddTransient<ISchoolQuisQuestionOptionService, SchoolQuisQuestionOptionService>();
-            services.AddTransient<ISchoolQuizCourseService, SchoolQuizCourseService>();
-            services.AddTransient<ISchoolQuizQuestionService, SchoolQuizQuestionService>();
-            services.AddTransient<ISchoolTopicService, SchoolTopicService>();
-            services.AddTransient<ISchoolUnitService, SchoolUnitService>();
-            services.AddTransient<ISchoolUserUnitReadService, SchoolUserUnitReadService>();
-
-            services.AddTransient<ISmsService, SmsService>();
-            services.AddTransient<ITesterProfileService, TesterProfileService>();
-            services.AddTransient<IUserEducationService, UserEducationService>();
-            services.AddTransient<IUserJobService, UserJobService>();
-            services.AddTransient<IUserFavoriteService, UserFavoriteService>();
-
-            services.AddTransient<IUserLanguageService, UserLanguageService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IUserSocialsService, UserSocialsService>();
-            services.AddTransient<IUserTokenService, UserTokenService>();
-            services.AddTransient<ISchoolCourseCertificateService, SchoolCourseCertificateService>();
-
-
-
-
-            #endregion
-
-            #region Validation
-
-            services.AddTransient<IActionValidation, ActionValidation>();
-            services.AddTransient<IRoleActionValidation, RoleActionValidation>();
-            services.AddTransient<IUserActionValidation, UserActionValidation>();
-            services.AddTransient<IRoleAccessValidation, RoleAccessValidation>();
-            services.AddTransient<IRoleValidation, RoleValidation>();
-
-            services.AddTransient<IConstValidation, ConstValidation>();
-            services.AddTransient<IFavoriteTagValidation, FavoriteTagValidation>();
-            services.AddTransient<IGeneralTypesValidation, GeneralTypesValidation>();
-            services.AddTransient<ILanguageValidation, LanguageValidation>();
-            services.AddTransient<ILocationValidation, LocationValidation>();
-            services.AddTransient<ISchoolCourseValidation, SchoolCourseValidation>();
-            services.AddTransient<ISchoolQuisQuestionOptionValidation, SchoolQuisQuestionOptionValidation>();
-            services.AddTransient<ISchoolQuizCourseValidation, SchoolQuizCourseValidation>();
-            services.AddTransient<ISchoolQuizQuestionValidation, SchoolQuizQuestionValidation>();
-            services.AddTransient<ISchoolTopicValidation, SchoolTopicValidation>();
-            services.AddTransient<ISchoolUnitValidation, SchoolUnitValidation>();
-            services.AddTransient<ISchoolUserUnitReadValidation, SchoolUserUnitReadValidation>();
-
-            services.AddTransient<ISmsValidation, SmsValidation>();
-            services.AddTransient<ITesterProfileValidation, TesterProfileValidation>();
-            services.AddTransient<IUserEducationValidation, UserEducationValidation>();
-            services.AddTransient<IUserJobValidation, UserJobValidation>();
-            services.AddTransient<IUserLanguageValidation, UserLanguageValidation>();
-            services.AddTransient<IUserValidation, UserValidation>();
-            services.AddTransient<IUserSocialsValidation, UserSocialsValidation>();
-            services.AddTransient<IUserTokenValidation, UserTokenValidation>();
-            services.AddTransient<ISchoolCourseCertificateValidation, SchoolCourseCertificateValidation>();
-            services.AddTransient<IUserFavoriteValidation, UserFavoriteValidation>();
-
-            #endregion
-
+            /* Main Application */
+            DatabaseValidation.IOC.Di.Config(services);
+            Repository.Services.IOC.Di.Config(services);
+            
             services.AddTransient<AuthHelper>();
             services.AddTransient<SmsHelper>();
-
             services.AddTransient<IOnlineUserService, OnlineUserService>();
-
         }
     }
 
@@ -139,6 +55,11 @@ namespace alphadinCore
             services.AddDbContext<DbContextModel>(option =>
             {
                 option.UseSqlServer(Configuration.GetConnectionString("DBCoreConnection"));
+            });
+
+            services.AddDbContext<FormEngineDbContext>(option =>
+            {
+                option.UseSqlServer(Configuration.GetConnectionString("FormEngineDbConnection"));
             });
 
             services.AddCors(options =>
@@ -217,6 +138,16 @@ namespace alphadinCore
                 .CreateScope())
             {
                 using (var context = serviceScope.ServiceProvider.GetService<DbContextModel>())
+                {
+                    context.Database.Migrate();
+                }
+            }
+
+            using (var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<FormEngineDbContext>())
                 {
                     context.Database.Migrate();
                 }

@@ -56,12 +56,11 @@ namespace Authentication.Services
             {
                 User = userToken.User,
                 UserToken = userToken,
-                ExpireDate = DateTime.Now.AddHours(8),
+                ExpireDate = DateTime.Now.AddHours(8),  //TODO: Get ExpireTime from JWT
                 UserActions = new List<UserAction>()
             };
 
-            //TODO: Get ExpireTime from JWT
-
+           
             _onlineUsers.Add(newUniqueKey, userInfo);
             return userInfo;
         }

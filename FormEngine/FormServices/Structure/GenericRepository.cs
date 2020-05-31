@@ -34,7 +34,7 @@ namespace FormEngine.Services.Structure
         /// <returns>
         /// return inserted object with id
         /// </returns>
-        public virtual DbResult<T> Add(T entity, Guid? createdById)
+        public virtual DbResult<T> Add(T entity, int? createdById)
         {
             var result = new DbResult<T>();
 
@@ -86,7 +86,7 @@ namespace FormEngine.Services.Structure
         /// <returns>
         /// return inserted object with id
         /// </returns>
-        public virtual async Task<DbResult<T>> AddAsync(T entity, Guid? createdById)
+        public virtual async Task<DbResult<T>> AddAsync(T entity, int? createdById)
         {
             var result = new DbResult<T>();
 
@@ -1478,7 +1478,7 @@ namespace FormEngine.Services.Structure
         /// <returns>
         /// returns updated object
         /// </returns>
-        public virtual DbResult<T> Update(T entity, Guid updatedById)
+        public virtual DbResult<T> Update(T entity, int updatedById)
         {
             try
             {
@@ -1537,7 +1537,7 @@ namespace FormEngine.Services.Structure
         /// <returns>
         /// returns updated object
         /// </returns>
-        public virtual async Task<DbResult<T>> UpdateAsync(T entity, Guid updatedById)
+        public virtual async Task<DbResult<T>> UpdateAsync(T entity, int updatedById)
         {
             try
             {
@@ -1593,7 +1593,7 @@ namespace FormEngine.Services.Structure
         /// </summary>
         /// <param name="id">object id</param>
         /// <param name="deletedById">id of user who want to disable this object</param>
-        public DbResult Disable(Guid id, Guid deletedById)
+        public DbResult Disable(Guid id, int deletedById)
         {
             var result = new DbResult();
 
@@ -1658,7 +1658,7 @@ namespace FormEngine.Services.Structure
         /// </summary>
         /// <param name="id">object id</param>
         /// <param name="deletedById">id of user who want to disable this object</param>
-        public async Task<DbResult> DisableAsync(Guid id, Guid deletedById)
+        public async Task<DbResult> DisableAsync(Guid id, int deletedById)
         {
             var result = new DbResult();
 
@@ -1723,7 +1723,7 @@ namespace FormEngine.Services.Structure
         /// </summary>
         /// <param name="id">object id</param>
         /// <param name="updatedById">id of user who want to enable this object</param>
-        public DbResult Enable(Guid id, Guid updatedById)
+        public DbResult Enable(Guid id, int updatedById)
         {
             var result = new DbResult();
 
@@ -1786,7 +1786,7 @@ namespace FormEngine.Services.Structure
         /// </summary>
         /// <param name="id">object id</param>
         /// <param name="updatedById">id of user who want to enable this object</param>
-        public async Task<DbResult> EnableAsync(Guid id, Guid updatedById)
+        public async Task<DbResult> EnableAsync(Guid id, int updatedById)
         {
             var result = new DbResult();
 
@@ -2032,15 +2032,15 @@ namespace FormEngine.Services.Structure
 
         #region Func
 
-        private static T SetInsertProperties(T entity, Guid? createdById)
+        private static T SetInsertProperties(T entity, int? createdById)
         {
             entity.CreatedByUserId = createdById;
             entity.CreatedOn = DateTime.Now;
 
             entity.IsDeleted = false;
 
-            if (entity.OwnerUserId.GetValueOrDefault(Guid.Empty) == Guid.Empty)
-                entity.OwnerUserId = createdById.GetValueOrDefault(Guid.NewGuid());
+            if (entity.OwnerUserId.GetValueOrDefault(0) == 0)
+                entity.OwnerUserId = createdById.GetValueOrDefault(1);
 
             return entity;
         }
